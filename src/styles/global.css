@@ -459,18 +459,24 @@ img {
 .sparkline polyline {
   fill: none;
   stroke: url(#sparkGradient);
-  stroke-width: 2;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px rgba(143, 220, 255, 0.25));
 }
 
 .comparison-sparkline polyline {
-  stroke-width: 1.5;
+  stroke-width: 1.25;
+  opacity: 0.92;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.12));
 }
 
 .sparkline-grid line {
-  stroke: rgba(148, 163, 184, 0.12);
-  stroke-dasharray: 6 10;
+  stroke: rgba(148, 163, 184, 0.16);
+  stroke-dasharray: 4 8;
+  vector-effect: non-scaling-stroke;
 }
 
 .trend-legend {
