@@ -1,3 +1,5 @@
+import { DEFAULT_SITE_URL } from '../lib/runtime';
+
 export type Locale = 'ko' | 'en';
 
 export type SeoPage = {
@@ -13,8 +15,8 @@ export const siteConfig = {
     ko: '김프보드',
     en: 'KimpBoard',
   },
-  domain: 'example.com',
-  siteUrl: 'https://example.com',
+  domain: 'enterkorea.mcjeff-park.workers.dev',
+  siteUrl: DEFAULT_SITE_URL,
   defaultLocale: 'ko' as Locale,
   reservedEnglishPaths: [
     '/en/bitcoin-premium',

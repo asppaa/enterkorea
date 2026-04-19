@@ -1,8 +1,10 @@
+import { DEFAULT_SITE_URL } from '../lib/runtime';
+
 export function GET() {
   const content = `User-agent: *
 Allow: /
 
-Sitemap: https://example.com/sitemap.xml
+Sitemap: ${DEFAULT_SITE_URL}/sitemap.xml
 `;
 
   return new Response(content, {

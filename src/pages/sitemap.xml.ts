@@ -1,8 +1,9 @@
 import { sitePages } from '../data/site';
+import { DEFAULT_SITE_URL } from '../lib/runtime';
 
 export function GET() {
   const urls = sitePages
-    .map((page) => `<url><loc>https://example.com${page.path}</loc></url>`)
+    .map((page) => `<url><loc>${DEFAULT_SITE_URL}${page.path}</loc></url>`)
     .join('');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

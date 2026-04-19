@@ -5,9 +5,10 @@ import TelegramInvite from '../components/TelegramInvite.astro';
 import { etfSnapshots, marketMeta } from '../data/market';
 import { sitePages } from '../data/site';
 import { formatKrw, formatPercent, formatUsd } from '../lib/format';
+import { getApiBase } from '../lib/runtime';
 
 const page = sitePages.find((item) => item.path === '/etf')!;
-const apiBase = import.meta.env.PUBLIC_KIMP_API_BASE || (import.meta.env.DEV ? 'http://127.0.0.1:8787' : '');
+const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env.DEV);
 const lead = [...etfSnapshots].sort((left, right) => Math.abs(right.deviationPercent) - Math.abs(left.deviationPercent))[0];
 ---
 
