@@ -1,0 +1,9 @@
+name = "kimpboard-www-redirect"
+main = "src/index.js"
+compatibility_date = "2026-04-19"
+workers_dev = true
+preview_urls = false
+
+[[routes]]
+pattern = "www.kimpboard.com"
+custom_domain = true

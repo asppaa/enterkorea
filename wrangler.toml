@@ -8,10 +8,6 @@ preview_urls = false
 pattern = "kimpboard.com"
 custom_domain = true
 
-[[routes]]
-pattern = "www.kimpboard.com"
-custom_domain = true
-
 [assets]
 directory = "./dist"
 binding = "ASSETS"
