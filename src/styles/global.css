@@ -23,7 +23,7 @@
 
 html {
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   background: radial-gradient(circle at top, rgba(59, 130, 246, 0.16), transparent 32%),
     linear-gradient(180deg, #08111f 0%, #06101e 48%, #091526 100%);
   color: var(--text);
@@ -482,13 +482,13 @@ img {
 .sparkline polyline {
   fill: none;
   stroke: url(#sparkGradient);
-  stroke-width: 4;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .comparison-sparkline polyline {
-  stroke-width: 3;
+  stroke-width: 1.5;
 }
 
 .sparkline-grid line {
@@ -931,7 +931,7 @@ img {
 
 @media (max-width: 640px) {
   html {
-    font-size: 14px;
+    font-size: 10px;
   }
 
   .page {
