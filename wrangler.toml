@@ -1,0 +1,9 @@
+name = "enterkorea"
+main = "worker-site/index.js"
+compatibility_date = "2026-04-19"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
