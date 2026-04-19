@@ -1,0 +1,16 @@
+---
+const { title, value, note, tone = 'positive' } = Astro.props as {
+  title: string;
+  value: string;
+  note?: string;
+  tone?: 'positive' | 'negative' | 'neutral';
+};
+
+const toneClass = tone === 'neutral' ? '' : tone;
+---
+
+<article class="metric-card">
+  <h3>{title}</h3>
+  <strong class={`metric-value ${toneClass}`.trim()}>{value}</strong>
+  {note && <div class="metric-note">{note}</div>}
+</article>

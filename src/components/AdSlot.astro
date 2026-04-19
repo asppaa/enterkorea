@@ -1,0 +1,17 @@
+---
+const {
+  label = '광고 영역',
+  note = '애드센스 또는 제휴 배너 자리',
+  compact = false,
+} = Astro.props as {
+  label?: string;
+  note?: string;
+  compact?: boolean;
+};
+---
+
+<aside class:list={['ad-slot', compact && 'ad-slot-compact']} aria-label={label}>
+  <span>AD</span>
+  <strong>{label}</strong>
+  <p>{note}</p>
+</aside>

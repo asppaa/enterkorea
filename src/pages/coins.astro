@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import TelegramInvite from '../components/TelegramInvite.astro';
+import { coinSnapshots, marketMeta } from '../data/market';
+import { sitePages } from '../data/site';
+import { formatKrw, formatPercent, formatUsd } from '../lib/format';
+
+const page = sitePages.find((item) => item.path === '/coins')!;
+const apiBase = import.meta.env.PUBLIC_KIMP_API_BASE || (import.meta.env.DEV ? 'http://127.0.0.1:8787' : '');
+const fallbackRows = Object.values(coinSnapshots);
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">한국 프리미엄 관측소 · 코인</div>
+          <h1>거래대금 순 코인 김프 보드</h1>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge" id="coins-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+          <div class="lang-badge" id="coin-count-badge">표시 종목 {fallbackRows.length}개</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>전체 코인 보드</h2>
+          <p>한국 거래소에서 거래되는 코인을 최대한 많이 모아 거래대금 순으로 정렬합니다.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="coin-table">
+          <thead>
+            <tr>
+              <th>코인</th>
+              <th>업비트</th>
+              <th>빗썸</th>
+              <th>바이낸스</th>
+              <th>한국/해외</th>
+              <th>국내간</th>
+              <th>24시간</th>
+              <th>거래대금</th>
+            </tr>
+          </thead>
+          <tbody id="coins-body">
+            {
+              fallbackRows.map((coin) => (
+                <tr>
+                  <td>
+                    <a class="coin-chip" href={`/${coin.slug}`}>
+                      <span class="coin-dot"></span>
+                      <strong>{coin.symbol}</strong>
+                    </a>
+                  </td>
+                  <td>{formatKrw(coin.localPriceKrw)}</td>
+                  <td>{formatKrw(coin.secondLocalPriceKrw)}</td>
+                  <td>{formatUsd(coin.globalPriceUsd)}</td>
+                  <td class={coin.premiumPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(coin.premiumPercent)}</td>
+                  <td class={coin.domesticSpreadPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(coin.domesticSpreadPercent)}</td>
+                  <td class={coin.change24h >= 0 ? 'positive' : 'negative'}>{formatPercent(coin.change24h)}</td>
+                  <td>{coin.volumeKrwBn.toFixed(1)}B KRW</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <TelegramInvite title="코인 요약 채널 자리" note="사용자가 코인 보드를 보고 난 뒤, 텔레그램에서 더 빠른 김프 요약을 받아보도록 연결하는 자리입니다." />
+  </section>
+
+  <section class="section">
+    <AdSlot label="코인 보드 광고" note="대량 테이블 아래에 자연스럽게 이어지는 인라인 광고 슬롯" />
+  </section>
+</BaseLayout>
+
+<script define:vars={{ apiBase }}>
+  const liveStatus = document.getElementById('coins-live-status');
+  const countBadge = document.getElementById('coin-count-badge');
+  const body = document.getElementById('coins-body');
+
+  const formatKrw = (value) =>
+    new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW',
+      maximumFractionDigits: 0,
+    }).format(Number(value));
+
+  const formatUsd = (value) =>
+    value === null || value === undefined
+      ? '-'
+      : new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          maximumFractionDigits: 2,
+        }).format(Number(value));
+
+  const formatPercent = (value) =>
+    value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(2)}%`;
+
+  const volumeText = (value) => `${(Number(value) / 1_000_000_000).toFixed(1)}B KRW`;
+  const tone = (value) => (Number(value) >= 0 ? 'positive' : 'negative');
+
+  const render = (rows) => {
+    if (!body || !Array.isArray(rows)) return;
+
+    body.innerHTML = rows.map((row) => `
+      <tr>
+        <td>
+          <span class="coin-chip">
+            <span class="coin-dot"></span>
+            <strong>${row.symbol}</strong>
+          </span>
+        </td>
+        <td>${row.upbit ? formatKrw(row.upbit) : '-'}</td>
+        <td>${row.bithumb ? formatKrw(row.bithumb) : '-'}</td>
+        <td>${formatUsd(row.binance)}</td>
+        <td class="${row.leadPremium === null ? '' : tone(row.leadPremium)}">${formatPercent(row.leadPremium)}</td>
+        <td class="${row.upbitVsBithumb === null ? '' : tone(row.upbitVsBithumb)}">${formatPercent(row.upbitVsBithumb)}</td>
+        <td class="${row.signedChangeRate24h === null ? '' : tone(row.signedChangeRate24h)}">${formatPercent(row.signedChangeRate24h)}</td>
+        <td>${volumeText(row.volumeKrw24hRaw ?? row.volumeKrw24h * 1_000_000_000)}</td>
+      </tr>
+    `).join('');
+  };
+
+  const load = async () => {
+    if (!apiBase) return;
+
+    try {
+      const response = await fetch(`${apiBase}/api/coins`);
+      const payload = await response.json();
+      if (liveStatus) liveStatus.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
+      if (countBadge) countBadge.textContent = `표시 종목 ${Number(payload.totalCount || 0).toLocaleString('ko-KR')}개`;
+      render(payload.rows);
+    } catch {
+      if (liveStatus) liveStatus.textContent = '실시간 연결 실패 · 폴백 유지';
+    }
+  };
+
+  load();
+  if (apiBase) window.setInterval(load, 3000);
+</script>

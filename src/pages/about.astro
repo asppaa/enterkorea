@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { sitePages } from '../data/site';
+
+const page = sitePages.find((item) => item.path === '/about')!;
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="eyebrow">서비스 소개</div>
+    <h1>김프보드 소개</h1>
+    <p>김프보드는 코인 김프에서 출발하지만, 목표는 더 넓습니다. 한국시장 가격이 해외 기준이나 NAV와 얼마나 벌어졌는지를 읽는 한국 프리미엄 관측소가 되는 것이 이 사이트의 방향입니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>우리가 풀고 싶은 문제</h2>
+    <ul class="bullet-list">
+      <li>코인 김프는 익숙하지만, 국내 거래소 내부 가격차나 ETF 괴리율은 따로 흩어져 있습니다.</li>
+      <li>사용자는 같은 질문을 하고 있습니다. 지금 한국시장이 글로벌 기준보다 비싼가, 싼가, 어디서 더 왜곡되고 있는가입니다.</li>
+      <li>김프보드는 그 질문을 코인, ETF, 원자재에 걸쳐 같은 화면 언어로 보여주려 합니다.</li>
+    </ul>
+  </section>
+
+  <section class="section content-grid">
+    <article class="copy-panel compact-panel">
+      <h2>핵심 원칙</h2>
+      <ul class="bullet-list">
+        <li>첫 화면은 설명보다 숫자가 먼저 보이게 합니다.</li>
+        <li>실시간 표와 검색형 해설 페이지를 함께 운영합니다.</li>
+        <li>광고는 넣더라도 데이터 해석 흐름을 깨지 않는 위치에 둡니다.</li>
+        <li>코인 전용 사이트가 아니라 한국 프리미엄 데이터 브랜드로 확장합니다.</li>
+      </ul>
+    </article>
+    <article class="copy-panel compact-panel">
+      <h2>확장 방향</h2>
+      <ul class="bullet-list">
+        <li>1단계는 코인 김프, 국내 거래소 차이, ETF 괴리율, 원자재 프리미엄입니다.</li>
+        <li>2단계는 자산별 상세 해설 페이지와 비교형 검색 랜딩입니다.</li>
+        <li>3단계는 알림, 제휴, 고급 비교 도구 등 수익화 기능입니다.</li>
+      </ul>
+    </article>
+  </section>
+</BaseLayout>

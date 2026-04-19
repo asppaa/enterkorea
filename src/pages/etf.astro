@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import TelegramInvite from '../components/TelegramInvite.astro';
+import { etfSnapshots, marketMeta } from '../data/market';
+import { sitePages } from '../data/site';
+import { formatKrw, formatPercent, formatUsd } from '../lib/format';
+
+const page = sitePages.find((item) => item.path === '/etf')!;
+const apiBase = import.meta.env.PUBLIC_KIMP_API_BASE || (import.meta.env.DEV ? 'http://127.0.0.1:8787' : '');
+const lead = [...etfSnapshots].sort((left, right) => Math.abs(right.deviationPercent) - Math.abs(left.deviationPercent))[0];
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">한국 프리미엄 관측소 · ETF</div>
+          <h1>국내 상장 해외 ETF 괴리율</h1>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge" id="etf-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+          <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 갱신</div>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card summary-card-primary">
+          <strong>대표 괴리율</strong>
+          <span id="etf-lead" class={lead.deviationPercent >= 0 ? 'positive' : 'negative'}>
+            {lead.name} {formatPercent(lead.deviationPercent)}
+          </span>
+          <p>절대값 기준 최대 괴리</p>
+        </article>
+        <article class="summary-card">
+          <strong>벤치마크 예시</strong>
+          <span>SPY · QQQ · SOXX</span>
+          <p>해외 기준 가격을 보조 참조</p>
+        </article>
+        <article class="summary-card">
+          <strong>읽는 법</strong>
+          <span>시장가 vs NAV</span>
+          <p>괴리율이 클수록 체감 가격 차이가 큽니다</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>ETF 실시간 보드</h2>
+          <p>시장가, NAV, 괴리율, 거래대금, 해외 기준값을 한 표로 확인합니다.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="asset-table">
+          <thead>
+            <tr>
+              <th>ETF</th>
+              <th>시장가</th>
+              <th>NAV</th>
+              <th>괴리율</th>
+              <th>거래대금</th>
+              <th>해외 기준</th>
+            </tr>
+          </thead>
+          <tbody id="etf-body">
+            {
+              etfSnapshots.map((item) => (
+                <tr>
+                  <td>
+                    <strong>{item.name}</strong>
+                    <div class="tiny">{item.code} · {item.category}</div>
+                  </td>
+                  <td>{formatKrw(item.marketPriceKrw)}</td>
+                  <td>{formatKrw(item.navKrw)}</td>
+                  <td class={item.deviationPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(item.deviationPercent)}</td>
+                  <td>{formatKrw(item.volumeKrw)}</td>
+                  <td>{item.benchmarkSymbol.replace('.US', '')} · {formatUsd(item.benchmarkPrice)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <TelegramInvite compact title="ETF 텔레그램 연동 자리" note="괴리율이 커질 때만 짧게 알려주는 채널로 연결하기 좋은 위치입니다." />
+  </section>
+
+  <section class="section">
+    <AdSlot label="ETF 인라인 광고" note="ETF 괴리율 표 아래에 들어가는 반응형 광고 슬롯" />
+  </section>
+</BaseLayout>
+
+<script define:vars={{ apiBase }}>
+  const liveStatus = document.getElementById('etf-live-status');
+  const leadEl = document.getElementById('etf-lead');
+  const body = document.getElementById('etf-body');
+
+  const formatKrw = (value) =>
+    new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW',
+      maximumFractionDigits: 0,
+    }).format(Number(value));
+
+  const formatUsd = (value) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2,
+    }).format(Number(value));
+
+  const formatPercent = (value) => `${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(2)}%`;
+  const tone = (value) => (Number(value) >= 0 ? 'positive' : 'negative');
+
+  const render = (rows) => {
+    if (!body || !Array.isArray(rows)) return;
+
+    body.innerHTML = rows.map((row) => `
+      <tr>
+        <td>
+          <strong>${row.name}</strong>
+          <div class="tiny">${row.code} · ${row.category}</div>
+        </td>
+        <td>${formatKrw(row.marketPriceKrw)}</td>
+        <td>${formatKrw(row.navKrw)}</td>
+        <td class="${tone(row.deviationPercent)}">${formatPercent(row.deviationPercent)}</td>
+        <td>${formatKrw(row.volumeKrw)}</td>
+        <td>${String(row.benchmarkSymbol).replace('.US', '')} · ${formatUsd(row.benchmarkPrice)}</td>
+      </tr>
+    `).join('');
+
+    const lead = [...rows].sort((left, right) => Math.abs(Number(right.deviationPercent)) - Math.abs(Number(left.deviationPercent)))[0];
+    if (lead && leadEl) {
+      leadEl.textContent = `${lead.name} ${formatPercent(lead.deviationPercent)}`;
+      leadEl.className = tone(lead.deviationPercent);
+    }
+  };
+
+  const load = async () => {
+    if (!apiBase) return;
+
+    try {
+      const response = await fetch(`${apiBase}/api/etf`);
+      const payload = await response.json();
+      if (liveStatus) liveStatus.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
+      render(payload.rows);
+    } catch {
+      if (liveStatus) liveStatus.textContent = '실시간 연결 실패 · 폴백 유지';
+    }
+  };
+
+  load();
+  if (apiBase) window.setInterval(load, 3000);
+</script>

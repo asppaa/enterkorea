@@ -1,0 +1,36 @@
+---
+import { toSvgPoints } from '../lib/format';
+
+const { title, value, caption, values } = Astro.props as {
+  title: string;
+  value: string;
+  caption: string;
+  values: number[];
+};
+
+const points = toSvgPoints(values);
+---
+
+<article class="panel chart-card">
+  <div class="chart-head">
+    <div>
+      <strong>{title}</strong>
+      <div class="tiny">{caption}</div>
+    </div>
+    <div class="lang-badge">{value}</div>
+  </div>
+  <svg class="sparkline" viewBox="0 0 320 96" aria-hidden="true" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="sparkGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+        <stop offset="0%" stop-color="#8fdcff"></stop>
+        <stop offset="100%" stop-color="#f2bf63"></stop>
+      </linearGradient>
+    </defs>
+    <g class="sparkline-grid">
+      <line x1="0" y1="24" x2="320" y2="24"></line>
+      <line x1="0" y1="48" x2="320" y2="48"></line>
+      <line x1="0" y1="72" x2="320" y2="72"></line>
+    </g>
+    <polyline points={points}></polyline>
+  </svg>
+</article>

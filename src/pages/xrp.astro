@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import CoinDetailSection from '../components/CoinDetailSection.astro';
+import { coinSnapshots } from '../data/market';
+import { sitePages } from '../data/site';
+
+const page = sitePages.find((item) => item.path === '/xrp')!;
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <CoinDetailSection coin={coinSnapshots.XRP} pageLabel="XRP 상세 랜딩" />
+</BaseLayout>

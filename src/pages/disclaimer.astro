@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { sitePages } from '../data/site';
+
+const page = sitePages.find((item) => item.path === '/disclaimer')!;
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="copy-panel">
+    <h1 class="page-title">면책조항</h1>
+    <p class="lede">본 사이트는 투자 권유, 자문, 중개, 자산 운용 서비스를 제공하지 않습니다.</p>
+    <p>거래 수수료, 환전 비용, 세금, 출금 제한, 기술적 장애로 인해 표시된 김프 수치와 실제 결과는 달라질 수 있습니다.</p>
+  </section>
+</BaseLayout>

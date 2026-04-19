@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { compareSnapshots } from '../../data/market';
+import { sitePages } from '../../data/site';
+import { formatPercent } from '../../lib/format';
+
+const page = sitePages.find((item) => item.path === '/compare/upbit-bithumb')!;
+const data = compareSnapshots['upbit-bithumb'];
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="eyebrow">국내 거래소 비교</div>
+    <h1>업비트 vs 빗썸</h1>
+    <p>{data.headline}</p>
+  </section>
+
+  <section class="section panel">
+    <div class="section-header">
+      <div>
+        <h2>국내 거래소 간 가격차</h2>
+        <p>{data.interpretation}</p>
+      </div>
+    </div>
+    <table class="coin-table">
+      <thead>
+        <tr>
+          <th>코인</th>
+          <th>기준 거래소</th>
+          <th>비교 거래소</th>
+          <th>가격차</th>
+          <th>프리미엄</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          data.rows.map((row) => (
+            <tr>
+              <td>{row.symbol}</td>
+              <td>{row.buy}</td>
+              <td>{row.sell}</td>
+              <td>{row.spreadKrw}</td>
+              <td class={row.spreadPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(row.spreadPercent)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section content-grid">
+    <article class="copy-panel">
+      <h2>왜 중요한가</h2>
+      <p>
+        한국/해외 김프만 보면 국내 시장 안에서 어디에 수급이 더 몰리는지 놓칠 수 있습니다. 업비트-빗썸 차이는 한국 내부 프리미엄의 방향을 읽는 축입니다.
+      </p>
+    </article>
+    <article class="copy-panel">
+      <h2>확장 방향</h2>
+      <p>
+        이 축은 코인에만 머물지 않습니다. ETF 괴리율도 국내 시장 내부에서 NAV와 시장가가 벌어지는 구조이고, 원자재 ETF 역시 같은 방식으로 읽을 수 있습니다.
+      </p>
+    </article>
+  </section>
+</BaseLayout>

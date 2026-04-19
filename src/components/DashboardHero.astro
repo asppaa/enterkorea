@@ -1,0 +1,58 @@
+---
+import type { CoinSnapshot } from '../data/market';
+import { heroSummaryFallback, marketMeta } from '../data/market';
+import { formatPercent } from '../lib/format';
+
+const { featuredCoin, apiBase = '' } = Astro.props as {
+  featuredCoin: CoinSnapshot;
+  apiBase?: string;
+};
+---
+
+<section class="hero">
+  <div class="hero-compact">
+    <div class="hero-topline">
+      <div>
+        <div class="eyebrow">한국 프리미엄 관측소</div>
+        <h1>코인, ETF, 원자재를 같은 화면에서</h1>
+      </div>
+      <div class="hero-badges">
+        <div class="lang-badge" id="hero-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+        <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 캐시</div>
+      </div>
+    </div>
+    <div class="summary-grid">
+      <article class="summary-card summary-card-primary">
+        <strong>코인 한국/해외</strong>
+        <span id="summary-global-premium" class={featuredCoin.premiumPercent >= 0 ? 'positive' : 'negative'}>
+          BTC {formatPercent(featuredCoin.premiumPercent)}
+        </span>
+        <p>업비트 vs 바이낸스</p>
+      </article>
+      <article class="summary-card">
+        <strong>코인 국내 거래소 차이</strong>
+        <span id="summary-domestic-premium" class={featuredCoin.domesticSpreadPercent >= 0 ? 'positive' : 'negative'}>
+          BTC {formatPercent(featuredCoin.domesticSpreadPercent)}
+        </span>
+        <p>업비트 vs 빗썸</p>
+      </article>
+      <article class="summary-card">
+        <strong>ETF 괴리율</strong>
+        <span id="summary-etf-deviation" class={heroSummaryFallback.etfLeadLabel.includes('-') ? 'negative' : 'positive'}>
+          {heroSummaryFallback.etfLeadLabel}
+        </span>
+        <p>국내 상장 해외 ETF</p>
+      </article>
+      <article class="summary-card">
+        <strong>원자재 프리미엄</strong>
+        <span
+          id="summary-commodity-premium"
+          class={heroSummaryFallback.commodityLeadLabel.includes('-') ? 'negative' : 'positive'}
+        >
+          {heroSummaryFallback.commodityLeadLabel}
+        </span>
+        <p>금 · 은 · 구리 · 원유</p>
+      </article>
+    </div>
+  </div>
+</section>

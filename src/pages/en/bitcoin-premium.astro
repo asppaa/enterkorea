@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { coinSnapshots } from '../../data/market';
+import { sitePages } from '../../data/site';
+import { formatPercent, formatUsd } from '../../lib/format';
+
+const page = sitePages.find((item) => item.path === '/en/bitcoin-premium')!;
+const coin = coinSnapshots.BTC;
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  locale="en"
+  pathname={page.path}
+  alternates={[
+    { lang: 'en', path: '/en/bitcoin-premium' },
+    { lang: 'ko', path: '/btc' },
+  ]}
+>
+  <section class="hero">
+    <div class="eyebrow">Reserved English path</div>
+    <h1>Bitcoin Premium in Korea</h1>
+    <p>
+      This page proves the site is ready for English expansion without changing the underlying component structure.
+      The current Korean-first rollout can later reuse the same templates for English SEO pages.
+    </p>
+  </section>
+
+  <section class="section content-grid">
+    <article class="copy-panel">
+      <h2>Current sample snapshot</h2>
+      <p>Bitcoin premium: <strong class="positive">{formatPercent(coin.premiumPercent)}</strong></p>
+      <p>Global price: {formatUsd(coin.globalPriceUsd)}</p>
+      <p>{coin.summary}</p>
+    </article>
+    <article class="copy-panel">
+      <h2>Why this path exists now</h2>
+      <p>
+        The keyword is niche, not mass-market, so the initial business logic targets Korean search demand first.
+        Still, the English URL and alternate tags are already reserved so the product can expand when the Korean side starts working.
+      </p>
+    </article>
+  </section>
+</BaseLayout>

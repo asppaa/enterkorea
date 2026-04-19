@@ -1,0 +1,63 @@
+---
+const { heading = '간단한 김프 계산기' } = Astro.props as { heading?: string };
+---
+
+<section class="panel calculator">
+  <div class="section-header">
+    <div>
+      <h2>{heading}</h2>
+      <p>국내 가격과 해외 달러 가격, 환율을 넣으면 명목 김프를 바로 계산합니다.</p>
+    </div>
+  </div>
+  <div class="calc-grid">
+    <div class="field">
+      <label for="local-price">국내 가격 (KRW)</label>
+      <input id="local-price" type="number" value="96730000" />
+    </div>
+    <div class="field">
+      <label for="global-price">해외 가격 (USD)</label>
+      <input id="global-price" type="number" value="69120" />
+    </div>
+    <div class="field">
+      <label for="fx-rate">USD/KRW 환율</label>
+      <input id="fx-rate" type="number" step="0.1" value="1376.4" />
+    </div>
+    <div class="field">
+      <label for="fee-rate">예상 총비용 (%)</label>
+      <input id="fee-rate" type="number" step="0.1" value="0.8" />
+    </div>
+  </div>
+  <div class="calc-output">
+    <strong>명목 김프 / 비용 차감 후</strong>
+    <span id="calc-result">+1.73% / +0.93%</span>
+  </div>
+</section>
+
+<script>
+  const localPrice = document.getElementById('local-price');
+  const globalPrice = document.getElementById('global-price');
+  const fxRate = document.getElementById('fx-rate');
+  const feeRate = document.getElementById('fee-rate');
+  const result = document.getElementById('calc-result');
+
+  const update = () => {
+    const local = Number(localPrice?.value || 0);
+    const global = Number(globalPrice?.value || 0);
+    const fx = Number(fxRate?.value || 0);
+    const fee = Number(feeRate?.value || 0);
+
+    if (!local || !global || !fx || !result) return;
+
+    const converted = global * fx;
+    const premium = ((local - converted) / converted) * 100;
+    const afterCost = premium - fee;
+    const withSign = (value) => `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
+    result.textContent = `${withSign(premium)} / ${withSign(afterCost)}`;
+  };
+
+  [localPrice, globalPrice, fxRate, feeRate].forEach((field) => {
+    field?.addEventListener('input', update);
+  });
+
+  update();
+</script>

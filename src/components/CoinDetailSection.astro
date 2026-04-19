@@ -1,0 +1,59 @@
+---
+import type { CoinSnapshot } from '../data/market';
+import { formatKrw, formatPercent, formatUsd, numberWithUnit } from '../lib/format';
+import MetricCard from './MetricCard.astro';
+import LineChart from './LineChart.astro';
+
+const { coin, pageLabel } = Astro.props as {
+  coin: CoinSnapshot;
+  pageLabel: string;
+};
+---
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">{pageLabel}</div>
+      <h1>{coin.name} 김프</h1>
+      <p>{coin.summary}</p>
+    </div>
+    <div class="status-card">
+      <strong>현재 대표 김프</strong>
+      <span class={coin.premiumPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(coin.premiumPercent)}</span>
+      <div class="metric-note">최근 범위: {coin.lowHighRange}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="metrics-grid">
+    <MetricCard title="국내 가격" value={formatKrw(coin.localPriceKrw)} note="업비트 기준 스냅샷" tone="neutral" />
+    <MetricCard title="해외 가격" value={formatUsd(coin.globalPriceUsd)} note="바이낸스 달러 기준" tone="neutral" />
+    <MetricCard title="24시간 변화" value={formatPercent(coin.change24h)} note="전일 대비" tone={coin.change24h >= 0 ? 'positive' : 'negative'} />
+    <MetricCard title="거래대금" value={numberWithUnit(coin.volumeKrwBn, 'B KRW')} note="상대적 체결 강도 참고" tone="neutral" />
+  </div>
+</section>
+
+<section class="section content-grid">
+  <LineChart title="7일 김프 추세" value={formatPercent(coin.trend7d.at(-1) || 0)} caption="단기 온도 체크" values={coin.trend7d} />
+  <LineChart title="30일 김프 추세" value={formatPercent(coin.trend30d.at(-1) || 0)} caption="중기 흐름 감각" values={coin.trend30d} />
+</section>
+
+<section class="section content-grid">
+  <article class="copy-panel">
+    <h2>계산 방식</h2>
+    <p>
+      김프는 해외 달러 가격에 USD/KRW 환율을 곱해 원화로 환산한 뒤 국내 원화 가격과 비교한 백분율입니다.
+      이 페이지는 샘플 스냅샷을 기본으로 두지만, 구조상 Cloudflare Worker API를 연결하면 3초 주기로 갱신되도록 설계되어 있습니다.
+    </p>
+    <p>{coin.caution}</p>
+  </article>
+  <article class="copy-panel">
+    <h2>해석 포인트</h2>
+    <ul class="bullet-list">
+      <li>명목 김프와 실행 가능한 김프를 구분해서 봐야 합니다.</li>
+      <li>환율 변동이 큰 날에는 코인 가격보다 환율 영향이 더 크게 보일 수 있습니다.</li>
+      <li>거래대금이 작은 구간에서는 작은 체결에도 프리미엄이 튀어 보일 수 있습니다.</li>
+    </ul>
+  </article>
+</section>

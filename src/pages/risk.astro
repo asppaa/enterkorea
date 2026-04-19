@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import LineChart from '../components/LineChart.astro';
+import TelegramInvite from '../components/TelegramInvite.astro';
+import { marketMeta, riskSnapshotFallback } from '../data/market';
+import { sitePages } from '../data/site';
+
+const page = sitePages.find((item) => item.path === '/risk')!;
+const apiBase = import.meta.env.PUBLIC_KIMP_API_BASE || (import.meta.env.DEV ? 'http://127.0.0.1:8787' : '');
+
+const fallbackSignals = [
+  { id: 'fear-greed', title: 'Crypto Fear & Greed', label: riskSnapshotFallback.fearGreedLabel, note: '시장 심리 기본 지표', tone: 'watch' },
+  { id: 'usd-krw', title: 'USD/KRW', label: `${riskSnapshotFallback.usdKrw.toFixed(2)}`, note: '환율 스트레스 체크', tone: 'danger' },
+  { id: 'btc-global', title: 'BTC 한국/해외', label: '+0.05%', note: '대표 코인 프리미엄', tone: 'normal' },
+  { id: 'btc-domestic', title: 'BTC 국내 거래소', label: '+0.01%', note: '한국 내부 수급 보조 신호', tone: 'normal' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">한국 프리미엄 관측소 · 위험 신호</div>
+          <h1>한 번에 보는 위험 신호</h1>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge" id="risk-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+          <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 갱신</div>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card summary-card-primary">
+          <strong>Fear & Greed</strong>
+          <span id="risk-fear-greed">{riskSnapshotFallback.fearGreedValue}</span>
+          <p id="risk-fear-greed-label">{riskSnapshotFallback.fearGreedLabel}</p>
+        </article>
+        <article class="summary-card">
+          <strong>USD/KRW</strong>
+          <span id="risk-usdkrw">{riskSnapshotFallback.usdKrw.toFixed(2)}</span>
+          <p>환율 스트레스</p>
+        </article>
+        <article class="summary-card">
+          <strong>BTC 한국/해외</strong>
+          <span id="risk-btc-global">+0.05%</span>
+          <p>대표 코인 프리미엄</p>
+        </article>
+        <article class="summary-card">
+          <strong>BTC 국내 거래소</strong>
+          <span id="risk-btc-domestic">+0.01%</span>
+          <p>한국 내부 수급</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dashboard-grid">
+    <LineChart
+      title="Fear & Greed 7일 흐름"
+      value={`${riskSnapshotFallback.fearGreedValue}`}
+      caption="대체 API 연동 전 기본 스냅샷"
+      values={riskSnapshotFallback.fearGreedHistory}
+    />
+    <article class="copy-panel compact-panel">
+      <h2>왜 이 페이지가 필요한가</h2>
+      <ul class="bullet-list">
+        <li>김프 숫자만 보면 환율과 심리 변수에 가려진 위험을 놓칠 수 있습니다.</li>
+        <li>코인·ETF·원자재 괴리율을 같은 시점에 보면 한국 시장의 체감 온도가 더 잘 보입니다.</li>
+        <li>텔레그램 채널에서는 이 신호를 더 짧고 자주 요약하는 방식이 잘 맞습니다.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>위험 신호 보드</h2>
+          <p>Fear & Greed, 환율, BTC 스프레드, ETF·원자재 대표 괴리를 한 번에 묶습니다.</p>
+        </div>
+      </div>
+      <div class="signal-grid" id="risk-signal-grid">
+        {
+          fallbackSignals.map((signal) => (
+            <article class:list={['signal-card', `signal-${signal.tone}`]}>
+              <strong>{signal.title}</strong>
+              <span>{signal.label}</span>
+              <p>{signal.note}</p>
+            </article>
+          ))
+        }
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <TelegramInvite title="위험 신호 텔레그램 채널 자리" note="이 페이지가 사이트의 분석판이라면, 텔레그램은 짧은 경보판이 됩니다. 채널 링크와 QR 자리를 미리 확보해 둡니다." />
+  </section>
+
+  <section class="section">
+    <AdSlot label="위험 신호 인라인 광고" note="신호 카드 아래에서 자연스럽게 이어지는 광고 슬롯" />
+  </section>
+</BaseLayout>
+
+<script define:vars={{ apiBase }}>
+  const liveStatus = document.getElementById('risk-live-status');
+  const fearGreed = document.getElementById('risk-fear-greed');
+  const fearGreedLabel = document.getElementById('risk-fear-greed-label');
+  const usdKrw = document.getElementById('risk-usdkrw');
+  const btcGlobal = document.getElementById('risk-btc-global');
+  const btcDomestic = document.getElementById('risk-btc-domestic');
+  const signalGrid = document.getElementById('risk-signal-grid');
+
+  const formatPercent = (value) =>
+    value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(2)}%`;
+
+  const toneClass = (tone) => `signal-card signal-${tone || 'normal'}`;
+
+  const renderSignals = (signals) => {
+    if (!signalGrid || !Array.isArray(signals)) return;
+
+    signalGrid.innerHTML = signals.map((signal) => `
+      <article class="${toneClass(signal.tone)}">
+        <strong>${signal.title}</strong>
+        <span>${signal.label}</span>
+        <p>${signal.note}</p>
+      </article>
+    `).join('');
+  };
+
+  const load = async () => {
+    if (!apiBase) return;
+
+    try {
+      const response = await fetch(`${apiBase}/api/risk`);
+      const payload = await response.json();
+
+      if (liveStatus) liveStatus.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
+      if (fearGreed) fearGreed.textContent = String(payload.fearGreed?.value ?? '-');
+      if (fearGreedLabel) fearGreedLabel.textContent = payload.fearGreed?.label ?? '-';
+      if (usdKrw) usdKrw.textContent = Number(payload.usdKrw ?? 0).toFixed(2);
+      if (btcGlobal) btcGlobal.textContent = formatPercent(payload.btcGlobalPremium);
+      if (btcDomestic) btcDomestic.textContent = formatPercent(payload.btcDomesticPremium);
+      renderSignals(payload.signals);
+    } catch {
+      if (liveStatus) liveStatus.textContent = '실시간 연결 실패 · 폴백 유지';
+    }
+  };
+
+  load();
+  if (apiBase) window.setInterval(load, 3000);
+</script>

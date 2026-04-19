@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { compareSnapshots } from '../../data/market';
+import { sitePages } from '../../data/site';
+import { formatPercent } from '../../lib/format';
+
+const page = sitePages.find((item) => item.path === '/compare/bithumb-binance')!;
+const data = compareSnapshots['bithumb-binance'];
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="eyebrow">거래소 비교</div>
+    <h1>빗썸 vs 바이낸스</h1>
+    <p>{data.headline}</p>
+  </section>
+
+  <section class="section panel">
+    <table class="coin-table">
+      <thead>
+        <tr>
+          <th>코인</th>
+          <th>국내</th>
+          <th>해외</th>
+          <th>가격차</th>
+          <th>스프레드</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          data.rows.map((row) => (
+            <tr>
+              <td>{row.symbol}</td>
+              <td>{row.buy}</td>
+              <td>{row.sell}</td>
+              <td>{row.spreadKrw}</td>
+              <td class={row.spreadPercent >= 0 ? 'positive' : 'negative'}>{formatPercent(row.spreadPercent)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>해석 포인트</h2>
+    <p>{data.interpretation}</p>
+    <p>빗썸은 업비트와 다른 체결 강도를 보여줄 때가 있어, 국내 원화 시장 전체 분위기를 비교해서 읽는 데 도움이 됩니다.</p>
+  </section>
+</BaseLayout>

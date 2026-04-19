@@ -1,0 +1,31 @@
+---
+import { siteConfig, type Locale } from '../data/site';
+
+const { locale = 'ko', pathname = '/' } = Astro.props as {
+  locale?: Locale;
+  pathname?: string;
+};
+
+const nav = siteConfig.topNav[locale];
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href={locale === 'ko' ? '/' : '/en/bitcoin-premium'} class="brand-mark">
+      <span class="brand-chip">KB</span>
+      <span class="brand-title">
+        <strong>{siteConfig.brand[locale]}</strong>
+        <span>{locale === 'ko' ? '한국 프리미엄 관측소' : 'Korea premium observatory'}</span>
+      </span>
+    </a>
+    <nav class="top-nav" aria-label={locale === 'ko' ? '주요 메뉴' : 'Primary navigation'}>
+      {
+        nav.map((item) => (
+          <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
