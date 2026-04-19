@@ -1,5 +1,5 @@
 ---
-import { siteConfig, type Locale } from '../data/site';
+import { getLocaleHref, siteConfig, type Locale } from '../data/site';
 
 const { locale = 'ko', pathname = '/' } = Astro.props as {
   locale?: Locale;
@@ -7,6 +7,8 @@ const { locale = 'ko', pathname = '/' } = Astro.props as {
 };
 
 const nav = siteConfig.topNav[locale];
+const koHref = getLocaleHref(pathname, 'ko');
+const enHref = getLocaleHref(pathname, 'en');
 ---
 
 <header class="site-header">
@@ -27,5 +29,13 @@ const nav = siteConfig.topNav[locale];
         ))
       }
     </nav>
+    <div class="locale-switch" aria-label={locale === 'ko' ? '언어 전환' : 'Language switch'}>
+      <a href={koHref} aria-current={locale === 'ko' ? 'page' : undefined}>
+        KO
+      </a>
+      <a href={enHref} aria-current={locale === 'en' ? 'page' : undefined}>
+        EN
+      </a>
+    </div>
   </div>
 </header>

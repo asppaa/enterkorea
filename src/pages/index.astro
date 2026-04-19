@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 import DashboardHero from '../components/DashboardHero.astro';
-import LineChart from '../components/LineChart.astro';
+import ComparisonTrendChart from '../components/ComparisonTrendChart.astro';
 import Calculator from '../components/Calculator.astro';
 import AdSlot from '../components/AdSlot.astro';
 import TelegramInvite from '../components/TelegramInvite.astro';
-import { coinSnapshots, commoditySnapshots, etfSnapshots, marketMeta } from '../data/market';
+import { coinSnapshots, commoditySnapshots, crossAssetTrendSeries, etfSnapshots, marketMeta } from '../data/market';
 import { sitePages } from '../data/site';
 import { formatKrw, formatPercent, formatUsd } from '../lib/format';
 import { getApiBase, DEFAULT_SITE_URL } from '../lib/runtime';
@@ -14,14 +14,24 @@ const page = sitePages.find((item) => item.path === '/')!;
 const featuredCoin = coinSnapshots.BTC;
 const fallbackCoinRows = Object.values(coinSnapshots);
 const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env.DEV);
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: '김프보드',
-  inLanguage: 'ko',
-  url: `${DEFAULT_SITE_URL}/`,
-  description: page.description,
-};
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: '김프보드',
+    inLanguage: 'ko',
+    url: `${DEFAULT_SITE_URL}/`,
+    description: page.description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: '김프보드 실시간 한국 프리미엄 데이터',
+    description: '코인 김프, 국내 거래소 차이, ETF 괴리율, 원자재 프리미엄을 묶어 보여주는 데이터셋',
+    inLanguage: 'ko',
+    url: `${DEFAULT_SITE_URL}/`,
+  },
+];
 ---
 
 <BaseLayout
@@ -33,15 +43,40 @@ const structuredData = {
 >
   <DashboardHero featuredCoin={featuredCoin} apiBase={apiBase} />
 
+  <section class="section explain-grid">
+    <article class="explain-card">
+      <strong>+면 김프</strong>
+      <p>한국 가격이 해외 기준이나 NAV보다 더 비싼 상태입니다. 국내 수요가 더 강하다고 읽습니다.</p>
+    </article>
+    <article class="explain-card">
+      <strong>-면 역프</strong>
+      <p>한국 가격이 오히려 더 싼 상태입니다. 한국 시장이 약하거나 글로벌 기준이 더 강한 구간입니다.</p>
+    </article>
+    <article class="explain-card">
+      <strong>순서대로 해석</strong>
+      <p>스테이블코인 김프, BTC 김프, 국내 거래소 차이, ETF·원자재 괴리율을 같이 보면 맥락이 빨라집니다.</p>
+    </article>
+  </section>
+
+  <section class="section">
+    <ComparisonTrendChart
+      title="대표 프리미엄 축 7일 추세"
+      caption="코인·ETF·원자재 대표 지표를 한 그래프에 겹쳐서 봅니다"
+      series={crossAssetTrendSeries}
+    />
+  </section>
+
   <section class="section dashboard-grid">
     <article class="panel">
       <div class="section-header">
         <div>
           <h2>코인 실시간 프리미엄</h2>
-          <p>한국에서 거래되는 코인을 거래대금 순으로 정렬해 한국/해외 프리미엄과 국내 거래소 차이를 같이 봅니다.</p>
+          <p>한국 거래 코인을 거래대금 순으로 정렬하고, 한국/해외 김프와 국내 거래소 차이를 같이 봅니다.</p>
         </div>
         <div class="panel-actions">
-          <div class="lang-badge" id="snapshot-updated">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+          <div class="lang-badge status-dot" id="snapshot-updated" data-state={apiBase ? 'delayed' : 'offline'}>
+            {apiBase ? '연결 준비 중' : `스냅샷 · ${marketMeta.updatedAt}`}
+          </div>
           <a class="text-link" href="/coins">전체 코인 보드</a>
         </div>
       </div>
@@ -52,9 +87,9 @@ const structuredData = {
               <th>코인</th>
               <th>업비트</th>
               <th>빗썸</th>
-              <th>바이낸스</th>
-              <th>한국/해외</th>
-              <th>국내간</th>
+              <th>글로벌 기준</th>
+              <th>한국/해외 김프</th>
+              <th>국내 거래소 차이</th>
               <th>24시간</th>
               <th>거래대금</th>
             </tr>
@@ -84,34 +119,33 @@ const structuredData = {
           </tbody>
         </table>
       </div>
+      <div class="source-list">
+        <span>코인 데이터: Upbit · Bithumb · Binance</span>
+        <span>환율: Frankfurter USD/KRW</span>
+      </div>
     </article>
 
     <div class="stack-grid">
-      <LineChart
-        title="비트코인 7일 프리미엄 추세"
-        value={formatPercent(featuredCoin.trend7d.at(-1) || 0)}
-        caption="한국/해외 기준, 단기 온도 체크"
-        values={featuredCoin.trend7d}
-      />
       <article class="copy-panel compact-panel">
         <div class="section-header">
           <div>
             <h2>위험 신호</h2>
-            <p>Fear & Greed, 환율, BTC 기준 스프레드를 묶어 봅니다.</p>
+            <p>Fear &amp; Greed, 환율, BTC 스프레드, ETF·원자재 괴리까지 한 번에 연결합니다.</p>
           </div>
           <a class="text-link" href="/risk">위험 신호 페이지</a>
         </div>
         <ul class="bullet-list">
-          <li>환율 급등 구간에서는 코인·ETF 괴리 해석이 달라집니다.</li>
-          <li>국내 거래소 차이는 한국 내부 수급을 읽는 보조 신호입니다.</li>
-          <li>텔레그램 채널에서는 이 위험 신호를 더 짧게 요약하기 좋습니다.</li>
+          <li>USDT 김프가 먼저 튀고 BTC 김프가 따라오면 국내 수요 과열로 보기 쉽습니다.</li>
+          <li>김프가 마이너스로 내려가면 한국 시장이 더 싼 상태라는 뜻입니다.</li>
+          <li>코인만 보지 말고 ETF·원자재 괴리까지 같이 보면 한국시장 전체 온도가 보입니다.</li>
         </ul>
       </article>
+      <TelegramInvite
+        compact
+        title="텔레그램 · X 연결"
+        note="사이트에서 숫자를 보고, 텔레그램과 X에서는 더 짧은 요약과 링크 큐레이션을 받는 흐름을 깔아둡니다."
+      />
     </div>
-  </section>
-
-  <section class="section">
-    <TelegramInvite compact title="텔레그램 채널 자리" note="이 사이트가 숫자판이라면, 텔레그램은 더 빠른 요약판이 됩니다. 링크와 QR 자리를 먼저 확보해 둡니다." />
   </section>
 
   <section class="section">
@@ -123,7 +157,7 @@ const structuredData = {
       <div class="section-header">
         <div>
           <h2>ETF 괴리율</h2>
-          <p>국내 상장 해외 ETF의 시장가격과 NAV 차이를 함께 봅니다.</p>
+          <p>국내 상장 해외 ETF의 시장가와 NAV 차이를 같이 봅니다.</p>
         </div>
         <a class="text-link" href="/etf">ETF 전체 보기</a>
       </div>
@@ -156,13 +190,17 @@ const structuredData = {
           </tbody>
         </table>
       </div>
+      <div class="source-list">
+        <span>ETF 데이터: K-ETF</span>
+        <span>해외 기준값: Stooq</span>
+      </div>
     </article>
 
     <article class="panel">
       <div class="section-header">
         <div>
           <h2>원자재 프리미엄</h2>
-          <p>금, 은, 구리, 원유, 농산물 ETF의 괴리율을 같이 확인합니다.</p>
+          <p>금, 은, 구리, 원유, 농산물 ETF의 국내 괴리율을 한 프레임으로 봅니다.</p>
         </div>
         <a class="text-link" href="/commodities">원자재 전체 보기</a>
       </div>
@@ -195,6 +233,10 @@ const structuredData = {
           </tbody>
         </table>
       </div>
+      <div class="source-list">
+        <span>원자재 ETF 데이터: K-ETF</span>
+        <span>벤치마크: GLD · SLV · CPER · USO · DBA</span>
+      </div>
     </article>
   </section>
 
@@ -204,6 +246,7 @@ const structuredData = {
 </BaseLayout>
 
 <script define:vars={{ apiBase }}>
+  const heroStatus = document.getElementById('hero-live-status');
   const updated = document.getElementById('snapshot-updated');
   const coinBody = document.getElementById('coins-home-body');
   const etfBody = document.getElementById('etf-home-body');
@@ -231,31 +274,26 @@ const structuredData = {
   const volumeText = (value) => `${(Number(value) / 1_000_000_000).toFixed(1)}B KRW`;
   const tone = (value) => (Number(value) >= 0 ? 'positive' : 'negative');
 
-  const updateSummary = (overview) => {
-    const global = document.getElementById('summary-global-premium');
-    const domestic = document.getElementById('summary-domestic-premium');
-    const etf = document.getElementById('summary-etf-deviation');
-    const commodity = document.getElementById('summary-commodity-premium');
+  const setStatus = (element, state, text) => {
+    if (!element) return;
+    element.dataset.state = state;
+    element.textContent = text;
+  };
 
-    if (overview?.cryptoGlobalLead && global) {
-      global.textContent = overview.cryptoGlobalLead.label;
-      global.className = tone(overview.cryptoGlobalLead.value);
-    }
+  const updateSummary = (payload) => {
+    const setSummary = (id, lead) => {
+      const node = document.getElementById(id);
+      if (!node || !lead) return;
+      node.textContent = lead.label;
+      node.className = tone(lead.value);
+    };
 
-    if (overview?.cryptoDomesticLead && domestic) {
-      domestic.textContent = overview.cryptoDomesticLead.label;
-      domestic.className = tone(overview.cryptoDomesticLead.value);
-    }
-
-    if (overview?.etfLead && etf) {
-      etf.textContent = overview.etfLead.label;
-      etf.className = tone(overview.etfLead.value);
-    }
-
-    if (overview?.commodityLead && commodity) {
-      commodity.textContent = overview.commodityLead.label;
-      commodity.className = tone(overview.commodityLead.value);
-    }
+    setSummary('summary-usdt-premium', payload?.overview?.usdtLead);
+    setSummary('summary-usdc-premium', payload?.overview?.usdcLead);
+    setSummary('summary-global-premium', payload?.overview?.cryptoGlobalLead);
+    setSummary('summary-domestic-premium', payload?.overview?.cryptoDomesticLead);
+    setSummary('summary-etf-deviation', payload?.overview?.etfLead);
+    setSummary('summary-commodity-premium', payload?.overview?.commodityLead);
   };
 
   const renderCoins = (rows) => {
@@ -304,16 +342,21 @@ const structuredData = {
       const response = await fetch(`${apiBase}/api/summary`);
       const payload = await response.json();
 
-      if (updated) {
-        updated.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
-      }
-
-      updateSummary(payload.overview);
+      updateSummary(payload);
       renderCoins(payload.rows);
       renderAssets(etfBody, payload.etfs);
       renderAssets(commodityBody, payload.commodities);
+
+      if (payload.fallback) {
+        setStatus(heroStatus, 'delayed', '폴백 데이터');
+        setStatus(updated, 'delayed', '폴백 데이터 표시 중');
+      } else {
+        setStatus(heroStatus, 'live', '실시간 연결 정상');
+        setStatus(updated, 'live', `실시간 · ${payload.updatedAt}`);
+      }
     } catch {
-      if (updated) updated.textContent = '실시간 연결 실패 · 폴백 유지';
+      setStatus(heroStatus, 'offline', '연결 지연');
+      setStatus(updated, 'offline', '실시간 연결 실패');
     }
   };
 

@@ -21,11 +21,28 @@ const fallbackRows = Object.values(coinSnapshots);
           <h1>거래대금 순 코인 김프 보드</h1>
         </div>
         <div class="hero-badges">
-          <div class="lang-badge" id="coins-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+          <div class="lang-badge status-dot" id="coins-live-status" data-state={apiBase ? 'delayed' : 'offline'}>
+            {apiBase ? '연결 준비 중' : `스냅샷 · ${marketMeta.updatedAt}`}
+          </div>
           <div class="lang-badge" id="coin-count-badge">표시 종목 {fallbackRows.length}개</div>
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="section explain-grid">
+    <article class="explain-card">
+      <strong>+면 김프</strong>
+      <p>한국 가격이 더 비싼 상태입니다.</p>
+    </article>
+    <article class="explain-card">
+      <strong>-면 역프</strong>
+      <p>한국 가격이 오히려 더 싼 상태입니다.</p>
+    </article>
+    <article class="explain-card">
+      <strong>국내간 차이</strong>
+      <p>업비트와 빗썸 수급 차이를 읽는 보조 지표입니다.</p>
+    </article>
   </section>
 
   <section class="section">
@@ -43,9 +60,9 @@ const fallbackRows = Object.values(coinSnapshots);
               <th>코인</th>
               <th>업비트</th>
               <th>빗썸</th>
-              <th>바이낸스</th>
-              <th>한국/해외</th>
-              <th>국내간</th>
+              <th>글로벌 기준</th>
+              <th>한국/해외 김프</th>
+              <th>국내 거래소 차이</th>
               <th>24시간</th>
               <th>거래대금</th>
             </tr>
@@ -72,6 +89,10 @@ const fallbackRows = Object.values(coinSnapshots);
             }
           </tbody>
         </table>
+      </div>
+      <div class="source-list">
+        <span>코인: Upbit · Bithumb · Binance</span>
+        <span>환율: Frankfurter</span>
       </div>
     </article>
   </section>
@@ -140,11 +161,17 @@ const fallbackRows = Object.values(coinSnapshots);
     try {
       const response = await fetch(`${apiBase}/api/coins`);
       const payload = await response.json();
-      if (liveStatus) liveStatus.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
+      if (liveStatus) {
+        liveStatus.dataset.state = payload.fallback ? 'delayed' : 'live';
+        liveStatus.textContent = payload.fallback ? '폴백 데이터' : `실시간 · ${payload.updatedAt}`;
+      }
       if (countBadge) countBadge.textContent = `표시 종목 ${Number(payload.totalCount || 0).toLocaleString('ko-KR')}개`;
       render(payload.rows);
     } catch {
-      if (liveStatus) liveStatus.textContent = '실시간 연결 실패 · 폴백 유지';
+      if (liveStatus) {
+        liveStatus.dataset.state = 'offline';
+        liveStatus.textContent = '실시간 연결 실패';
+      }
     }
   };
 

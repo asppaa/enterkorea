@@ -149,6 +149,13 @@ export const sitePages: SeoPage[] = [
     locale: 'ko',
   },
   {
+    title: '트래블룰이란 | 김프와 차익거래에서 꼭 알아야 할 송금 규칙',
+    description:
+      '국내 거래소 간 송금, 해외 거래소 이동, 김프 차익거래에 직접 영향을 주는 트래블룰 개념과 체크 포인트를 정리합니다.',
+    path: '/guide/트래블룰',
+    locale: 'ko',
+  },
+  {
     title: '방법론 | 한국 프리미엄 관측소 계산 기준',
     description:
       '김프보드가 코인, ETF, 원자재 프리미엄을 계산하는 방식과 캐시 정책, 데이터 처리 원칙을 설명합니다.',
@@ -214,3 +221,28 @@ export const sitePages: SeoPage[] = [
     },
   },
 ];
+
+export function getLocaleHref(pathname: string, targetLocale: Locale) {
+  const current = sitePages.find((item) => item.path === pathname);
+
+  if (current) {
+    if (current.locale === targetLocale) {
+      return current.path;
+    }
+
+    const alternate = current.alternates?.[targetLocale];
+    if (alternate) {
+      return alternate;
+    }
+  }
+
+  const reverseMatch = sitePages.find(
+    (item) => item.locale === targetLocale && Object.values(item.alternates ?? {}).includes(pathname),
+  );
+
+  if (reverseMatch) {
+    return reverseMatch.path;
+  }
+
+  return targetLocale === 'ko' ? '/' : '/en/what-is-kimchi-premium';
+}

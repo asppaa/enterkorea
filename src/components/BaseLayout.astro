@@ -1,7 +1,7 @@
 ---
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import { siteConfig, type Locale } from '../data/site';
+import { getLocaleHref, siteConfig, type Locale } from '../data/site';
 import '../styles/global.css';
 
 type AlternateLink = { lang: string; path: string };
@@ -28,6 +28,13 @@ const siteUrl = Astro.site?.toString() || siteConfig.siteUrl;
 const canonical = new URL(pathname, siteUrl).toString();
 const ogImage = new URL(image, siteUrl).toString();
 const jsonLd = structuredData ? JSON.stringify(structuredData) : null;
+const alternateTags =
+  alternates.length > 0
+    ? alternates
+    : [
+        { lang: locale, path: pathname },
+        { lang: locale === 'ko' ? 'en' : 'ko', path: getLocaleHref(pathname, locale === 'ko' ? 'en' : 'ko') },
+      ];
 ---
 
 <!doctype html>
@@ -46,11 +53,8 @@ const jsonLd = structuredData ? JSON.stringify(structuredData) : null;
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    {
-      alternates.map((item) => (
-        <link rel="alternate" hreflang={item.lang} href={new URL(item.path, siteUrl).toString()} />
-      ))
-    }
+    {alternateTags.map((item) => <link rel="alternate" hreflang={item.lang} href={new URL(item.path, siteUrl).toString()} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(getLocaleHref(pathname, 'ko'), siteUrl).toString()} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

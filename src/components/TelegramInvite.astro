@@ -1,6 +1,9 @@
 ---
 const telegramUrl = import.meta.env.PUBLIC_TELEGRAM_CHANNEL_URL || '';
 const telegramHandle = import.meta.env.PUBLIC_TELEGRAM_CHANNEL_HANDLE || '@your_channel';
+const telegramQrImage = import.meta.env.PUBLIC_TELEGRAM_QR_IMAGE_URL || '';
+const xUrl = import.meta.env.PUBLIC_X_PROFILE_URL || '';
+const xHandle = import.meta.env.PUBLIC_X_HANDLE || '@your_x';
 
 const {
   title = '텔레그램 채널',
@@ -13,6 +16,8 @@ const {
 };
 
 const isReady = Boolean(telegramUrl);
+const hasQr = Boolean(telegramQrImage);
+const hasX = Boolean(xUrl);
 ---
 
 <section class:list={['telegram-card', compact && 'telegram-card-compact']}>
@@ -27,18 +32,38 @@ const isReady = Boolean(telegramUrl);
     </ul>
   </div>
   <div class="telegram-side">
-    <div class="telegram-qr">
-      <strong>QR</strong>
-      <span>{isReady ? telegramHandle : '채널 개설 예정'}</span>
-    </div>
     {
       isReady ? (
-        <a class="telegram-link" href={telegramUrl} target="_blank" rel="noreferrer">
-          텔레그램 채널 열기
+        <a class="telegram-qr telegram-qr-link" href={telegramUrl} target="_blank" rel="noreferrer">
+          {hasQr ? <img src={telegramQrImage} alt={`${telegramHandle} QR`} /> : <strong>QR</strong>}
+          <span>{telegramHandle}</span>
         </a>
       ) : (
-        <div class="telegram-link telegram-link-muted">링크 자리 확보 완료</div>
+        <div class="telegram-qr">
+          <strong>QR</strong>
+          <span>채널 개설 예정</span>
+        </div>
       )
     }
+    <div class="social-stack">
+      {
+        isReady ? (
+          <a class="telegram-link" href={telegramUrl} target="_blank" rel="noreferrer">
+            텔레그램 채널 열기
+          </a>
+        ) : (
+          <div class="telegram-link telegram-link-muted">텔레그램 링크 자리 확보</div>
+        )
+      }
+      {
+        hasX ? (
+          <a class="telegram-link telegram-link-secondary" href={xUrl} target="_blank" rel="noreferrer">
+            X {xHandle}
+          </a>
+        ) : (
+          <div class="telegram-link telegram-link-muted">X 링크 자리 확보</div>
+        )
+      }
+    </div>
   </div>
 </section>

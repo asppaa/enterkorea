@@ -1,0 +1,51 @@
+---
+import type { TrendSeries } from '../data/market';
+import { formatPercent, toSvgPoints } from '../lib/format';
+
+const { title, caption, series } = Astro.props as {
+  title: string;
+  caption: string;
+  series: TrendSeries[];
+};
+
+const colors = {
+  crypto: '#8fdcff',
+  etf: '#f2bf63',
+  commodity: '#6ee7b7',
+};
+---
+
+<article class="panel chart-card comparison-chart">
+  <div class="chart-head">
+    <div>
+      <strong>{title}</strong>
+      <div class="tiny">{caption}</div>
+    </div>
+    <div class="trend-legend" aria-label="그래프 범례">
+      {
+        series.map((item) => (
+          <span>
+            <i style={`--legend:${colors[item.tone]}`}></i>
+            {item.label} {formatPercent(item.values.at(-1) ?? 0)}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <svg class="sparkline comparison-sparkline" viewBox="0 0 320 110" aria-hidden="true" preserveAspectRatio="none">
+    <g class="sparkline-grid">
+      <line x1="0" y1="22" x2="320" y2="22"></line>
+      <line x1="0" y1="55" x2="320" y2="55"></line>
+      <line x1="0" y1="88" x2="320" y2="88"></line>
+    </g>
+    {
+      series.map((item) => (
+        <polyline
+          points={toSvgPoints(item.values)}
+          style={`stroke:${colors[item.tone]}`}
+          data-tone={item.tone}
+        ></polyline>
+      ))
+    }
+  </svg>
+</article>

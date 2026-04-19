@@ -45,6 +45,11 @@ type CoinRow = {
   volumeKrw24hRaw: number;
 };
 
+type SummaryLead = {
+  label: string;
+  value: number;
+};
+
 type FearGreedPoint = {
   value: number;
   label: string;
@@ -255,6 +260,25 @@ function relativeSpread(base: number, comparison: number) {
   return Number((((base - comparison) / comparison) * 100).toFixed(2));
 }
 
+function getReferenceUsdPrice(symbol: string, binanceMap: Map<string, number>) {
+  if (symbol === 'USDT' || symbol === 'USDC') {
+    return 1;
+  }
+
+  return binanceMap.get(`${symbol}USDT`) ?? null;
+}
+
+function toLead(symbol: string, value: number | null, note = ''): SummaryLead | null {
+  if (value === null) {
+    return null;
+  }
+
+  return {
+    label: `${symbol} ${value > 0 ? '+' : ''}${value.toFixed(2)}%${note ? ` · ${note}` : ''}`,
+    value,
+  };
+}
+
 function toneByFearGreed(value: number) {
   if (value <= 25) return 'danger';
   if (value <= 40) return 'watch';
@@ -401,7 +425,7 @@ async function buildCoinSummaryRaw() {
     .map((symbol) => {
       const upbit = upbitMap.get(`KRW-${symbol}`);
       const bithumb = bithumbMap.get(symbol);
-      const binance = binanceMap.get(`${symbol}USDT`) ?? null;
+      const binance = getReferenceUsdPrice(symbol, binanceMap);
       const upbitPrice = upbit ? Number(upbit.trade_price) : null;
       const bithumbPrice = bithumb ? Number(bithumb.closing_price) : null;
       const upbitPremium = upbitPrice && binance ? premium(upbitPrice, binance, fxRate) : null;
@@ -503,6 +527,7 @@ async function buildSummaryRaw() {
   ]);
 
   const btc = coinSummary.rows.find((item) => item.symbol === 'BTC') ?? coinDetailFallbacks.BTC;
+  const stablecoins = coinSummary.rows.filter((item) => item.symbol === 'USDT' || item.symbol === 'USDC').slice(0, 2);
   const etfLead = leadByAbsoluteValue(etfs);
   const commodityLead = leadByAbsoluteValue(commodities);
 
@@ -510,22 +535,15 @@ async function buildSummaryRaw() {
     updatedAt: new Date().toISOString(),
     rows: coinSummary.rows,
     totalCount: coinSummary.totalCount,
+    stablecoins,
     etfs,
     commodities,
     overview: {
       fxRate: coinSummary.fxRate,
-      cryptoGlobalLead: btc.leadPremium !== null
-        ? {
-            label: `BTC ${btc.leadPremium > 0 ? '+' : ''}${btc.leadPremium.toFixed(2)}%`,
-            value: btc.leadPremium,
-          }
-        : null,
-      cryptoDomesticLead: btc.upbitVsBithumb !== null
-        ? {
-            label: `BTC ${btc.upbitVsBithumb > 0 ? '+' : ''}${btc.upbitVsBithumb.toFixed(2)}%`,
-            value: btc.upbitVsBithumb,
-          }
-        : null,
+      usdtLead: toLead('USDT', stablecoins.find((item) => item.symbol === 'USDT')?.leadPremium ?? null, '업비트 vs $1'),
+      usdcLead: toLead('USDC', stablecoins.find((item) => item.symbol === 'USDC')?.leadPremium ?? null, '업비트 vs $1'),
+      cryptoGlobalLead: toLead('BTC', btc.leadPremium, '업비트 vs 바이낸스'),
+      cryptoDomesticLead: toLead('BTC', btc.upbitVsBithumb, '업비트 vs 빗썸'),
       etfLead: etfLead
         ? {
             label: `${etfLead.name} ${etfLead.deviationPercent > 0 ? '+' : ''}${etfLead.deviationPercent.toFixed(2)}%`,
@@ -633,12 +651,15 @@ function getFallbackSummary() {
     updatedAt: new Date().toISOString(),
     rows,
     totalCount: rows.length,
+    stablecoins: rows.filter((item) => item.symbol === 'USDT' || item.symbol === 'USDC').slice(0, 2),
     etfs: fallbackEtfs,
     commodities: fallbackCommodities,
     overview: {
       fxRate: 1478.99,
-      cryptoGlobalLead: { label: 'BTC +0.05%', value: 0.05 },
-      cryptoDomesticLead: { label: 'BTC +0.01%', value: 0.01 },
+      usdtLead: { label: 'USDT +0.17% · 업비트 vs $1', value: 0.17 },
+      usdcLead: { label: 'USDC +0.01% · 업비트 vs $1', value: 0.01 },
+      cryptoGlobalLead: { label: 'BTC +0.05% · 업비트 vs 바이낸스', value: 0.05 },
+      cryptoDomesticLead: { label: 'BTC +0.01% · 업비트 vs 빗썸', value: 0.01 },
       etfLead: { label: 'KODEX 미국30년국채울트라선물(H) -0.41%', value: -0.41 },
       commodityLead: { label: 'TIGER 원유선물Enhanced(H) -1.08%', value: -1.08 },
     },

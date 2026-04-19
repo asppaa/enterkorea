@@ -36,6 +36,21 @@ export type PremiumSnapshot = {
   benchmarkNote: string;
 };
 
+export type TrendSeries = {
+  label: string;
+  values: number[];
+  tone: 'crypto' | 'etf' | 'commodity';
+};
+
+export type StablecoinSnapshot = {
+  symbol: 'USDT' | 'USDC';
+  localPriceKrw: number;
+  globalReferenceUsd: number;
+  premiumPercent: number;
+  exchangePair: string;
+  note: string;
+};
+
 export const marketMeta = {
   updatedAt: '2026-04-18 22:45 KST',
   fxRateUsdKrw: 1478.99,
@@ -105,6 +120,25 @@ export const coinSnapshots: Record<CoinSymbol, CoinSnapshot> = {
 };
 
 export const featuredOrder: CoinSymbol[] = ['BTC', 'ETH', 'XRP'];
+
+export const stablecoinSnapshots: StablecoinSnapshot[] = [
+  {
+    symbol: 'USDT',
+    localPriceKrw: 1_481.5,
+    globalReferenceUsd: 1,
+    premiumPercent: 0.17,
+    exchangePair: '업비트 KRW-USDT vs 1달러 환산',
+    note: '차익거래 수요가 몰릴 때 가장 먼저 반응하는 대표 스테이블코인 축입니다.',
+  },
+  {
+    symbol: 'USDC',
+    localPriceKrw: 1_479.2,
+    globalReferenceUsd: 1,
+    premiumPercent: 0.01,
+    exchangePair: '업비트 KRW-USDC vs 1달러 환산',
+    note: 'USDT와 같이 보면 국내 달러 수요와 거래소별 편차를 더 안정적으로 읽을 수 있습니다.',
+  },
+];
 
 export const etfSnapshots: PremiumSnapshot[] = [
   {
@@ -426,11 +460,31 @@ const strongestCommodity = [...commoditySnapshots].sort(
 )[0];
 
 export const heroSummaryFallback = {
+  usdtLabel: `USDT ${stablecoinSnapshots[0].premiumPercent > 0 ? '+' : ''}${stablecoinSnapshots[0].premiumPercent.toFixed(2)}%`,
+  usdcLabel: `USDC ${stablecoinSnapshots[1].premiumPercent > 0 ? '+' : ''}${stablecoinSnapshots[1].premiumPercent.toFixed(2)}%`,
   globalPremiumLabel: `BTC ${coinSnapshots.BTC.premiumPercent > 0 ? '+' : ''}${coinSnapshots.BTC.premiumPercent.toFixed(2)}%`,
   domesticPremiumLabel: `BTC ${coinSnapshots.BTC.domesticSpreadPercent > 0 ? '+' : ''}${coinSnapshots.BTC.domesticSpreadPercent.toFixed(2)}%`,
   etfLeadLabel: `${strongestEtf.name} ${strongestEtf.deviationPercent > 0 ? '+' : ''}${strongestEtf.deviationPercent.toFixed(2)}%`,
   commodityLeadLabel: `${strongestCommodity.name} ${strongestCommodity.deviationPercent > 0 ? '+' : ''}${strongestCommodity.deviationPercent.toFixed(2)}%`,
 };
+
+export const crossAssetTrendSeries: TrendSeries[] = [
+  {
+    label: 'BTC 김프',
+    tone: 'crypto',
+    values: coinSnapshots.BTC.trend7d,
+  },
+  {
+    label: '대표 ETF 괴리',
+    tone: 'etf',
+    values: [-0.12, -0.08, -0.16, -0.09, -0.22, -0.31, -0.18],
+  },
+  {
+    label: '대표 원자재 괴리',
+    tone: 'commodity',
+    values: [0.42, 0.18, -0.06, -0.28, -0.41, -0.76, -1.08],
+  },
+];
 
 export const riskSnapshotFallback = {
   fearGreedValue: 26,
@@ -454,5 +508,10 @@ export const guideSnippets = {
     '역프는 한국시장 가격이 해외 기준이나 NAV보다 낮게 형성되는 상태입니다. 코인에서는 원화 수급 이탈, ETF에서는 할인 거래, 원자재에서는 환율과 거래량 영향으로 나타납니다.',
     '즉 모양은 다르지만 한국시장 가격이 글로벌 기준보다 약한 상태라는 공통된 해석축이 있습니다.',
     '이 사이트는 그 공통축을 코인, ETF, 원자재에 걸쳐 한 화면에서 읽을 수 있게 만드는 것을 목표로 합니다.',
+  ],
+  travelRule: [
+    '트래블룰은 거래소 간 가상자산 송금 시 송·수신자 정보를 확인하는 규칙입니다. 김프 차익거래에서는 이 규칙 때문에 실제 자금 이동 속도와 성공률이 크게 달라질 수 있습니다.',
+    '즉 화면상 가격차가 있어도, 송금 가능 거래소인지와 출금 지연·수수료·실명 확인 절차를 함께 확인해야 순수한 수익 가능성을 판단할 수 있습니다.',
+    '김프보드에서 계산기와 위험 신호를 같이 보는 이유도, 숫자 하나보다 실제 실행 비용과 이동 제약이 더 중요하기 때문입니다.',
   ],
 };

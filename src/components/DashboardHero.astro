@@ -17,11 +17,23 @@ const { featuredCoin, apiBase = '' } = Astro.props as {
         <h1>코인, ETF, 원자재를 같은 화면에서</h1>
       </div>
       <div class="hero-badges">
-        <div class="lang-badge" id="hero-live-status">{apiBase ? '실시간 연결 대기 중' : `스냅샷 · ${marketMeta.updatedAt}`}</div>
+        <div class="lang-badge status-dot" id="hero-live-status" data-state={apiBase ? 'delayed' : 'offline'}>
+          {apiBase ? '연결 준비 중' : `스냅샷 · ${marketMeta.updatedAt}`}
+        </div>
         <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 캐시</div>
       </div>
     </div>
     <div class="summary-grid">
+      <article class="summary-card summary-card-primary">
+        <strong>USDT 김프</strong>
+        <span id="summary-usdt-premium" class="positive">{heroSummaryFallback.usdtLabel}</span>
+        <p>업비트 KRW-USDT vs 1달러 환산</p>
+      </article>
+      <article class="summary-card">
+        <strong>USDC 김프</strong>
+        <span id="summary-usdc-premium" class="positive">{heroSummaryFallback.usdcLabel}</span>
+        <p>업비트 KRW-USDC vs 1달러 환산</p>
+      </article>
       <article class="summary-card summary-card-primary">
         <strong>코인 한국/해외</strong>
         <span id="summary-global-premium" class={featuredCoin.premiumPercent >= 0 ? 'positive' : 'negative'}>

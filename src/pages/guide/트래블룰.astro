@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { guideSnippets } from '../../data/market';
+import { sitePages } from '../../data/site';
+
+const page = sitePages.find((item) => item.path === '/guide/트래블룰')!;
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '트래블룰이 김프 차익거래에 왜 중요하나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '가격 차이보다 실제 송금 가능 여부와 지연 시간, 본인확인 절차가 더 크게 수익성을 바꿀 수 있기 때문입니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '화면상 김프가 있어도 바로 수익이 나는 건 아닌가요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '아닙니다. 수수료, 전송 지연, 환전 비용, 출금 한도, 트래블룰 확인 절차까지 합쳐서 봐야 합니다.',
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path} structuredData={faq}>
+  <section class="hero">
+    <div class="eyebrow">기본 가이드</div>
+    <h1>트래블룰이란</h1>
+    <p>김프와 차익거래를 숫자만으로 보면 놓치기 쉬운 것이 송금 규칙입니다. 실제 실행 가능성을 가르는 핵심 제약으로 정리합니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>핵심 설명</h2>
+    {guideSnippets.travelRule.map((paragraph) => <p>{paragraph}</p>)}
+  </section>
+</BaseLayout>
