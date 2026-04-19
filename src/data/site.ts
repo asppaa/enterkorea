@@ -15,7 +15,7 @@ export const siteConfig = {
     ko: '김프보드',
     en: 'KimpBoard',
   },
-  domain: 'enterkorea.mcjeff-park.workers.dev',
+  domain: 'kimpboard.com',
   siteUrl: DEFAULT_SITE_URL,
   defaultLocale: 'ko' as Locale,
   reservedEnglishPaths: [

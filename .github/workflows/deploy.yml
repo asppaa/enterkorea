@@ -19,7 +19,7 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      SITE_URL: https://enterkorea.mcjeff-park.workers.dev
+      SITE_URL: https://kimpboard.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -4,6 +4,14 @@ compatibility_date = "2026-04-19"
 workers_dev = true
 preview_urls = false
 
+[[routes]]
+pattern = "kimpboard.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.kimpboard.com"
+custom_domain = true
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"

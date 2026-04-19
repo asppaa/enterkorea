@@ -4,6 +4,11 @@ export default {
     const blockedPrefixes = ["/.git", "/.github", "/node_modules", "/worker-site", "/workers"];
     const blockedSuffixes = [".map", ".log", ".toml"];
 
+    if (url.hostname === "www.kimpboard.com") {
+      url.hostname = "kimpboard.com";
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (
       blockedPrefixes.some((prefix) => url.pathname.startsWith(prefix)) ||
       blockedSuffixes.some((suffix) => url.pathname.endsWith(suffix))
