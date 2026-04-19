@@ -731,38 +731,6 @@ img {
   align-content: center;
 }
 
-.telegram-qr {
-  display: grid;
-  place-items: center;
-  min-height: 132px;
-  border-radius: 20px;
-  border: 1px dashed rgba(143, 220, 255, 0.3);
-  background: rgba(6, 16, 28, 0.86);
-  text-align: center;
-}
-
-.telegram-qr img {
-  width: 112px;
-  height: 112px;
-  object-fit: contain;
-  border-radius: 12px;
-}
-
-.telegram-qr-link {
-  color: inherit;
-}
-
-.telegram-qr strong {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.2rem;
-}
-
-.telegram-qr span {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
 .telegram-link {
   display: inline-flex;
   justify-content: center;
@@ -990,9 +958,5 @@ img {
 
   .telegram-card {
     padding: 18px;
-  }
-
-  .telegram-qr {
-    min-height: 112px;
   }
 }
