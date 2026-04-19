@@ -9,20 +9,16 @@ const { locale = 'ko' } = Astro.props as { locale?: Locale };
   <div class="footer-inner">
     <div>
       <div class="lang-badge">
-        <span>{locale === 'ko' ? 'KO 우선 운영' : 'EN reserved path'}</span>
+        <span>국문 집중 운영</span>
       </div>
       <p>
-        {locale === 'ko'
-          ? '김프보드는 코인 김프만 보여주는 사이트가 아니라, 코인·ETF·원자재를 같은 프레임으로 읽는 한국 프리미엄 관측소를 지향합니다.'
-          : 'KimpBoard starts with Korean demand and reserves English paths for future expansion.'}
+        김프보드는 코인 김프만 보여주는 사이트가 아니라, 코인·ETF·원자재를 같은 프레임으로 읽는 한국 프리미엄 관측소를 지향합니다.
       </p>
       <small>최근 스냅샷 시각: {marketMeta.updatedAt}</small>
     </div>
     <div>
       <small>
-        {locale === 'ko'
-          ? '이 사이트는 정보 제공 목적이며 투자 권유가 아닙니다. 실제 체결 결과는 수수료, 출금 정책, 환율, 세금, 슬리피지에 따라 크게 달라질 수 있습니다.'
-          : 'This site is for informational purposes only and is not investment advice.'}
+        이 사이트는 정보 제공 목적이며 투자 권유가 아닙니다. 실제 체결 결과는 수수료, 출금 정책, 환율, 세금, 슬리피지에 따라 크게 달라질 수 있습니다.
       </small>
     </div>
   </div>

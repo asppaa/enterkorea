@@ -124,6 +124,23 @@ const overseasEtfs: PremiumAssetConfig[] = [
   { code: '381180', slug: 'tiger-us-semiconductor', name: 'TIGER 미국필라델피아반도체나스닥', category: '테마 ETF', benchmarkLabel: '반도체 ETF 기준', benchmarkSymbol: 'SOXX.US', benchmarkNote: '반도체 심리 과열 시 괴리 확대 여부 확인용' },
   { code: '402970', slug: 'ace-us-dividend-dow', name: 'ACE 미국배당다우존스', category: '배당 ETF', benchmarkLabel: '미국 배당 ETF 기준', benchmarkSymbol: 'SCHD.US', benchmarkNote: '배당형 수급과 안정 자금 유입 확인용' },
   { code: '304660', slug: 'kodex-us-30y-bond', name: 'KODEX 미국30년국채울트라선물(H)', category: '채권 ETF', benchmarkLabel: '미국 장기채 ETF 기준', benchmarkSymbol: 'TLT.US', benchmarkNote: '위험 회피 자금이 채권으로 이동할 때 참고' },
+  { code: '444490', slug: 'won-us-sp500', name: 'WON 미국S&P500', category: '해외지수 ETF', benchmarkLabel: 'S&P 500 기준', benchmarkSymbol: 'SPY.US', benchmarkNote: '후발 S&P500 ETF와 대형 ETF 괴리를 비교하기 좋은 상품' },
+  { code: '448290', slug: 'tiger-us-sp500-hedged', name: 'TIGER 미국S&P500(H)', category: '해외지수 ETF', benchmarkLabel: 'S&P 500 기준', benchmarkSymbol: 'SPY.US', benchmarkNote: '환헤지형 S&P500 ETF로 원달러 영향이 작은 편입니다.' },
+  { code: '449770', slug: 'kiwoom-us-sp500', name: 'KIWOOM 미국S&P500', category: '해외지수 ETF', benchmarkLabel: 'S&P 500 기준', benchmarkSymbol: 'VOO.US', benchmarkNote: '국내 상장 S&P500 추종 상품 간 체감 괴리를 비교하는 축입니다.' },
+  { code: '429000', slug: 'tiger-us-sp500-dividend-aristocrats', name: 'TIGER 미국S&P500배당귀족', category: '배당 ETF', benchmarkLabel: '미국 배당귀족 기준', benchmarkSymbol: 'NOBL.US', benchmarkNote: '배당 스타일 ETF의 국내 괴리를 따로 읽을 수 있는 상품' },
+  { code: '438080', slug: 'ace-us-sp500-us-treasury-mix', name: 'ACE 미국S&P500미국채혼합50액티브', category: '채권혼합 ETF', benchmarkLabel: 'S&P500·미국채 혼합 기준', benchmarkSymbol: 'AOA.US', benchmarkNote: '주식과 채권을 섞은 자산배분 ETF의 괴리 감각을 보는 축입니다.' },
+  { code: '483240', slug: 'tiger-us-nasdaq100-etf-futures', name: 'TIGER 미국나스닥100ETF선물', category: '해외지수 ETF', benchmarkLabel: 'NASDAQ 100 기준', benchmarkSymbol: 'QQQ.US', benchmarkNote: '선물형 나스닥100 상품과 일반 현물형의 괴리 차이를 비교합니다.' },
+  { code: '453080', slug: 'kiwoom-us-nasdaq100-hedged', name: 'KIWOOM 미국나스닥100(H)', category: '해외지수 ETF', benchmarkLabel: 'NASDAQ 100 기준', benchmarkSymbol: 'QQQ.US', benchmarkNote: '환헤지형 나스닥100 ETF로 환율 영향이 작은 비교축입니다.' },
+  { code: '200030', slug: 'kodex-us-sp500-industrials', name: 'KODEX 미국S&P500산업재(합성)', category: '섹터 ETF', benchmarkLabel: '미국 산업재 기준', benchmarkSymbol: 'XLI.US', benchmarkNote: '미국 산업재 섹터 괴리를 따로 추적할 수 있는 상품입니다.' },
+  { code: '463640', slug: 'kodex-us-sp500-utilities', name: 'KODEX 미국S&P500유틸리티', category: '섹터 ETF', benchmarkLabel: '미국 유틸리티 기준', benchmarkSymbol: 'XLU.US', benchmarkNote: '방어주 성격의 유틸리티 ETF를 따로 보는 보조 지표입니다.' },
+  { code: '453650', slug: 'kodex-us-sp500-financials', name: 'KODEX 미국S&P500금융', category: '섹터 ETF', benchmarkLabel: '미국 금융 섹터 기준', benchmarkSymbol: 'XLF.US', benchmarkNote: '미국 금융주 수급과 국내 체감 괴리를 같이 읽는 섹터 ETF입니다.' },
+  { code: '218420', slug: 'kodex-us-sp500-energy', name: 'KODEX 미국S&P500에너지(합성)', category: '섹터 ETF', benchmarkLabel: '미국 에너지 섹터 기준', benchmarkSymbol: 'XLE.US', benchmarkNote: '미국 에너지 섹터와 원유 심리가 같이 반영되는 보조 축입니다.' },
+  { code: '0137V0', slug: 'kiwoom-us-sp500-momentum', name: 'KIWOOM 미국S&P500모멘텀', category: '스타일 ETF', benchmarkLabel: '미국 모멘텀 스타일 기준', benchmarkSymbol: 'MTUM.US', benchmarkNote: 'S&P500 내 모멘텀 강한 종목만 따로 묶어 읽는 스타일 ETF입니다.' },
+  { code: '0019K0', slug: 'time-us-nasdaq100-bond-mix', name: 'TIME 미국나스닥100채권혼합50액티브', category: '채권혼합 ETF', benchmarkLabel: '미국 나스닥100·단기채 혼합 기준', benchmarkSymbol: 'QQQ.US', benchmarkNote: '나스닥100과 채권을 섞은 혼합형 ETF로 위험 선호 완화 구간 비교에 유용합니다.' },
+  { code: '0137W0', slug: 'kiwoom-sp500-gold', name: 'KIWOOM S&P500 & GOLD', category: '혼합자산 ETF', benchmarkLabel: 'S&P500·Gold 혼합 기준', benchmarkSymbol: 'GLD.US', benchmarkNote: '미국 주식과 금을 섞은 혼합형 ETF로 한국식 프리미엄 관점과 잘 맞는 상품입니다.' },
+  { code: '0041E0', slug: 'kodex-us-sp500-active', name: 'KODEX 미국S&P500액티브', category: '액티브 ETF', benchmarkLabel: 'S&P 500 액티브 기준', benchmarkSymbol: 'SPY.US', benchmarkNote: '액티브 방식으로 S&P500 초과성과를 노리는 ETF라 일반형과 괴리를 비교하기 좋습니다.' },
+  { code: '483570', slug: 'kcgi-us-sp500-top10', name: 'KCGI 미국S&P500TOP10', category: '집중형 ETF', benchmarkLabel: 'S&P500 TOP10 기준', benchmarkSymbol: 'SPY.US', benchmarkNote: '미국 대형주 상위 10종목 집중형이라 체감 괴리가 빠르게 드러나는 축입니다.' },
+  { code: '0089C0', slug: 'kodex-us-sp500-covered-call', name: 'KODEX 미국S&P500변동성확대시커버드콜', category: '커버드콜 ETF', benchmarkLabel: 'S&P500 변동성 커버드콜 기준', benchmarkSymbol: 'SPY.US', benchmarkNote: '월배당·커버드콜 수급까지 함께 읽을 수 있어 일반 S&P500 ETF와 결이 다른 상품입니다.' },
 ];
 
 const commodityEtfs: PremiumAssetConfig[] = [
@@ -135,6 +152,13 @@ const commodityEtfs: PremiumAssetConfig[] = [
   { code: '138910', slug: 'kodex-copper-futures', name: 'KODEX 구리선물(H)', category: '원자재 ETF', benchmarkLabel: 'Copper ETF 기준', benchmarkSymbol: 'CPER.US', benchmarkNote: '산업 금속 심리와 국내 유동성 왜곡을 함께 보는 지점' },
   { code: '130680', slug: 'tiger-oil-futures', name: 'TIGER 원유선물Enhanced(H)', category: '원자재 ETF', benchmarkLabel: '원유 ETF 기준', benchmarkSymbol: 'USO.US', benchmarkNote: '에너지 리스크 심리와 괴리 확대 여부 체크용' },
   { code: '271060', slug: 'kodex-agriculture-futures', name: 'KODEX 3대농산물선물(H)', category: '원자재 ETF', benchmarkLabel: '농산물 ETF 기준', benchmarkSymbol: 'DBA.US', benchmarkNote: '농산물 인플레이션 기대가 반영되는지 확인용' },
+  { code: '0072R0', slug: 'tiger-krx-gold-spot', name: 'TIGER KRX금현물', category: '원자재 ETF', benchmarkLabel: 'KRX 금현물 기준', benchmarkSymbol: 'GLD.US', benchmarkNote: '국내 금현물 ETF를 서로 비교할 때 유용한 기준 축입니다.' },
+  { code: '261220', slug: 'kodex-wti-oil-futures', name: 'KODEX WTI원유선물(H)', category: '원자재 ETF', benchmarkLabel: 'WTI 원유 기준', benchmarkSymbol: 'USO.US', benchmarkNote: '국내 원유 ETF 간 괴리 차이를 크게 비교할 수 있는 축입니다.' },
+  { code: '137610', slug: 'tiger-agriculture-futures', name: 'TIGER 농산물선물Enhanced(H)', category: '원자재 ETF', benchmarkLabel: '농산물 ETF 기준', benchmarkSymbol: 'DBA.US', benchmarkNote: '주요 농산물선물 ETF 간 괴리를 비교할 수 있는 상품입니다.' },
+  { code: '280940', slug: 'kodex-gold-futures-inverse', name: 'KODEX 골드선물인버스(H)', category: '원자재 ETF', benchmarkLabel: 'Gold ETF 기준', benchmarkSymbol: 'GLD.US', benchmarkNote: '금 가격 하락 베팅형 상품까지 같이 보면 귀금속 수급 해석 폭이 넓어집니다.' },
+  { code: '225130', slug: 'ace-gold-futures-leverage', name: 'ACE 골드선물 레버리지(합성 H)', category: '원자재 ETF', benchmarkLabel: 'Gold ETF 기준', benchmarkSymbol: 'GLD.US', benchmarkNote: '금 레버리지 상품까지 함께 보면 귀금속 과열 구간을 더 빨리 체감할 수 있습니다.' },
+  { code: '334690', slug: 'rise-palladium-futures', name: 'RISE 팔라듐선물(H)', category: '원자재 ETF', benchmarkLabel: '팔라듐 선물 기준', benchmarkSymbol: 'PALL.US', benchmarkNote: '팔라듐 선물 ETF까지 포함해 귀금속 범위를 더 넓혔습니다.' },
+  { code: '334700', slug: 'rise-palladium-inverse', name: 'RISE 팔라듐인버스선물(H)', category: '원자재 ETF', benchmarkLabel: '팔라듐 선물 인버스 기준', benchmarkSymbol: 'PALL.US', benchmarkNote: '팔라듐 인버스 상품까지 넣어 원자재 보드를 더 넓게 읽을 수 있게 했습니다.' },
 ];
 
 const fallbackEtfs: PremiumAssetRow[] = [
@@ -146,6 +170,23 @@ const fallbackEtfs: PremiumAssetRow[] = [
   { ...overseasEtfs[5], marketPriceKrw: 36255, navKrw: 36226, deviationPercent: 0.08, marketCapKrw: 4142133750000, volumeKrw: 44415510821, shares: 114250000, benchmarkPrice: 415.71, benchmarkCurrency: 'USD' },
   { ...overseasEtfs[6], marketPriceKrw: 14765, navKrw: 14757, deviationPercent: 0.05, marketCapKrw: 816504500000, volumeKrw: 4358695732, shares: 55300000, benchmarkPrice: 31.05, benchmarkCurrency: 'USD' },
   { ...overseasEtfs[7], marketPriceKrw: 7520, navKrw: 7551, deviationPercent: -0.41, marketCapKrw: 183488000000, volumeKrw: 822485130, shares: 24400000, benchmarkPrice: 87.07, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[8], marketPriceKrw: 19485, navKrw: 19355, deviationPercent: 0.67, marketCapKrw: 70146000000, volumeKrw: 426429090, shares: 3600000, benchmarkPrice: 710.14, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[9], marketPriceKrw: 16275, navKrw: 16084, deviationPercent: 1.19, marketCapKrw: 484995000000, volumeKrw: 3861082238, shares: 29800000, benchmarkPrice: 710.14, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[10], marketPriceKrw: 17460, navKrw: 17395, deviationPercent: 0.37, marketCapKrw: 250765000000, volumeKrw: 1204381550, shares: 14400000, benchmarkPrice: 652.78, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[11], marketPriceKrw: 13995, navKrw: 14072, deviationPercent: -0.55, marketCapKrw: 142049250000, volumeKrw: 1635460961, shares: 10150000, benchmarkPrice: 101.77, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[12], marketPriceKrw: 14210, navKrw: 14169, deviationPercent: 0.29, marketCapKrw: 964859000000, volumeKrw: 6910649730, shares: 67900000, benchmarkPrice: 59.44, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[13], marketPriceKrw: 6520, navKrw: 6513, deviationPercent: 0.11, marketCapKrw: 215160000000, volumeKrw: 3214580220, shares: 33000000, benchmarkPrice: 648.85, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[14], marketPriceKrw: 22240, navKrw: 22180, deviationPercent: 0.27, marketCapKrw: 312540000000, volumeKrw: 2208114445, shares: 14100000, benchmarkPrice: 648.85, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[15], marketPriceKrw: 44175, navKrw: 44248, deviationPercent: -0.16, marketCapKrw: 50359500000, volumeKrw: 145649147, shares: 1140000, benchmarkPrice: 139.22, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[16], marketPriceKrw: 13860, navKrw: 13912, deviationPercent: -0.37, marketCapKrw: 64325000000, volumeKrw: 258410220, shares: 4630000, benchmarkPrice: 76.33, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[17], marketPriceKrw: 18240, navKrw: 17986, deviationPercent: 1.41, marketCapKrw: 42147250000, volumeKrw: 303160743, shares: 2350000, benchmarkPrice: 49.88, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[18], marketPriceKrw: 8965, navKrw: 8921, deviationPercent: 0.49, marketCapKrw: 39091300000, volumeKrw: 182435690, shares: 4360000, benchmarkPrice: 97.42, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[19], marketPriceKrw: 12935, navKrw: 12882, deviationPercent: 0.41, marketCapKrw: 86664500000, volumeKrw: 611905217, shares: 6700000, benchmarkPrice: 216.47, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[20], marketPriceKrw: 12680, navKrw: 12606, deviationPercent: 0.59, marketCapKrw: 177520000000, volumeKrw: 7157499591, shares: 14000000, benchmarkPrice: 648.85, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[21], marketPriceKrw: 10420, navKrw: 10366, deviationPercent: 0.52, marketCapKrw: 57310000000, volumeKrw: 268420510, shares: 5500000, benchmarkPrice: 445.93, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[22], marketPriceKrw: 11215, navKrw: 11168, deviationPercent: 0.42, marketCapKrw: 132337000000, volumeKrw: 894511462, shares: 11800000, benchmarkPrice: 710.14, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[23], marketPriceKrw: 16140, navKrw: 16052, deviationPercent: 0.55, marketCapKrw: 64560000000, volumeKrw: 348190420, shares: 4000000, benchmarkPrice: 710.14, benchmarkCurrency: 'USD' },
+  { ...overseasEtfs[24], marketPriceKrw: 9870, navKrw: 9816, deviationPercent: 0.55, marketCapKrw: 73038000000, volumeKrw: 511235882, shares: 7400000, benchmarkPrice: 710.14, benchmarkCurrency: 'USD' },
 ];
 
 const fallbackCommodities: PremiumAssetRow[] = [
@@ -157,6 +198,13 @@ const fallbackCommodities: PremiumAssetRow[] = [
   { ...commodityEtfs[5], marketPriceKrw: 9440, navKrw: 9488, deviationPercent: -0.51, marketCapKrw: 50032000000, volumeKrw: 1280773716, shares: 5300000, benchmarkPrice: 37.29, benchmarkCurrency: 'USD' },
   { ...commodityEtfs[6], marketPriceKrw: 6780, navKrw: 6854, deviationPercent: -1.08, marketCapKrw: 21696000000, volumeKrw: 1530132940, shares: 3200000, benchmarkPrice: 116.04, benchmarkCurrency: 'USD' },
   { ...commodityEtfs[7], marketPriceKrw: 8270, navKrw: 8235, deviationPercent: 0.43, marketCapKrw: 32253000000, volumeKrw: 613956311, shares: 3900000, benchmarkPrice: 26.92, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[8], marketPriceKrw: 15250, navKrw: 15144, deviationPercent: 0.7, marketCapKrw: 1510512500000, volumeKrw: 27391302524, shares: 99050000, benchmarkPrice: 445.93, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[9], marketPriceKrw: 22930, navKrw: 24325, deviationPercent: -5.73, marketCapKrw: 85414250000, volumeKrw: 21397978840, shares: 3725000, benchmarkPrice: 116.04, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[10], marketPriceKrw: 5290, navKrw: 5226, deviationPercent: 1.22, marketCapKrw: 13225000000, volumeKrw: 226466215, shares: 2500000, benchmarkPrice: 26.92, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[11], marketPriceKrw: 6180, navKrw: 6205, deviationPercent: -0.4, marketCapKrw: 28740000000, volumeKrw: 512440900, shares: 4650000, benchmarkPrice: 445.93, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[12], marketPriceKrw: 20880, navKrw: 20740, deviationPercent: 0.68, marketCapKrw: 78220000000, volumeKrw: 1180224500, shares: 3770000, benchmarkPrice: 445.93, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[13], marketPriceKrw: 7540, navKrw: 7368, deviationPercent: 2.33, marketCapKrw: 5162500000, volumeKrw: 51600588, shares: 700000, benchmarkPrice: 96.42, benchmarkCurrency: 'USD' },
+  { ...commodityEtfs[14], marketPriceKrw: 7180, navKrw: 7244, deviationPercent: -0.88, marketCapKrw: 4665000000, volumeKrw: 39957372, shares: 650000, benchmarkPrice: 96.42, benchmarkCurrency: 'USD' },
 ];
 
 const memoryCache = new Map<string, CacheEntry<unknown>>();

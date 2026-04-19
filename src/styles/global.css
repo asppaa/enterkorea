@@ -132,29 +132,6 @@ img {
   color: var(--text);
 }
 
-.locale-switch {
-  display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(8, 16, 29, 0.86);
-}
-
-.locale-switch a {
-  min-width: 44px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-.locale-switch a[aria-current='page'] {
-  color: var(--text);
-  background: rgba(143, 220, 255, 0.14);
-}
-
 .page {
   padding: 40px 0 72px;
 }
@@ -983,10 +960,6 @@ img {
     white-space: nowrap;
     padding: 9px 12px;
     font-size: 0.84rem;
-  }
-
-  .locale-switch {
-    align-self: flex-start;
   }
 
   .summary-card {

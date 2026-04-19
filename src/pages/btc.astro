@@ -6,7 +6,6 @@ import { coinSnapshots } from '../data/market';
 import { sitePages } from '../data/site';
 
 const page = sitePages.find((item) => item.path === '/btc')!;
-const alternates = [{ lang: 'ko', path: '/btc' }, { lang: 'en', path: '/en/bitcoin-premium' }];
 ---
 
 <BaseLayout
@@ -14,7 +13,6 @@ const alternates = [{ lang: 'ko', path: '/btc' }, { lang: 'en', path: '/en/bitco
   description={page.description}
   locale="ko"
   pathname={page.path}
-  alternates={alternates}
   structuredData={{
     '@context': 'https://schema.org',
     '@type': 'Article',

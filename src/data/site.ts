@@ -1,28 +1,21 @@
 import { DEFAULT_SITE_URL } from '../lib/runtime';
 
-export type Locale = 'ko' | 'en';
+export type Locale = 'ko';
 
 export type SeoPage = {
   title: string;
   description: string;
   path: string;
   locale: Locale;
-  alternates?: Partial<Record<Locale, string>>;
 };
 
 export const siteConfig = {
   brand: {
     ko: '김프보드',
-    en: 'KimpBoard',
   },
   domain: 'kimpboard.com',
   siteUrl: DEFAULT_SITE_URL,
   defaultLocale: 'ko' as Locale,
-  reservedEnglishPaths: [
-    '/en/bitcoin-premium',
-    '/en/upbit-vs-binance',
-    '/en/what-is-kimchi-premium',
-  ],
   topNav: {
     ko: [
       { href: '/', label: '한국 프리미엄' },
@@ -31,11 +24,6 @@ export const siteConfig = {
       { href: '/etf', label: 'ETF 괴리율' },
       { href: '/commodities', label: '원자재' },
       { href: '/risk', label: '위험 신호' },
-    ],
-    en: [
-      { href: '/en/bitcoin-premium', label: 'Premium' },
-      { href: '/en/upbit-vs-binance', label: 'Spread' },
-      { href: '/en/what-is-kimchi-premium', label: 'Guide' },
     ],
   },
 };
@@ -61,9 +49,6 @@ export const sitePages: SeoPage[] = [
       '업비트·빗썸·바이낸스 기준으로 비트코인 김프와 국내 거래소 가격 차이를 함께 보는 상세 페이지.',
     path: '/btc',
     locale: 'ko',
-    alternates: {
-      en: '/en/bitcoin-premium',
-    },
   },
   {
     title: '이더리움 김프 | ETH 한국·해외 프리미엄과 국내 거래소 차이',
@@ -85,9 +70,6 @@ export const sitePages: SeoPage[] = [
       '업비트와 바이낸스의 주요 코인 가격 차이를 비교해 한국·해외 김프를 읽는 비교 페이지.',
     path: '/compare/upbit-binance',
     locale: 'ko',
-    alternates: {
-      en: '/en/upbit-vs-binance',
-    },
   },
   {
     title: '빗썸 vs 바이낸스 | 한국·해외 프리미엄 비교',
@@ -130,9 +112,6 @@ export const sitePages: SeoPage[] = [
       '김치프리미엄의 뜻과 발생 구조를 코인에만 묶지 않고 ETF 괴리율과 원자재 프리미엄까지 확장해 설명합니다.',
     path: '/guide/김치프리미엄-뜻',
     locale: 'ko',
-    alternates: {
-      en: '/en/what-is-kimchi-premium',
-    },
   },
   {
     title: '김프 보는 법 | 코인·ETF·원자재 프리미엄 읽는 기본',
@@ -190,59 +169,4 @@ export const sitePages: SeoPage[] = [
     path: '/disclaimer',
     locale: 'ko',
   },
-  {
-    title: 'Bitcoin Premium in Korea | KimpBoard',
-    description:
-      'Track Bitcoin premium between Korean exchanges and global venues inside a wider Korea premium observatory.',
-    path: '/en/bitcoin-premium',
-    locale: 'en',
-    alternates: {
-      ko: '/btc',
-    },
-  },
-  {
-    title: 'Upbit vs Binance Bitcoin Price Spread | KimpBoard',
-    description:
-      'Compare Upbit and Binance Bitcoin prices inside a Korea premium observatory for crypto, ETFs, and commodities.',
-    path: '/en/upbit-vs-binance',
-    locale: 'en',
-    alternates: {
-      ko: '/compare/upbit-binance',
-    },
-  },
-  {
-    title: 'What Is Kimchi Premium? | KimpBoard',
-    description:
-      'A compact English guide to the kimchi premium phenomenon and how it fits into a broader Korea premium framework.',
-    path: '/en/what-is-kimchi-premium',
-    locale: 'en',
-    alternates: {
-      ko: '/guide/김치프리미엄-뜻',
-    },
-  },
 ];
-
-export function getLocaleHref(pathname: string, targetLocale: Locale) {
-  const current = sitePages.find((item) => item.path === pathname);
-
-  if (current) {
-    if (current.locale === targetLocale) {
-      return current.path;
-    }
-
-    const alternate = current.alternates?.[targetLocale];
-    if (alternate) {
-      return alternate;
-    }
-  }
-
-  const reverseMatch = sitePages.find(
-    (item) => item.locale === targetLocale && Object.values(item.alternates ?? {}).includes(pathname),
-  );
-
-  if (reverseMatch) {
-    return reverseMatch.path;
-  }
-
-  return targetLocale === 'ko' ? '/' : '/en/what-is-kimchi-premium';
-}
