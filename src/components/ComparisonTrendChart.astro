@@ -49,12 +49,13 @@ const yTicks = [yMax, (yMax + yMin) / 2, yMin].map((v) => ({
   y: PLOT_TOP + (1 - (v - yMin) / yRange) * PLOT_H,
 }));
 
-// X축 날짜 라벨 (오늘 포함 과거 N일)
+// X축 날짜 라벨 (오늘 포함 과거 N일, 영문 "Apr 14")
 const today = new Date();
+const enDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
 const xLabels = Array.from({ length: seriesLen }, (_, i) => {
   const d = new Date(today);
   d.setDate(today.getDate() - (seriesLen - 1 - i));
-  return `${d.getMonth() + 1}/${d.getDate()}`;
+  return enDate.format(d);
 });
 ---
 
@@ -86,7 +87,7 @@ const xLabels = Array.from({ length: seriesLen }, (_, i) => {
     <g class="axis-labels axis-y">
       {
         yTicks.map((t) => (
-          <text x={PLOT_LEFT - 4} y={t.y + 3} text-anchor="end">
+          <text x={PLOT_LEFT - 3} y={t.y + 1.5} text-anchor="end">
             {formatPercent(t.value)}
           </text>
         ))
@@ -97,7 +98,7 @@ const xLabels = Array.from({ length: seriesLen }, (_, i) => {
         xLabels.map((label, i) => (
           <text
             x={PLOT_LEFT + (i / (seriesLen - 1 || 1)) * PLOT_W}
-            y={PLOT_BOTTOM + 14}
+            y={PLOT_BOTTOM + 8}
             text-anchor="middle"
           >
             {label}
