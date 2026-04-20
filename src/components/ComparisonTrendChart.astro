@@ -1,6 +1,6 @@
 ---
 import type { TrendSeries } from '../data/market';
-import { formatPercent, toSvgPoints } from '../lib/format';
+import { formatPercent } from '../lib/format';
 
 const { title, caption, series } = Astro.props as {
   title: string;
@@ -13,6 +13,49 @@ const colors = {
   etf: '#f2bf63',
   commodity: '#6ee7b7',
 };
+
+// 모든 시리즈를 공통 스케일로 정규화 — 축 값 표시를 위해 Y축 통일
+const allValues = series.flatMap((s) => s.values);
+const rawMin = Math.min(...allValues);
+const rawMax = Math.max(...allValues);
+const pad = (rawMax - rawMin) * 0.1 || 0.1;
+const yMin = rawMin - pad;
+const yMax = rawMax + pad;
+const yRange = yMax - yMin || 1;
+
+// 플롯 영역(좌측 Y라벨 공간 + 하단 X라벨 공간 확보)
+const PLOT_LEFT = 38;
+const PLOT_RIGHT = 356;
+const PLOT_TOP = 8;
+const PLOT_BOTTOM = 110;
+const PLOT_W = PLOT_RIGHT - PLOT_LEFT;
+const PLOT_H = PLOT_BOTTOM - PLOT_TOP;
+
+const seriesLen = series[0]?.values.length ?? 0;
+
+function plotPoints(values: number[]) {
+  return values
+    .map((v, i) => {
+      const x = PLOT_LEFT + (i / (values.length - 1 || 1)) * PLOT_W;
+      const y = PLOT_TOP + (1 - (v - yMin) / yRange) * PLOT_H;
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    })
+    .join(' ');
+}
+
+// Y축 눈금 (min, mid, max)
+const yTicks = [yMax, (yMax + yMin) / 2, yMin].map((v) => ({
+  value: v,
+  y: PLOT_TOP + (1 - (v - yMin) / yRange) * PLOT_H,
+}));
+
+// X축 날짜 라벨 (오늘 포함 과거 N일)
+const today = new Date();
+const xLabels = Array.from({ length: seriesLen }, (_, i) => {
+  const d = new Date(today);
+  d.setDate(today.getDate() - (seriesLen - 1 - i));
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+});
 ---
 
 <article class="panel chart-card comparison-chart">
@@ -32,16 +75,40 @@ const colors = {
       }
     </div>
   </div>
-  <svg class="sparkline comparison-sparkline" viewBox="0 0 320 110" aria-hidden="true" preserveAspectRatio="none">
+  <svg class="sparkline comparison-sparkline" viewBox="0 0 360 130" aria-hidden="true">
     <g class="sparkline-grid">
-      <line x1="0" y1="22" x2="320" y2="22"></line>
-      <line x1="0" y1="55" x2="320" y2="55"></line>
-      <line x1="0" y1="88" x2="320" y2="88"></line>
+      {
+        yTicks.map((t) => (
+          <line x1={PLOT_LEFT} y1={t.y} x2={PLOT_RIGHT} y2={t.y}></line>
+        ))
+      }
+    </g>
+    <g class="axis-labels axis-y">
+      {
+        yTicks.map((t) => (
+          <text x={PLOT_LEFT - 4} y={t.y + 3} text-anchor="end">
+            {formatPercent(t.value)}
+          </text>
+        ))
+      }
+    </g>
+    <g class="axis-labels axis-x">
+      {
+        xLabels.map((label, i) => (
+          <text
+            x={PLOT_LEFT + (i / (seriesLen - 1 || 1)) * PLOT_W}
+            y={PLOT_BOTTOM + 14}
+            text-anchor="middle"
+          >
+            {label}
+          </text>
+        ))
+      }
     </g>
     {
       series.map((item) => (
         <polyline
-          points={toSvgPoints(item.values)}
+          points={plotPoints(item.values)}
           style={`stroke:${colors[item.tone]}`}
           data-tone={item.tone}
         ></polyline>

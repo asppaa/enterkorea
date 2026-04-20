@@ -479,6 +479,12 @@ img {
   vector-effect: non-scaling-stroke;
 }
 
+.axis-labels text {
+  fill: rgba(148, 163, 184, 0.75);
+  font-size: 9px;
+  font-family: inherit;
+}
+
 .trend-legend {
   display: flex;
   flex-wrap: wrap;
