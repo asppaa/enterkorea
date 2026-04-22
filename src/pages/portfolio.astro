@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { portfolioAsOf, portfolioGroups } from '../data/portfolio';
+import { sitePages } from '../data/site';
+import { DEFAULT_SITE_URL } from '../lib/runtime';
+
+const page = sitePages.find((item) => item.path === '/portfolio')!;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: '정적배분으로 보는 내 포트폴리오',
+  description: page.description,
+  inLanguage: 'ko',
+  url: `${DEFAULT_SITE_URL}${page.path}`,
+  dateModified: portfolioAsOf,
+};
+
+const formatWeight = (value: number) => `${value}%`;
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  locale="ko"
+  pathname={page.path}
+  structuredData={structuredData}
+>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">정적배분 포트폴리오</div>
+          <h1>정적배분으로 보는 내 포트폴리오</h1>
+          <p>
+            정적배분은 시장 타이밍보다 사전에 정한 비중과 리밸런싱 규칙을 따르는 방식입니다. 여기서는 실제 보유수량이나
+            평가금액 대신, 장기 운용을 위해 정해 둔 목표 비중만 공개합니다.
+          </p>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge">기준일 {portfolioAsOf}</div>
+          <div class="lang-badge">목표 비중 공개</div>
+        </div>
+      </div>
+      <div class="metrics-grid">
+        <article class="summary-card summary-card-primary">
+          <strong>기준일</strong>
+          <span>{portfolioAsOf}</span>
+          <p>첨부 포트폴리오의 목표 비중 기준</p>
+        </article>
+        <article class="summary-card summary-card-primary">
+          <strong>공개 방식</strong>
+          <span>비중 중심</span>
+          <p>수량, 평가금액, 조정수량은 제외</p>
+        </article>
+        <article class="summary-card">
+          <strong>포트폴리오</strong>
+          <span>{portfolioGroups.length}개</span>
+          <p>ISA, 병목 인프라, 올웨더</p>
+        </article>
+        <article class="summary-card">
+          <strong>리밸런싱</strong>
+          <span>규칙 우선</span>
+          <p>전망보다 목표 비중과 이탈 폭을 확인</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-grid">
+    <article class="copy-panel">
+      <h2>정적배분이란</h2>
+      <p>
+        정적배분은 어떤 자산이 곧 오를지 맞히는 방식보다, 미리 정한 자산군과 비중을 유지하는 데 초점을 둡니다. 주식,
+        채권, 금, 달러, 특정 테마처럼 성격이 다른 자산을 나누어 담고 시간이 지나 비중이 흐트러지면 다시 목표 비중에
+        가깝게 돌려놓습니다.
+      </p>
+      <p>
+        장점은 운용 판단을 단순하게 만든다는 점입니다. 매일 전망을 새로 세우기보다, 포트폴리오가 원래 의도한 위험을
+        유지하고 있는지 확인하는 쪽에 집중합니다.
+      </p>
+    </article>
+    <article class="copy-panel compact-panel">
+      <h2>공개 원칙</h2>
+      <ul class="bullet-list">
+        <li>개별 종목은 목표 비중과 역할만 보여줍니다.</li>
+        <li>보유수량, 평가금액, 매수 단가, 조정 필요 금액은 공개하지 않습니다.</li>
+        <li>이 페이지는 운용 기록과 사고방식 공유용이며 투자 권유가 아닙니다.</li>
+      </ul>
+    </article>
+  </section>
+
+  {
+    portfolioGroups.map((group) => (
+      <section class="section">
+        <article class="panel">
+          <div class="section-header">
+            <div>
+              <h2>{group.name}</h2>
+              <p>{group.description}</p>
+            </div>
+            <div class="lang-badge">목표 합계 100%</div>
+          </div>
+          <p class="lede">{group.objective}</p>
+          <div class="table-scroll">
+            <table class="asset-table">
+              <thead>
+                <tr>
+                  <th>종목</th>
+                  <th>목표 비중</th>
+                  <th>역할</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.holdings.map((holding) => (
+                  <tr>
+                    <td>
+                      <strong>{holding.name}</strong>
+                    </td>
+                    <td>
+                      <strong>{formatWeight(holding.targetWeight)}</strong>
+                    </td>
+                    <td>{holding.role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    ))
+  }
+
+  <section class="section content-grid">
+    <article class="copy-panel compact-panel">
+      <h2>운용 원칙</h2>
+      <ul class="bullet-list">
+        <li>목표 비중은 매매 판단을 줄이기 위한 기준선입니다.</li>
+        <li>리밸런싱은 비중이 크게 틀어졌을 때 검토하고, 작은 흔들림에는 자주 반응하지 않습니다.</li>
+        <li>현금과 달러성 자산은 수익률보다 대응 여력을 남기는 역할로 봅니다.</li>
+        <li>과거 수익률에 맞춘 과최적화보다 이해 가능한 구조를 우선합니다.</li>
+      </ul>
+    </article>
+    <article class="copy-panel compact-panel">
+      <h2>주의할 점</h2>
+      <p>
+        같은 정적배분이라도 투자 기간, 소득 구조, 세금, 계좌 종류, 손실 감내도에 따라 맞는 비중은 달라집니다. 이
+        페이지의 비중은 개인 포트폴리오 공개 사례이며, 누구에게나 맞는 추천안이 아닙니다.
+      </p>
+      <div class="source-list">
+        <span>정보 제공용</span>
+        <span>투자 권유 아님</span>
+        <span>실제 판단은 개인 책임</span>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

@@ -24,6 +24,7 @@ export const siteConfig = {
       { href: '/etf', label: 'ETF 괴리율' },
       { href: '/commodities', label: '원자재' },
       { href: '/risk', label: '위험 신호' },
+      { href: '/portfolio', label: '포트폴리오' },
     ],
   },
 };
@@ -104,6 +105,13 @@ export const sitePages: SeoPage[] = [
     description:
       'Fear and Greed Index, USD/KRW, BTC 프리미엄, ETF·원자재 괴리율을 묶어 보는 위험 신호 페이지.',
     path: '/risk',
+    locale: 'ko',
+  },
+  {
+    title: '정적배분 포트폴리오 | ISA, 병목 인프라, 올웨더 비중',
+    description:
+      '정적배분의 뜻과 운용 원칙을 설명하고 ISA, 병목 인프라, 올웨더 포트폴리오의 목표 비중을 공개합니다.',
+    path: '/portfolio',
     locale: 'ko',
   },
   {
