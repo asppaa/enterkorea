@@ -3,6 +3,17 @@ export default {
     const url = new URL(request.url);
     const blockedPrefixes = ["/.git", "/.github", "/node_modules", "/worker-site", "/workers"];
     const blockedSuffixes = [".map", ".log", ".toml"];
+    const normalizedPath = url.pathname.endsWith("/") && url.pathname !== "/" ? url.pathname.slice(0, -1) : url.pathname;
+
+    const legacyRedirects = {
+      "/compare/upbit-bithumb": "/coins",
+      "/en/bitcoin-premium": "/btc",
+      "/en/upbit-vs-binance": "/compare/upbit-binance",
+      "/en/what-is-kimchi-premium": "/guide/김치프리미엄-뜻",
+    };
+    if (legacyRedirects[normalizedPath]) {
+      return Response.redirect(new URL(legacyRedirects[normalizedPath], url), 301);
+    }
 
     if (
       blockedPrefixes.some((prefix) => url.pathname.startsWith(prefix)) ||
