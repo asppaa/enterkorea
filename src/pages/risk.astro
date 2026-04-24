@@ -10,11 +10,22 @@ import { getApiBase } from '../lib/runtime';
 const page = sitePages.find((item) => item.path === '/risk')!;
 const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env.DEV);
 
+const signedPercent = (value: number, digits = 2) => `${value > 0 ? '+' : ''}${value.toFixed(digits)}%`;
+
 const fallbackSignals = [
+  {
+    id: 'kimp-index',
+    title: 'KIMP Index',
+    label: `${signedPercent(riskSnapshotFallback.kimpIndexValue)} · ${riskSnapshotFallback.kimpIndexLabel}`,
+    note: 'BTC·ETH·USDT 가중 평균 한국 프리미엄',
+    tone: 'normal',
+  },
   { id: 'fear-greed', title: 'Crypto Fear & Greed', label: riskSnapshotFallback.fearGreedLabel, note: '시장 심리 기본 지표', tone: 'watch' },
   { id: 'usd-krw', title: 'USD/KRW', label: `${riskSnapshotFallback.usdKrw.toFixed(2)}`, note: '환율 스트레스 체크', tone: 'danger' },
   { id: 'btc-global', title: 'BTC 한국/해외', label: '+0.05%', note: '대표 코인 프리미엄', tone: 'normal' },
   { id: 'btc-domestic', title: 'BTC 국내 거래소', label: '+0.01%', note: '한국 내부 수급 보조 신호', tone: 'normal' },
+  { id: 'btc-funding', title: 'BTC 선물 펀딩비', label: signedPercent(riskSnapshotFallback.btcFundingRate * 100, 4), note: '선물 포지션 쏠림 체크', tone: 'normal' },
+  { id: 'btc-open-interest', title: 'BTC OI 24h 변화', label: signedPercent(riskSnapshotFallback.btcOpenInterestChange24h), note: '청산 대리지표', tone: 'normal' },
 ];
 ---
 
@@ -32,6 +43,11 @@ const fallbackSignals = [
         </div>
       </div>
       <div class="summary-grid">
+        <article class="summary-card summary-card-primary">
+          <strong>KIMP Index</strong>
+          <span id="risk-kimp-index">{signedPercent(riskSnapshotFallback.kimpIndexValue)}</span>
+          <p id="risk-kimp-index-label">{riskSnapshotFallback.kimpIndexLabel}</p>
+        </article>
         <article class="summary-card summary-card-primary">
           <strong>Fear & Greed</strong>
           <span id="risk-fear-greed">{riskSnapshotFallback.fearGreedValue}</span>
@@ -51,6 +67,16 @@ const fallbackSignals = [
           <strong>BTC 국내 거래소</strong>
           <span id="risk-btc-domestic">+0.01%</span>
           <p>한국 내부 수급</p>
+        </article>
+        <article class="summary-card">
+          <strong>BTC 펀딩비</strong>
+          <span id="risk-btc-funding">{signedPercent(riskSnapshotFallback.btcFundingRate * 100, 4)}</span>
+          <p>선물 포지션 쏠림</p>
+        </article>
+        <article class="summary-card">
+          <strong>BTC OI 24h</strong>
+          <span id="risk-btc-oi">{signedPercent(riskSnapshotFallback.btcOpenInterestChange24h)}</span>
+          <p>청산 대리지표</p>
         </article>
       </div>
     </div>
@@ -78,7 +104,7 @@ const fallbackSignals = [
       <div class="section-header">
         <div>
           <h2>위험 신호 보드</h2>
-          <p>Fear & Greed, 환율, BTC 스프레드, ETF·원자재 대표 괴리를 한 번에 묶습니다.</p>
+          <p>KIMP Index, Fear & Greed, 환율, BTC 스프레드, 펀딩비, OI를 한 번에 묶습니다.</p>
         </div>
       </div>
       <div class="signal-grid" id="risk-signal-grid">
@@ -96,6 +122,36 @@ const fallbackSignals = [
   </section>
 
   <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>위험 신호가 높을 때 확인할 것</h2>
+          <p>위험 신호는 매도 신호가 아닙니다. 다만 여러 지표가 동시에 비정상 구간에 들어가면 포지션 규모와 유동성 리스크를 점검할 필요가 있습니다.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th>신호</th>
+              <th>확인할 것</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>USDT 김프 급등</td><td>원화 기반 달러 수요가 강한지, 거래소 입출금 제한 이슈가 있는지 확인합니다.</td></tr>
+            <tr><td>BTC 김프 급등</td><td>국내 개인투자자 과열인지, 해외 BTC 가격과 같은 방향으로 움직이는지 확인합니다.</td></tr>
+            <tr><td>국내 거래소 차이 확대</td><td>특정 거래소의 유동성 부족, 입출금 지연, 호가 왜곡 여부를 확인합니다.</td></tr>
+            <tr><td>ETF 괴리율 확대</td><td>장중 NAV 시차, 환율 반영 지연, 거래량 부족 여부를 확인합니다.</td></tr>
+            <tr><td>원자재 프리미엄 확대</td><td>원자재 자체 상승인지, 국내 ETF 유동성 문제인지 구분합니다.</td></tr>
+            <tr><td>Fear &amp; Greed 급락</td><td>위험자산 회피 심리와 김프 방향이 일치하는지 확인합니다.</td></tr>
+            <tr><td>USD/KRW 급등</td><td>김프가 진짜 과열인지, 단순 환율 효과인지 확인합니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
     <TelegramInvite title="위험 신호 텔레그램 · X 연결" note="이 페이지가 분석판이라면, 텔레그램은 빠른 경보판이고 X는 더 짧은 업데이트 흐름으로 연결됩니다." />
   </section>
 
@@ -106,15 +162,21 @@ const fallbackSignals = [
 
 <script define:vars={{ apiBase }}>
   const liveStatus = document.getElementById('risk-live-status');
+  const kimpIndex = document.getElementById('risk-kimp-index');
+  const kimpIndexLabel = document.getElementById('risk-kimp-index-label');
   const fearGreed = document.getElementById('risk-fear-greed');
   const fearGreedLabel = document.getElementById('risk-fear-greed-label');
   const usdKrw = document.getElementById('risk-usdkrw');
   const btcGlobal = document.getElementById('risk-btc-global');
   const btcDomestic = document.getElementById('risk-btc-domestic');
+  const btcFunding = document.getElementById('risk-btc-funding');
+  const btcOpenInterest = document.getElementById('risk-btc-oi');
   const signalGrid = document.getElementById('risk-signal-grid');
 
   const formatPercent = (value) =>
     value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${Number(value).toFixed(2)}%`;
+  const formatFunding = (value) =>
+    value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${(Number(value) * 100).toFixed(4)}%`;
 
   const toneClass = (tone) => `signal-card signal-${tone || 'normal'}`;
 
@@ -138,11 +200,15 @@ const fallbackSignals = [
       const payload = await response.json();
 
       if (liveStatus) liveStatus.textContent = payload.fallback ? '폴백 데이터 표시 중' : `실시간 · ${payload.updatedAt}`;
+      if (kimpIndex) kimpIndex.textContent = formatPercent(payload.kimpIndex?.value);
+      if (kimpIndexLabel) kimpIndexLabel.textContent = payload.kimpIndex?.label ?? '-';
       if (fearGreed) fearGreed.textContent = String(payload.fearGreed?.value ?? '-');
       if (fearGreedLabel) fearGreedLabel.textContent = payload.fearGreed?.label ?? '-';
       if (usdKrw) usdKrw.textContent = Number(payload.usdKrw ?? 0).toFixed(2);
       if (btcGlobal) btcGlobal.textContent = formatPercent(payload.btcGlobalPremium);
       if (btcDomestic) btcDomestic.textContent = formatPercent(payload.btcDomesticPremium);
+      if (btcFunding) btcFunding.textContent = formatFunding(payload.btcFunding?.rate);
+      if (btcOpenInterest) btcOpenInterest.textContent = formatPercent(payload.btcOpenInterest?.change24hPercent);
       renderSignals(payload.signals);
     } catch {
       if (liveStatus) liveStatus.textContent = '실시간 연결 실패 · 폴백 유지';

@@ -17,6 +17,17 @@ const { locale = 'ko' } = Astro.props as { locale?: Locale };
       <small>최근 스냅샷 시각: {marketMeta.updatedAt}</small>
     </div>
     <div>
+      <nav class="footer-nav" aria-label="사이트 보조 링크">
+        <a href="/how-to-read">숫자 읽는 법</a>
+        <a href="/methodology">데이터 기준</a>
+        <a href="/glossary">용어</a>
+        <a href="/risk">위험 신호</a>
+        <a href="/portfolio">포트폴리오</a>
+        <a href="/about">소개</a>
+        <a href="/privacy">개인정보</a>
+        <a href="/terms">약관</a>
+        <a href="/disclaimer">면책</a>
+      </nav>
       <small>
         이 사이트는 정보 제공 목적이며 투자 권유가 아닙니다. 실제 체결 결과는 수수료, 출금 정책, 환율, 세금, 슬리피지에 따라 크게 달라질 수 있습니다.
       </small>

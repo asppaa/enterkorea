@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { sitePages } from '../data/site';
+
+const page = sitePages.find((item) => item.path === '/glossary')!;
+
+const terms = [
+  { term: '김프', desc: '한국 가격이 해외 기준 가격보다 비싼 상태를 말합니다.' },
+  { term: '역프', desc: '한국 가격이 해외 기준 가격보다 싼 상태를 말합니다.' },
+  { term: '스테이블코인 김프', desc: 'USDT · USDC 같은 달러 연동 코인이 국내에서 얼마나 비싸게 거래되는지 보는 지표입니다.' },
+  { term: 'BTC 김프', desc: '비트코인의 한국 가격과 해외 기준 가격 차이를 보는 지표입니다.' },
+  { term: '거래소 차이', desc: '같은 자산이 국내 거래소끼리 다른 가격에 거래되는 정도를 말합니다. 업비트·빗썸 차이가 대표적입니다.' },
+  { term: 'ETF 괴리율', desc: 'ETF 시장가격이 기준가 또는 순자산가치(NAV)와 얼마나 차이 나는지 보는 지표입니다.' },
+  { term: 'NAV', desc: 'Net Asset Value. ETF가 보유한 자산의 순가치를 뜻합니다.' },
+  { term: 'Fear & Greed', desc: '시장의 공포와 탐욕 정도를 보여주는 심리 지표입니다. 0에 가까울수록 공포, 100에 가까울수록 탐욕입니다.' },
+  { term: '프리미엄', desc: '특정 시장 가격이 기준 가격보다 비싼 정도를 말합니다.' },
+  { term: '디스카운트', desc: '특정 시장 가격이 기준 가격보다 싼 정도를 말합니다.' },
+];
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="eyebrow">용어 설명</div>
+    <h1>김프보드 핵심 용어</h1>
+    <p>
+      지표를 해석할 때 자주 나오는 용어를 짧게 정리했습니다. 더 자세한 해석 순서는 <a class="text-link" href="/how-to-read">숫자 읽는 법</a>, 계산 공식과 구간표는 <a class="text-link" href="/methodology">방법론</a> 페이지를 참고해 주세요.
+    </p>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <dl class="glossary-list">
+        {terms.map((item) => (
+          <div class="glossary-item">
+            <dt>{item.term}</dt>
+            <dd>{item.desc}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  </section>
+</BaseLayout>

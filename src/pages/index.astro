@@ -27,9 +27,21 @@ const structuredData = [
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: '김프보드 실시간 한국 프리미엄 데이터',
-    description: '코인 김프, 국내 거래소 차이, ETF 괴리율, 원자재 프리미엄을 묶어 보여주는 데이터셋',
+    description:
+      '김프보드가 제공하는 공개 데이터셋으로, 코인 김프, 국내 거래소 가격 차이, ETF 괴리율, 원자재 프리미엄, 환율과 위험 지표를 함께 정리해 한국 시장의 프리미엄 흐름을 비교할 수 있게 합니다.',
     inLanguage: 'ko',
     url: `${DEFAULT_SITE_URL}/`,
+    creator: {
+      '@type': 'Organization',
+      name: 'Kimpboard',
+      url: DEFAULT_SITE_URL,
+    },
+    license: {
+      '@type': 'CreativeWork',
+      name: 'Kimpboard Terms of Use',
+      url: `${DEFAULT_SITE_URL}/terms`,
+    },
+    isAccessibleForFree: true,
   },
 ];
 ---
@@ -43,6 +55,16 @@ const structuredData = [
 >
   <DashboardHero featuredCoin={featuredCoin} apiBase={apiBase} />
 
+  <section class="section">
+    <div class="notice-banner">
+      <strong>관측 도구</strong>
+      <span>
+        이 사이트는 매수·매도 신호가 아니라 한국 가격과 글로벌 기준 가격의 차이를 관측하는 도구입니다.
+        프리미엄은 기회일 수도 있지만, 환율·세금·수수료·입출금 제한·유동성 때문에 실제 수익과 다를 수 있습니다.
+      </span>
+    </div>
+  </section>
+
   <section class="section explain-grid">
     <article class="explain-card">
       <strong>+면 김프</strong>
@@ -53,8 +75,43 @@ const structuredData = [
       <p>한국 가격이 오히려 더 싼 상태입니다. 한국 시장이 약하거나 글로벌 기준이 더 강한 구간입니다.</p>
     </article>
     <article class="explain-card">
-      <strong>순서대로 해석</strong>
-      <p>스테이블코인 김프, BTC 김프, 국내 거래소 차이, ETF·원자재 괴리율을 같이 보면 맥락이 빨라집니다.</p>
+      <strong>코인 1% ≠ ETF 1%</strong>
+      <p>ETF 괴리율은 NAV·환율·장 운영시간·유동성 영향을 크게 받아 같은 1%도 의미가 다릅니다.</p>
+    </article>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>숫자 읽는 법</h2>
+          <p>김프보드는 하나의 숫자로 시장을 판단하지 않습니다. 아래 순서로 읽으면 한국 시장의 체감 온도가 보입니다.</p>
+        </div>
+        <a class="text-link" href="/how-to-read">상세 가이드</a>
+      </div>
+      <div class="table-scroll">
+        <table class="reading-steps">
+          <thead>
+            <tr>
+              <th>순서</th>
+              <th>먼저 볼 것</th>
+              <th>이유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>USD/KRW</td><td>환율 자체가 한국 자산 가격의 기준을 흔들 수 있습니다.</td></tr>
+            <tr><td>2</td><td>USDT·USDC 김프</td><td>원화 기반 달러 대체 수요와 코인 시장의 현금 수요를 봅니다.</td></tr>
+            <tr><td>3</td><td>BTC 한국/해외 김프</td><td>대표 위험자산에 한국 프리미엄이 붙었는지 봅니다.</td></tr>
+            <tr><td>4</td><td>업비트·빗썸 차이</td><td>국내 거래소 내부 수급 불균형과 유동성 차이를 봅니다.</td></tr>
+            <tr><td>5</td><td>ETF 괴리율</td><td>국내 상장 해외자산이 NAV 대비 비싼지 싼지 봅니다.</td></tr>
+            <tr><td>6</td><td>원자재 ETF 괴리율</td><td>금·은·원유·구리 등 실물자산 선호가 국내에서 왜곡됐는지 봅니다.</td></tr>
+            <tr><td>7</td><td>Fear &amp; Greed</td><td>숫자 괴리가 시장 심리와 같은 방향인지 확인합니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede">
+        각 지표는 단독으로 매매 판단에 쓰기 어렵습니다. 특히 프리미엄이 커 보여도 실제 차익거래에는 수수료·세금·입출금 제한·호가 스프레드·환율 시차가 영향을 줍니다.
+      </p>
     </article>
   </section>
 
@@ -66,7 +123,7 @@ const structuredData = [
     />
   </section>
 
-  <section class="section dashboard-grid">
+  <section class="section dashboard-grid" id="home-premium-board">
     <article class="panel">
       <div class="section-header">
         <div>

@@ -849,17 +849,6 @@ export const compareSnapshots = {
     interpretation:
       '빗썸-바이낸스 축은 업비트보다 한 단계 더 민감하게 국내 수급 왜곡을 보여주는 경우가 있습니다.',
   },
-  'upbit-bithumb': {
-    pair: '업비트 vs 빗썸',
-    headline: '국내 거래소 내부의 가격차를 직접 보는 비교',
-    rows: [
-      { symbol: 'BTC', buy: '업비트', sell: '빗썸', spreadPercent: 0.01, spreadKrw: '+11,000 KRW' },
-      { symbol: 'ETH', buy: '업비트', sell: '빗썸', spreadPercent: -0.03, spreadKrw: '-1,000 KRW' },
-      { symbol: 'XRP', buy: '업비트', sell: '빗썸', spreadPercent: -0.09, spreadKrw: '-2 KRW' },
-    ],
-    interpretation:
-      '국내 거래소 간 차이는 한국시장 내부 프리미엄을 읽는 가장 직접적인 축입니다. ETF 괴리율을 보는 감각과도 닮아 있습니다.',
-  },
 };
 
 const strongestEtf = [...etfSnapshots].sort((left, right) => Math.abs(right.deviationPercent) - Math.abs(left.deviationPercent))[0];
@@ -895,10 +884,14 @@ export const crossAssetTrendSeries: TrendSeries[] = [
 ];
 
 export const riskSnapshotFallback = {
+  kimpIndexValue: 0.06,
+  kimpIndexLabel: '정상',
   fearGreedValue: 26,
   fearGreedLabel: 'Fear',
-  fearGreedHistory: [26, 21, 23, 23, 21, 12, 16],
+  fearGreedHistory: [16, 12, 21, 23, 23, 21, 26],
   usdKrw: 1478.99,
+  btcFundingRate: 0.0001,
+  btcOpenInterestChange24h: 1.2,
 };
 
 export const guideSnippets = {

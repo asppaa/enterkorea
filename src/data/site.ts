@@ -20,7 +20,6 @@ export const siteConfig = {
     ko: [
       { href: '/', label: '한국 프리미엄' },
       { href: '/coins', label: '코인 김프' },
-      { href: '/compare/upbit-bithumb', label: '국내 거래소 차이' },
       { href: '/etf', label: 'ETF 괴리율' },
       { href: '/commodities', label: '원자재' },
       { href: '/risk', label: '위험 신호' },
@@ -80,13 +79,6 @@ export const sitePages: SeoPage[] = [
     locale: 'ko',
   },
   {
-    title: '업비트 vs 빗썸 | 국내 거래소 차이 비교',
-    description:
-      '업비트와 빗썸 가격 차이로 한국 시장 내부 프리미엄과 자금 흐름을 읽는 비교 페이지.',
-    path: '/compare/upbit-bithumb',
-    locale: 'ko',
-  },
-  {
     title: 'ETF 괴리율 | 국내 상장 해외 ETF 프리미엄',
     description:
       '국내 상장 해외 ETF의 시장가격과 NAV 차이를 실시간으로 읽는 ETF 괴리율 페이지.',
@@ -143,9 +135,23 @@ export const sitePages: SeoPage[] = [
     locale: 'ko',
   },
   {
-    title: '방법론 | 한국 프리미엄 관측소 계산 기준',
+    title: '숫자 읽는 법 | 김프·ETF·원자재 프리미엄 해석 순서',
     description:
-      '김프보드가 코인, ETF, 원자재 프리미엄을 계산하는 방식과 캐시 정책, 데이터 처리 원칙을 설명합니다.',
+      'USD/KRW부터 Fear & Greed까지 7단계로 한국 프리미엄을 읽는 순서, 프리미엄 구간 해석, FAQ를 정리한 가이드.',
+    path: '/how-to-read',
+    locale: 'ko',
+  },
+  {
+    title: '용어 설명 | 김프·역프·NAV·괴리율 핵심 용어',
+    description:
+      '김프, 역프, 스테이블코인 김프, BTC 김프, 거래소 차이, ETF 괴리율, NAV, Fear & Greed 등 핵심 용어를 짧게 정리한 페이지.',
+    path: '/glossary',
+    locale: 'ko',
+  },
+  {
+    title: '방법론 | 데이터 출처·계산 방식·프리미엄 구간표',
+    description:
+      '김프보드가 코인·ETF·원자재 프리미엄을 계산하는 공식, 데이터 출처와 한계, 참고 구간표, 갱신 주기와 면책을 한 번에 정리합니다.',
     path: '/methodology',
     locale: 'ko',
   },

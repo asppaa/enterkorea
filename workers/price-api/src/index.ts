@@ -56,6 +56,17 @@ type FearGreedPoint = {
   timestamp: number;
 };
 
+type BtcFundingSnapshot = {
+  rate: number;
+  markPrice: number;
+};
+
+type BtcOiSnapshot = {
+  change24hPercent: number;
+  openInterestBtc: number;
+  openInterestUsd: number;
+};
+
 interface Env {
   CACHE_TTL?: string;
 }
@@ -327,6 +338,34 @@ function toLead(symbol: string, value: number | null, note = ''): SummaryLead | 
   };
 }
 
+function formatSignedPercent(value: number) {
+  return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
+}
+
+function buildKimpIndex(rows: CoinRow[]) {
+  const weights: Record<string, number> = { BTC: 0.5, ETH: 0.3, USDT: 0.2 };
+  let total = 0;
+  let weightSum = 0;
+
+  for (const [symbol, weight] of Object.entries(weights)) {
+    const row = rows.find((item) => item.symbol === symbol);
+    if (row?.leadPremium === null || row?.leadPremium === undefined) continue;
+    total += row.leadPremium * weight;
+    weightSum += weight;
+  }
+
+  const value = weightSum ? Number((total / weightSum).toFixed(2)) : 0;
+  const label = value < -1 ? '얼음' : value <= 1 ? '정상' : value <= 3 ? '과열' : '극단 과열';
+  const tone = value < -1 || value > 3 ? 'danger' : value > 1 ? 'watch' : 'normal';
+
+  return {
+    value,
+    label,
+    tone,
+    display: `${formatSignedPercent(value)} · ${label}`,
+  };
+}
+
 function toneByFearGreed(value: number) {
   if (value <= 25) return 'danger';
   if (value <= 40) return 'watch';
@@ -414,6 +453,41 @@ async function getFearGreed() {
       label: item.value_classification,
       timestamp: Number(item.timestamp),
     })) as FearGreedPoint[];
+  });
+}
+
+async function getBtcFunding() {
+  return memoize('btc-funding', 60 * 1000, async () => {
+    const response = await fetchJson<{ lastFundingRate: string; markPrice: string }>(
+      'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT',
+    );
+
+    return {
+      rate: Number(response.lastFundingRate),
+      markPrice: Number(response.markPrice),
+    } satisfies BtcFundingSnapshot;
+  });
+}
+
+async function getBtcOpenInterest() {
+  return memoize('btc-open-interest', 60 * 1000, async () => {
+    const response = await fetchJson<Array<{ sumOpenInterest: string; sumOpenInterestValue: string }>>(
+      'https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=1h&limit=25',
+    );
+    const latest = response.at(-1);
+    const oldest = response[0];
+    const latestUsd = Number(latest?.sumOpenInterestValue ?? 0);
+    const oldestUsd = Number(oldest?.sumOpenInterestValue ?? 0);
+
+    if (!latest || !oldest || oldestUsd <= 0) {
+      throw new Error('Failed to parse BTC open interest history');
+    }
+
+    return {
+      change24hPercent: Number((((latestUsd - oldestUsd) / oldestUsd) * 100).toFixed(2)),
+      openInterestBtc: Number(latest.sumOpenInterest),
+      openInterestUsd: latestUsd,
+    } satisfies BtcOiSnapshot;
   });
 }
 
@@ -613,23 +687,40 @@ async function buildSummary() {
 }
 
 async function buildRiskSummaryRaw() {
-  const [summary, fearGreed] = await Promise.all([buildSummary(), getFearGreed()]);
+  const [summary, fearGreed, funding, openInterest] = await Promise.all([
+    buildSummary(),
+    getFearGreed(),
+    getBtcFunding().catch(() => null),
+    getBtcOpenInterest().catch(() => null),
+  ]);
   const btc = summary.rows.find((item) => item.symbol === 'BTC') ?? coinDetailFallbacks.BTC;
   const etfLead = leadByAbsoluteValue(summary.etfs);
   const commodityLead = leadByAbsoluteValue(summary.commodities);
   const currentFearGreed = fearGreed[0] ?? { value: 26, label: 'Fear', timestamp: Date.now() / 1000 };
   const usdKrw = Number(summary.overview.fxRate.toFixed(2));
+  const kimpIndex = buildKimpIndex(summary.rows);
 
   return {
     updatedAt: new Date().toISOString(),
     fearGreed: currentFearGreed,
     fearGreedHistory: fearGreed.slice().reverse().map((item) => item.value),
     usdKrw,
+    kimpIndex,
     btcGlobalPremium: btc.leadPremium,
     btcDomesticPremium: btc.upbitVsBithumb,
+    btcFunding: funding,
+    btcOpenInterest: openInterest,
     etfLead,
     commodityLead,
     signals: [
+      {
+        id: 'kimp-index',
+        title: 'KIMP Index',
+        value: kimpIndex.value,
+        label: kimpIndex.display,
+        tone: kimpIndex.tone,
+        note: 'BTC·ETH·USDT 가중 평균 한국 프리미엄',
+      },
       {
         id: 'fear-greed',
         title: 'Crypto Fear & Greed',
@@ -680,6 +771,38 @@ async function buildRiskSummaryRaw() {
         tone: toneByAbsolute(commodityLead?.deviationPercent ?? 0, 0.6, 1.2),
         note: commodityLead && Math.abs(commodityLead.deviationPercent) >= 1.2 ? '원자재 ETF 수급 왜곡이 크게 확대됨' : '원자재 괴리율은 감시 수준',
       },
+      ...(funding
+        ? [
+            {
+              id: 'btc-funding',
+              title: 'BTC 선물 펀딩비',
+              value: Number((funding.rate * 100).toFixed(4)),
+              label: `${funding.rate > 0 ? '+' : ''}${(funding.rate * 100).toFixed(4)}%`,
+              tone: funding.rate >= 0.0005 || funding.rate <= -0.0003 ? 'danger' : Math.abs(funding.rate) >= 0.0002 ? 'watch' : 'normal',
+              note:
+                funding.rate >= 0.0005
+                  ? '롱 편향 과밀 구간'
+                  : funding.rate <= -0.0003
+                    ? '숏 편향 과밀 구간'
+                    : '선물 포지션 쏠림은 제한적',
+            },
+          ]
+        : []),
+      ...(openInterest
+        ? [
+            {
+              id: 'btc-open-interest',
+              title: 'BTC OI 24h 변화',
+              value: openInterest.change24hPercent,
+              label: formatSignedPercent(openInterest.change24hPercent),
+              tone: toneByAbsolute(openInterest.change24hPercent, 3, 5),
+              note:
+                Math.abs(openInterest.change24hPercent) >= 5
+                  ? '레버리지 포지션 급변 감시'
+                  : '청산 대리지표는 안정권',
+            },
+          ]
+        : []),
     ],
   };
 }
@@ -724,17 +847,23 @@ function getFallbackRisk() {
     },
     fearGreedHistory: [16, 12, 21, 23, 23, 21, 26],
     usdKrw: 1478.99,
+    kimpIndex: { value: 0.06, label: '정상', tone: 'normal', display: '+0.06% · 정상' },
     btcGlobalPremium: 0.05,
     btcDomesticPremium: 0.01,
+    btcFunding: { rate: 0.0001, markPrice: 76135.19 },
+    btcOpenInterest: { change24hPercent: 1.2, openInterestBtc: 52000, openInterestUsd: 3959000000 },
     etfLead: fallbackEtfs[7],
     commodityLead: fallbackCommodities[6],
     signals: [
+      { id: 'kimp-index', title: 'KIMP Index', value: 0.06, label: '+0.06% · 정상', tone: 'normal', note: 'BTC·ETH·USDT 가중 평균 한국 프리미엄' },
       { id: 'fear-greed', title: 'Crypto Fear & Greed', value: 26, label: 'Fear', tone: 'watch', note: '시장 심리가 위축된 구간' },
       { id: 'usd-krw', title: 'USD/KRW', value: 1478.99, label: '1478.99', tone: 'danger', note: '원화 약세 구간' },
       { id: 'btc-global', title: 'BTC 한국/해외 프리미엄', value: 0.05, label: '+0.05%', tone: 'normal', note: '대표 코인 프리미엄은 제한적' },
       { id: 'btc-domestic', title: 'BTC 국내 거래소 차이', value: 0.01, label: '+0.01%', tone: 'normal', note: '국내 내부 수급 차이는 작음' },
       { id: 'etf-gap', title: 'ETF 대표 괴리', value: -0.41, label: 'KODEX 미국30년국채울트라선물(H) -0.41%', tone: 'watch', note: '채권 ETF 괴리 확대 감시' },
       { id: 'commodity-gap', title: '원자재 대표 괴리', value: -1.08, label: 'TIGER 원유선물Enhanced(H) -1.08%', tone: 'danger', note: '원자재 ETF 괴리 확대' },
+      { id: 'btc-funding', title: 'BTC 선물 펀딩비', value: 0.01, label: '+0.0100%', tone: 'normal', note: '선물 포지션 쏠림은 제한적' },
+      { id: 'btc-open-interest', title: 'BTC OI 24h 변화', value: 1.2, label: '+1.20%', tone: 'normal', note: '청산 대리지표는 안정권' },
     ],
   };
 }

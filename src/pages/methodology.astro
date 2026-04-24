@@ -9,22 +9,151 @@ const page = sitePages.find((item) => item.path === '/methodology')!;
 <BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
   <section class="hero">
     <div class="eyebrow">데이터 기준</div>
-    <h1>방법론</h1>
-    <p>김프보드는 코인, ETF, 원자재를 같은 질문으로 봅니다. 한국시장 가격이 해외 기준 또는 NAV보다 얼마나 벌어져 있는가를 측정하고, 그 차이를 같은 화면 구조로 보여줍니다.</p>
+    <h1>데이터 출처와 계산 방식</h1>
+    <p>
+      김프보드는 여러 시장 가격을 한 화면에서 비교하기 위해 거래소 가격, 환율, ETF 기준값, 위험 심리 지표를 함께 사용합니다. 모든 지표는 실제 매매 가능 수익률이 아니라 관측용 참고값입니다.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="notice-banner">
+      <strong>면책</strong>
+      <span>
+        환율 시차, 거래소별 호가, 입출금 제한, 수수료, 세금, NAV 반영 시차에 따라 실제 결과는 달라질 수 있습니다. 투자 권유·매매 추천·수익 보장을 의미하지 않습니다.
+      </span>
+    </div>
   </section>
 
   <section class="section content-grid">
     <article class="copy-panel">
-      <h2>계산 방식</h2>
-      <p>코인 김프 = (국내 원화 가격 - 해외 달러 가격 × 환율) / (해외 달러 가격 × 환율) × 100</p>
-      <p>ETF 괴리율 = (시장가격 - NAV) / NAV × 100</p>
-      <p>원자재 프리미엄은 국내 원자재 ETF의 시장가격과 NAV 괴리율을 우선 보고, 해외 벤치마크는 보조 축으로 함께 제공합니다.</p>
-      <p>현재 메인 화면의 김프는 공식 USD/KRW 환율 기준 수치입니다. 스테이블코인 체결가나 실행 비용까지 넣은 다른 정의는 추후 별도 지표로 분리할 예정입니다.</p>
+      <h2>계산 공식</h2>
+      <p>기본 개념은 다음과 같습니다.</p>
+      <p><strong>프리미엄(%) = (한국 원화 가격 / 해외 기준 가격의 원화 환산값 - 1) × 100</strong></p>
+      <p>자산별로는 다음과 같이 변형됩니다.</p>
+      <ul class="bullet-list">
+        <li>코인 김프 = (국내 원화 가격 - 해외 달러 가격 × 환율) / (해외 달러 가격 × 환율) × 100</li>
+        <li>ETF 괴리율 = (시장가격 - NAV) / NAV × 100</li>
+        <li>원자재 프리미엄: 국내 원자재 ETF의 시장가격과 NAV 괴리율을 우선 보고, 해외 벤치마크는 보조 축으로 함께 제공합니다.</li>
+      </ul>
+      <p>
+        현재 메인 화면의 김프는 공식 USD/KRW 환율 기준 수치입니다. 스테이블코인 체결가나 실행 비용까지 반영한 다른 정의는 추후 별도 지표로 분리할 예정입니다.
+      </p>
     </article>
     <article class="copy-panel">
       <h2>운영 구조</h2>
-      <p>정적 프런트와 Worker 집계를 분리해 속도와 운영비를 낮춥니다. 실시간 수치는 반복 조회에 맞게 설계하고, 해설형 페이지는 검색 유입을 받도록 확장합니다.</p>
-      <p>{marketMeta.cacheWindowSeconds}초 캐시를 기본으로 두고, 프런트도 3초 주기 갱신을 전제로 설계했습니다. 일부 데이터 소스가 실패해도 마지막 스냅샷으로 화면이 무너지지 않도록 폴백 구조를 유지합니다.</p>
+      <p>
+        정적 프런트와 Worker 집계를 분리해 속도와 운영비를 낮춥니다. 실시간 수치는 반복 조회에 맞게 설계하고, 해설형 페이지는 검색 유입을 받도록 확장합니다.
+      </p>
+      <p>
+        {marketMeta.cacheWindowSeconds}초 캐시를 기본으로 두고, 프런트도 3초 주기 갱신을 전제로 설계했습니다. 일부 데이터 소스가 실패해도 마지막 스냅샷으로 화면이 무너지지 않도록 폴백 구조를 유지합니다.
+      </p>
+    </article>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>데이터 항목과 한계</h2>
+          <p>각 지표가 어떤 데이터를 쓰고, 어떤 한계가 있는지 정리합니다.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>설명 · 주요 한계</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>USDT · USDC 김프</td>
+              <td>국내 거래소 원화 가격과 해외 기준 가격을 환율로 환산해 비교합니다. 입출금 제한, 호가 스프레드, 거래소별 유동성 영향을 받습니다.</td>
+            </tr>
+            <tr>
+              <td>BTC 한국/해외 김프</td>
+              <td>국내 BTC 가격과 해외 BTC 가격을 환율 기준으로 비교합니다. 거래소별 가격, 환율 시차, 입출금 상태 영향을 받습니다.</td>
+            </tr>
+            <tr>
+              <td>국내 거래소 차이</td>
+              <td>업비트와 빗썸 등 국내 거래소 간 가격 차이를 비교합니다. 특정 거래소 유동성, 호가, 이벤트, 입출금 상태 영향을 받습니다.</td>
+            </tr>
+            <tr>
+              <td>ETF 괴리율</td>
+              <td>국내 ETF 시장가격과 기준가(NAV)의 차이를 봅니다. NAV 시차, 환율 반영 지연, 장 운영시간 차이, 유동성 영향을 받습니다.</td>
+            </tr>
+            <tr>
+              <td>원자재 ETF 프리미엄</td>
+              <td>금·은·원유·구리 등 원자재 관련 ETF의 가격 괴리를 봅니다. 선물 롤오버, 환헤지, 벤치마크 차이, 거래량 영향을 받습니다.</td>
+            </tr>
+            <tr>
+              <td>Fear &amp; Greed</td>
+              <td>시장 심리 지표를 통해 위험 선호도를 참고합니다. 단일 지표로 매매 판단하기 어렵습니다.</td>
+            </tr>
+            <tr>
+              <td>USD/KRW</td>
+              <td>원화 기준 환율 스트레스를 확인합니다. 실시간성, 출처별 시차, 고시환율과 실제 체결환율 차이가 있을 수 있습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="source-list">
+        <span>코인: Upbit · Bithumb · Binance</span>
+        <span>환율: Frankfurter</span>
+        <span>ETF/원자재: K-ETF · Stooq</span>
+        <span>심리: Alternative.me Fear &amp; Greed</span>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <article class="panel">
+      <div class="section-header">
+        <div>
+          <h2>프리미엄 참고 구간표</h2>
+          <p>아래 구간은 고정된 매매 기준이 아니라 관측을 쉽게 하기 위한 참고 구간입니다. 실제 의미는 자산별 유동성, 환율, 거래소 입출금 상태, 세금, 호가 스프레드에 따라 달라집니다.</p>
+        </div>
+      </div>
+      <h3 class="range-subtitle">코인 김프</h3>
+      <div class="table-scroll">
+        <table class="range-table">
+          <thead>
+            <tr>
+              <th>구간</th>
+              <th>해석</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>-1.0% 이하</td><td>역프 구간. 한국 가격이 글로벌 기준보다 의미 있게 낮을 가능성이 있습니다.</td></tr>
+            <tr><td>-1.0% ~ +1.0%</td><td>중립 구간. 비용과 스프레드를 감안하면 큰 의미가 약할 수 있습니다.</td></tr>
+            <tr><td>+1.0% ~ +3.0%</td><td>약한 김프 구간. 국내 수요가 다소 강한 상태일 수 있습니다.</td></tr>
+            <tr><td>+3.0% ~ +7.0%</td><td>높은 김프 구간. 과열 또는 입출금·유동성 병목을 점검해야 합니다.</td></tr>
+            <tr><td>+7.0% 이상</td><td>과열 후보 구간. 단순 차익거래 가능성보다 리스크를 먼저 점검해야 합니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="range-subtitle">ETF 괴리율</h3>
+      <div class="table-scroll">
+        <table class="range-table">
+          <thead>
+            <tr>
+              <th>구간</th>
+              <th>해석</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>±0.3% 이내</td><td>대체로 정상 범위 후보입니다.</td></tr>
+            <tr><td>±0.3% ~ ±1.0%</td><td>확인이 필요한 구간입니다.</td></tr>
+            <tr><td>±1.0% 이상</td><td>NAV 지연, 환율 반영, 유동성, 장중 시차를 점검해야 합니다.</td></tr>
+            <tr><td>±3.0% 이상</td><td>단순 투자 판단보다 원인 확인을 우선해야 합니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede">
+        코인 김프 1%와 ETF 괴리율 1%는 의미가 다릅니다. ETF는 NAV·환율·장 운영시간·유동성·호가 스프레드에 영향을 크게 받기 때문에 코인 김프보다 작은 괴리도 의미가 있을 수 있습니다.
+      </p>
     </article>
   </section>
 
@@ -33,12 +162,16 @@ const page = sitePages.find((item) => item.path === '/methodology')!;
     <ul class="bullet-list">
       <li>김프 사이트만으로는 경쟁이 강해, 한국 프리미엄 관측소로 자산군을 넓혔습니다.</li>
       <li>숫자 보드만으로는 애드센스와 SEO에 약하므로, 실시간 보드와 해설형 페이지를 같이 운영합니다.</li>
-      <li>코인, ETF, 원자재를 각각 따로 설명하기보다 같은 계산 프레임으로 묶어야 브랜드가 선명해집니다.</li>
+      <li>코인·ETF·원자재를 각각 따로 설명하기보다 같은 계산 프레임으로 묶어야 브랜드가 선명해집니다.</li>
     </ul>
-    <div class="source-list">
-      <span>코인: Upbit · Bithumb · Binance</span>
-      <span>환율: Frankfurter</span>
-      <span>ETF/원자재: K-ETF · Stooq</span>
-    </div>
   </section>
 </BaseLayout>
+
+<style>
+  .range-subtitle {
+    margin: 20px 0 10px;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+</style>

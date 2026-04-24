@@ -14,7 +14,11 @@ const { featuredCoin, apiBase = '' } = Astro.props as {
     <div class="hero-topline">
       <div>
         <div class="eyebrow">한국 프리미엄 관측소</div>
-        <h1>코인, ETF, 원자재를 같은 화면에서</h1>
+        <h1>김프만 보지 말고,<br />한국 시장 전체 프리미엄.</h1>
+        <p class="hero-lede">
+          스테이블코인, BTC, 국내 거래소 차이, 해외 ETF 괴리율, 원자재 프리미엄을 한 화면에서 비교합니다.
+          이 사이트는 매수·매도 신호가 아니라, 한국 가격이 글로벌 기준보다 비싼지 싼지 관측하는 도구입니다.
+        </p>
       </div>
       <div class="hero-badges">
         <div class="lang-badge status-dot" id="hero-live-status" data-state={apiBase ? 'delayed' : 'offline'}>
@@ -22,6 +26,12 @@ const { featuredCoin, apiBase = '' } = Astro.props as {
         </div>
         <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 캐시</div>
       </div>
+    </div>
+    <div class="hero-cta-row">
+      <a class="hero-cta hero-cta-primary" href="#home-premium-board">한국 프리미엄 보기</a>
+      <a class="hero-cta" href="/risk">위험 신호 보기</a>
+      <a class="hero-cta" href="/etf">ETF 괴리율 보기</a>
+      <a class="hero-cta" href="/methodology">데이터 기준 보기</a>
     </div>
     <div class="summary-grid">
       <article class="summary-card summary-card-primary">
