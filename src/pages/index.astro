@@ -5,6 +5,7 @@ import ComparisonTrendChart from '../components/ComparisonTrendChart.astro';
 import Calculator from '../components/Calculator.astro';
 import AdSlot from '../components/AdSlot.astro';
 import TelegramInvite from '../components/TelegramInvite.astro';
+import MacroSummaryCard from '../components/MacroSummaryCard.astro';
 import { coinSnapshots, commoditySnapshots, crossAssetTrendSeries, etfSnapshots, marketMeta } from '../data/market';
 import { sitePages } from '../data/site';
 import { formatKrw, formatPercent, formatUsd } from '../lib/format';
@@ -183,6 +184,7 @@ const structuredData = [
     </article>
 
     <div class="stack-grid">
+      <MacroSummaryCard />
       <article class="copy-panel compact-panel">
         <div class="section-header">
           <div>

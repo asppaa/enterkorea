@@ -69,6 +69,8 @@ type BtcOiSnapshot = {
 
 interface Env {
   CACHE_TTL?: string;
+  MACRO_KV?: KVNamespace;
+  MACRO_API_TOKEN?: string;
 }
 
 type CacheEntry<T> = {
@@ -877,12 +879,64 @@ export default {
       return new Response(null, {
         headers: {
           'access-control-allow-origin': '*',
-          'access-control-allow-methods': 'GET, OPTIONS',
+          'access-control-allow-methods': 'GET, POST, OPTIONS',
+          'access-control-allow-headers': 'Authorization, Content-Type',
         },
       });
     }
 
     try {
+      // 모닝 매크로 요약 (Python에서 POST, 사이트에서 GET)
+      if (url.pathname === '/api/macro-summary') {
+        if (request.method === 'POST') {
+          if (!env.MACRO_API_TOKEN) {
+            return json({ error: 'MACRO_API_TOKEN unset' }, 0);
+          }
+          const auth = request.headers.get('authorization') || '';
+          const expected = `Bearer ${env.MACRO_API_TOKEN}`;
+          if (auth !== expected) {
+            return new Response(JSON.stringify({ error: 'unauthorized' }), {
+              status: 401,
+              headers: {
+                'content-type': 'application/json; charset=utf-8',
+                'access-control-allow-origin': '*',
+              },
+            });
+          }
+          if (!env.MACRO_KV) {
+            return json({ error: 'MACRO_KV unbound' }, 0);
+          }
+          let payload: Record<string, unknown>;
+          try {
+            payload = (await request.json()) as Record<string, unknown>;
+          } catch {
+            return new Response(JSON.stringify({ error: 'invalid json' }), {
+              status: 400,
+              headers: { 'content-type': 'application/json; charset=utf-8' },
+            });
+          }
+          const record = {
+            updatedAt: new Date().toISOString(),
+            ...payload,
+          };
+          await env.MACRO_KV.put('latest', JSON.stringify(record));
+          return json({ ok: true, updatedAt: record.updatedAt }, 0);
+        }
+        // GET — 최신 요약 반환
+        if (!env.MACRO_KV) {
+          return json({ error: 'MACRO_KV unbound', record: null }, 0);
+        }
+        const raw = await env.MACRO_KV.get('latest');
+        if (!raw) {
+          return json({ record: null }, 60);
+        }
+        try {
+          return json(JSON.parse(raw), 60);
+        } catch {
+          return json({ record: null, error: 'parse failed' }, 0);
+        }
+      }
+
       if (url.pathname === '/api/summary') {
         return json(await buildSummary(), ttl);
       }
