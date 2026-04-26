@@ -21,6 +21,20 @@ const structuredData = {
   dateModified: qvgmAsOf,
 };
 
+const moatTypeLabel = (code: string): string => {
+  const m: Record<string, string> = {
+    BRAND: '브랜드',
+    NETWORK: '네트워크 효과',
+    COST: '원가 우위',
+    IP: '지식재산',
+    SWITCHING: '전환비용',
+    REG: '규제/면허',
+    NONE: '없음',
+  };
+  const c = (code || '').toUpperCase().trim();
+  return m[c] || code || '';
+};
+
 const recBadge = (rec: string) => {
   const r = (rec || '').toUpperCase();
   if (r === 'STRONG_BUY') return { emoji: '🔥', label: '강력매수', cls: 'badge-strong' };
@@ -109,7 +123,7 @@ const sections = [
               <th>티커</th>
               <th>종목</th>
               <th>총점</th>
-              <th>Moat</th>
+              <th>경제적 해자</th>
               <th class="hide-sm">병목</th>
               <th class="hide-sm">PER</th>
               <th class="hide-sm">PBR</th>
@@ -127,7 +141,7 @@ const sections = [
                   <td class="mono">{r.ticker}</td>
                   <td class="td-name">{r.name}</td>
                   <td>{fmt.score(r.totalScore)}</td>
-                  <td>{r.moatScore != null ? `${r.moatScore.toFixed(0)}${r.moatType ? ` (${r.moatType})` : ''}` : '-'}</td>
+                  <td>{r.moatScore != null ? `${r.moatScore.toFixed(0)}${r.moatType ? ` (${moatTypeLabel(r.moatType)})` : ''}` : '-'}</td>
                   <td class="hide-sm">{r.bottleneck || '-'}</td>
                   <td class="hide-sm">{fmt.num1(r.metrics.per)}</td>
                   <td class="hide-sm">{fmt.num1(r.metrics.pbr)}</td>
@@ -168,7 +182,7 @@ const sections = [
                 {r.metrics.fcfYield != null && <span>FCFy {fmt.pct(r.metrics.fcfYield)}</span>}
                 {r.metrics.ret6m != null && <span>6m {fmt.signed(r.metrics.ret6m)}</span>}
                 {r.metrics.ret12m != null && <span>12m {fmt.signed(r.metrics.ret12m)}</span>}
-                {r.moatScore != null && <span>Moat {r.moatScore.toFixed(0)} ({r.moatType})</span>}
+                {r.moatScore != null && <span>경제적 해자 {r.moatScore.toFixed(0)} ({moatTypeLabel(r.moatType)})</span>}
               </footer>
             </article>
           );
