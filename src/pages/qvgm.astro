@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { qvgmAsOf, qvgmKrTop, qvgmUsTop, qvgmWeights, type QvgmRecord } from '../data/qvgm';
+import { sitePages } from '../data/site';
+import { DEFAULT_SITE_URL } from '../lib/runtime';
+
+const page = sitePages.find((item) => item.path === '/qvgm') ?? {
+  title: 'QVGM+Moat 스크리너 | 김프보드',
+  description: '저평가·퀄리티·성장·모멘텀·섹터·해자·병목을 결합한 LLM 보강 스크리너 결과',
+  path: '/qvgm',
+  locale: 'ko' as const,
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'QVGM+Moat 종목 스크리너',
+  description: page.description,
+  inLanguage: 'ko',
+  url: `${DEFAULT_SITE_URL}${page.path}`,
+  dateModified: qvgmAsOf,
+};
+
+const recBadge = (rec: string) => {
+  const r = (rec || '').toUpperCase();
+  if (r === 'STRONG_BUY') return { emoji: '🔥', label: '강력매수', cls: 'badge-strong' };
+  if (r === 'BUY') return { emoji: '✅', label: '매수', cls: 'badge-buy' };
+  if (r === 'HOLD') return { emoji: '🟨', label: '관망', cls: 'badge-hold' };
+  if (r === 'AVOID') return { emoji: '⛔', label: '회피', cls: 'badge-avoid' };
+  return { emoji: '•', label: rec || '-', cls: 'badge-default' };
+};
+
+const fmt = {
+  num1: (v: number | null | undefined) => (v == null ? '-' : v.toFixed(1)),
+  pct: (v: number | null | undefined) => (v == null ? '-' : `${(v * 100).toFixed(1)}%`),
+  pct0: (v: number | null | undefined) => (v == null ? '-' : `${(v * 100).toFixed(0)}%`),
+  signed: (v: number | null | undefined) => (v == null ? '-' : `${(v * 100 >= 0 ? '+' : '')}${(v * 100).toFixed(0)}%`),
+  score: (v: number | null | undefined) => (v == null ? '-' : v.toFixed(1)),
+};
+
+const sections = [
+  { id: 'kr', title: '🇰🇷 한국 KOSPI/KOSDAQ TOP 10', records: qvgmKrTop, currency: 'KRW' },
+  { id: 'us', title: '🇺🇸 미국 S&P 500 / MidCap 400 TOP 10', records: qvgmUsTop, currency: 'USD' },
+];
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  locale="ko"
+  pathname={page.path}
+  structuredData={structuredData}
+>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">QVGM+Moat 스크리너</div>
+          <h1>저평가·성장·해자·병목을 결합한 종목 발굴 리포트</h1>
+          <p>
+            한국 KOSPI/KOSDAQ 시총 상위 265종과 미국 S&amp;P 500 + MidCap 400 (903종)을 대상으로
+            가치(Value), 품질(Quality), 성장(Growth), 모멘텀(Momentum), 섹터, 경제적 해자(Moat),
+            공급 병목(Bottleneck) 7대 점수를 합산해 TOP 10을 추렸습니다.
+            해자와 종목별 심층 코멘트는 <strong>Gemini 3.1 Pro</strong>가 생성했습니다.
+          </p>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge">기준 {qvgmAsOf}</div>
+          <div class="lang-badge">7대 점수 합산</div>
+        </div>
+      </div>
+      <div class="metrics-grid">
+        <article class="summary-card summary-card-primary">
+          <strong>대상 시장</strong>
+          <span>한국 + 미국</span>
+          <p>KOSPI/KOSDAQ 265종 + S&amp;P 500/MidCap 400 903종</p>
+        </article>
+        <article class="summary-card summary-card-primary">
+          <strong>해자 평가</strong>
+          <span>Gemini 3.1 Pro</span>
+          <p>BRAND·NETWORK·COST·IP·SWITCHING·REG 분류</p>
+        </article>
+        <article class="summary-card">
+          <strong>가중치</strong>
+          <span>V {Math.round(qvgmWeights.value * 100)}% · Moat {Math.round(qvgmWeights.moat * 100)}%</span>
+          <p>
+            Q {Math.round(qvgmWeights.quality * 100)}% · G {Math.round(qvgmWeights.growth * 100)}% ·
+            M {Math.round(qvgmWeights.momentum * 100)}% · S {Math.round(qvgmWeights.sector * 100)}% ·
+            병목 {Math.round(qvgmWeights.bottleneck * 100)}%
+          </p>
+        </article>
+        <article class="summary-card">
+          <strong>유의사항</strong>
+          <span>참고용 리포트</span>
+          <p>투자 권유가 아니며 매수 전 정성 검토를 병행해 주세요.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {sections.map((sec) => (
+    <section class="qvgm-section">
+      <h2>{sec.title}</h2>
+      <div class="table-wrap">
+        <table class="qvgm-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>티커</th>
+              <th>종목</th>
+              <th>총점</th>
+              <th>Moat</th>
+              <th>병목</th>
+              <th>PER</th>
+              <th>PBR</th>
+              <th>ROE</th>
+              <th>6m</th>
+              <th>추천</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sec.records.map((r: QvgmRecord) => {
+              const b = recBadge(r.recommendation);
+              return (
+                <tr>
+                  <td>{r.rank}</td>
+                  <td class="mono">{r.ticker}</td>
+                  <td>{r.name}</td>
+                  <td>{fmt.score(r.totalScore)}</td>
+                  <td>{r.moatScore != null ? `${r.moatScore.toFixed(0)}${r.moatType ? ` (${r.moatType})` : ''}` : '-'}</td>
+                  <td>{r.bottleneck || '-'}</td>
+                  <td>{fmt.num1(r.metrics.per)}</td>
+                  <td>{fmt.num1(r.metrics.pbr)}</td>
+                  <td>{fmt.pct0(r.metrics.roe)}</td>
+                  <td>{fmt.signed(r.metrics.ret6m)}</td>
+                  <td><span class={`badge ${b.cls}`}>{b.emoji} {b.label}</span></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cards-grid">
+        {sec.records.map((r: QvgmRecord) => {
+          const b = recBadge(r.recommendation);
+          return (
+            <article class="qvgm-card">
+              <header>
+                <span class={`badge ${b.cls}`}>{b.emoji} {b.label}{r.conviction != null ? ` · ${r.conviction.toFixed(0)}` : ''}</span>
+                <strong>{r.name}</strong>
+                <span class="mono">{r.ticker}</span>
+              </header>
+              <p class="one-liner">{r.oneLiner}</p>
+              <dl>
+                <div><dt>섹터</dt><dd>{r.sector || '-'}{r.bottleneck ? ` · 병목: ${r.bottleneck}` : ''}</dd></div>
+                <div><dt>핵심사업</dt><dd>{r.coreBusiness || '-'}</dd></div>
+                <div><dt>경쟁우위</dt><dd>{r.competitiveEdge || '-'}</dd></div>
+                <div><dt>촉매</dt><dd>{r.catalysts.length ? r.catalysts.join(' · ') : '-'}</dd></div>
+                <div><dt>리스크</dt><dd>{r.risks.length ? r.risks.join(' · ') : '-'}</dd></div>
+                <div><dt>밸류에이션</dt><dd>{r.valuationNote || '-'}</dd></div>
+              </dl>
+              <footer>
+                {r.metrics.per != null && <span>PER {fmt.num1(r.metrics.per)}</span>}
+                {r.metrics.pbr != null && <span>PBR {fmt.num1(r.metrics.pbr)}</span>}
+                {r.metrics.psr != null && <span>PSR {fmt.num1(r.metrics.psr)}</span>}
+                {r.metrics.roe != null && <span>ROE {fmt.pct0(r.metrics.roe)}</span>}
+                {r.metrics.fcfYield != null && <span>FCFy {fmt.pct(r.metrics.fcfYield)}</span>}
+                {r.metrics.ret6m != null && <span>6m {fmt.signed(r.metrics.ret6m)}</span>}
+                {r.metrics.ret12m != null && <span>12m {fmt.signed(r.metrics.ret12m)}</span>}
+                {r.moatScore != null && <span>Moat {r.moatScore.toFixed(0)} ({r.moatType})</span>}
+              </footer>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  ))}
+
+  <section class="disclaimer">
+    <h3>방법론 요약</h3>
+    <ul>
+      <li>유니버스: KOSPI/KOSDAQ 시총 상위 265종 (Naver Finance) · S&amp;P 500 + MidCap 400 (Wikipedia)</li>
+      <li>데이터: yahooquery 일괄 + KR 상위 60종 DART 정밀화 (ROIC·매출·영업이익)</li>
+      <li>점수: Value 16% · Quality 12% · Growth 15% · Momentum 18% · Sector 12% · Moat 17% · 병목 10%</li>
+      <li>Moat: Gemini 3.1 Pro로 0~100 점수 + BRAND/NETWORK/COST/IP/SWITCHING/REG 분류</li>
+      <li>병목: 반도체 HBM·전력기기·방산·조선·원전·희토류·광케이블 등 공급제약 테마 매칭</li>
+      <li>심층 카드: Gemini 3.1 Pro로 핵심사업·경쟁우위·촉매·리스크·밸류·추천강도 생성</li>
+    </ul>
+    <p class="warn">
+      ※ 본 페이지는 1차 발굴 + 정성 보강 자동화 결과입니다. 실제 매수·매도 의사결정은 본인의 추가 검토에 따라 주세요.
+    </p>
+  </section>
+
+  <style>
+    .qvgm-section { margin: 2.5rem 0; }
+    .qvgm-section h2 { margin-bottom: 0.75rem; font-size: 1.4rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--color-border, #e5e7eb); border-radius: 8px; margin-bottom: 1.5rem; }
+    .qvgm-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .qvgm-table thead { background: #1F4E78; color: white; }
+    .qvgm-table th, .qvgm-table td { padding: 8px 10px; text-align: center; border-bottom: 1px solid #eef2f7; }
+    .qvgm-table tbody tr:nth-child(even) { background: #f8fafc; }
+    .qvgm-table tbody tr:hover { background: #eef6ff; }
+    .qvgm-table .mono { font-family: ui-monospace, SFMono-Regular, monospace; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .badge-strong { background: #fee2e2; color: #b91c1c; }
+    .badge-buy { background: #dcfce7; color: #166534; }
+    .badge-hold { background: #fef3c7; color: #92400e; }
+    .badge-avoid { background: #e0e7ff; color: #3730a3; }
+    .badge-default { background: #f1f5f9; color: #475569; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .qvgm-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .qvgm-card header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .qvgm-card header strong { font-size: 1.05rem; }
+    .qvgm-card .one-liner { font-style: italic; color: #334155; margin: 0.4rem 0 0.8rem; }
+    .qvgm-card dl { margin: 0; }
+    .qvgm-card dl > div { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.35rem; padding: 0.25rem 0; border-bottom: 1px dashed #f1f5f9; }
+    .qvgm-card dt { color: #64748b; font-size: 0.8rem; font-weight: 600; }
+    .qvgm-card dd { margin: 0; font-size: 0.875rem; color: #1e293b; }
+    .qvgm-card footer { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.75rem; color: #475569; }
+    .qvgm-card footer span { background: #f1f5f9; padding: 2px 8px; border-radius: 6px; }
+
+    .disclaimer { margin-top: 2rem; padding: 1rem 1.25rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; }
+    .disclaimer h3 { margin-top: 0; }
+    .disclaimer ul { padding-left: 1.2rem; }
+    .disclaimer .warn { color: #b91c1c; font-weight: 600; margin-top: 0.5rem; }
+
+    @media (prefers-color-scheme: dark) {
+      .qvgm-table tbody tr:nth-child(even) { background: #0f172a; }
+      .qvgm-table tbody tr:hover { background: #1e293b; }
+      .qvgm-card { background: #0f172a; border-color: #1f2a3a; color: #e2e8f0; }
+      .qvgm-card .one-liner { color: #cbd5e1; }
+      .qvgm-card dt { color: #94a3b8; }
+      .qvgm-card dd { color: #e2e8f0; }
+      .qvgm-card footer span { background: #1e293b; color: #cbd5e1; }
+      .disclaimer { background: #0f172a; border-color: #1f2a3a; color: #cbd5e1; }
+    }
+  </style>
+</BaseLayout>

@@ -24,6 +24,7 @@ export const siteConfig = {
       { href: '/commodities', label: '원자재' },
       { href: '/risk', label: '위험 신호' },
       { href: '/portfolio', label: '포트폴리오' },
+      { href: '/qvgm', label: 'QVGM 스크리너' },
     ],
   },
 };
@@ -104,6 +105,13 @@ export const sitePages: SeoPage[] = [
     description:
       '정적배분의 뜻과 운용 원칙을 설명하고 ISA, 병목 인프라, 올웨더 포트폴리오의 목표 비중을 공개합니다.',
     path: '/portfolio',
+    locale: 'ko',
+  },
+  {
+    title: 'QVGM+Moat 스크리너 | 저평가·성장·해자·병목 종목 발굴',
+    description:
+      'KOSPI/KOSDAQ 시총 상위 265종과 미국 S&P 500/MidCap 400을 대상으로 가치·품질·성장·모멘텀·섹터·경제적 해자·공급 병목 7대 점수를 합산한 LLM 보강 스크리너 결과 TOP 10.',
+    path: '/qvgm',
     locale: 'ko',
   },
   {
