@@ -23,7 +23,7 @@
 
 html {
   font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
-  font-size: 12px;
+  font-size: 13.2px;
   background: radial-gradient(circle at top, rgba(59, 130, 246, 0.16), transparent 32%),
     linear-gradient(180deg, #08111f 0%, #06101e 48%, #091526 100%);
   color: var(--text);
