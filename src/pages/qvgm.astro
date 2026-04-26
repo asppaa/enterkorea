@@ -110,11 +110,11 @@ const sections = [
               <th>종목</th>
               <th>총점</th>
               <th>Moat</th>
-              <th>병목</th>
-              <th>PER</th>
-              <th>PBR</th>
-              <th>ROE</th>
-              <th>6m</th>
+              <th class="hide-sm">병목</th>
+              <th class="hide-sm">PER</th>
+              <th class="hide-sm">PBR</th>
+              <th class="hide-md">ROE</th>
+              <th class="hide-md">6m</th>
               <th>추천</th>
             </tr>
           </thead>
@@ -125,14 +125,14 @@ const sections = [
                 <tr>
                   <td>{r.rank}</td>
                   <td class="mono">{r.ticker}</td>
-                  <td>{r.name}</td>
+                  <td class="td-name">{r.name}</td>
                   <td>{fmt.score(r.totalScore)}</td>
                   <td>{r.moatScore != null ? `${r.moatScore.toFixed(0)}${r.moatType ? ` (${r.moatType})` : ''}` : '-'}</td>
-                  <td>{r.bottleneck || '-'}</td>
-                  <td>{fmt.num1(r.metrics.per)}</td>
-                  <td>{fmt.num1(r.metrics.pbr)}</td>
-                  <td>{fmt.pct0(r.metrics.roe)}</td>
-                  <td>{fmt.signed(r.metrics.ret6m)}</td>
+                  <td class="hide-sm">{r.bottleneck || '-'}</td>
+                  <td class="hide-sm">{fmt.num1(r.metrics.per)}</td>
+                  <td class="hide-sm">{fmt.num1(r.metrics.pbr)}</td>
+                  <td class="hide-md">{fmt.pct0(r.metrics.roe)}</td>
+                  <td class="hide-md">{fmt.signed(r.metrics.ret6m)}</td>
                   <td><span class={`badge ${b.cls}`}>{b.emoji} {b.label}</span></td>
                 </tr>
               );
@@ -193,48 +193,123 @@ const sections = [
   </section>
 
   <style>
-    .qvgm-section { margin: 2.5rem 0; }
-    .qvgm-section h2 { margin-bottom: 0.75rem; font-size: 1.4rem; }
-    .table-wrap { overflow-x: auto; border: 1px solid var(--color-border, #e5e7eb); border-radius: 8px; margin-bottom: 1.5rem; }
+    .qvgm-section { margin: 2rem 0; }
+    .qvgm-section h2 { margin-bottom: 0.75rem; font-size: 1.3rem; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      -webkit-overflow-scrolling: touch;
+    }
     .qvgm-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-    .qvgm-table thead { background: #1F4E78; color: white; }
-    .qvgm-table th, .qvgm-table td { padding: 8px 10px; text-align: center; border-bottom: 1px solid #eef2f7; }
-    .qvgm-table tbody tr:nth-child(even) { background: #f8fafc; }
-    .qvgm-table tbody tr:hover { background: #eef6ff; }
+    .qvgm-table thead { background: #1F4E78; color: white; position: sticky; top: 0; }
+    .qvgm-table th, .qvgm-table td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      vertical-align: middle;
+    }
+    .qvgm-table .td-name { text-align: left; font-weight: 500; }
+    /* 반투명 alt-row → 라이트/다크 모두에서 텍스트 가독성 보장 */
+    .qvgm-table tbody tr:nth-child(even) { background: rgba(148, 163, 184, 0.10); }
+    .qvgm-table tbody tr:hover { background: rgba(59, 130, 246, 0.10); }
     .qvgm-table .mono { font-family: ui-monospace, SFMono-Regular, monospace; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
     .badge-strong { background: #fee2e2; color: #b91c1c; }
     .badge-buy { background: #dcfce7; color: #166534; }
     .badge-hold { background: #fef3c7; color: #92400e; }
     .badge-avoid { background: #e0e7ff; color: #3730a3; }
     .badge-default { background: #f1f5f9; color: #475569; }
 
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .qvgm-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
-    .qvgm-card header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .qvgm-card {
+      background: white;
+      border: 1px solid rgba(148, 163, 184, 0.30);
+      border-radius: 14px;
+      padding: 1.1rem 1rem;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    }
+    .qvgm-card header { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
     .qvgm-card header strong { font-size: 1.05rem; }
-    .qvgm-card .one-liner { font-style: italic; color: #334155; margin: 0.4rem 0 0.8rem; }
+    .qvgm-card .one-liner { font-style: italic; color: #334155; margin: 0.4rem 0 0.8rem; line-height: 1.45; }
     .qvgm-card dl { margin: 0; }
-    .qvgm-card dl > div { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.35rem; padding: 0.25rem 0; border-bottom: 1px dashed #f1f5f9; }
-    .qvgm-card dt { color: #64748b; font-size: 0.8rem; font-weight: 600; }
-    .qvgm-card dd { margin: 0; font-size: 0.875rem; color: #1e293b; }
-    .qvgm-card footer { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.75rem; color: #475569; }
-    .qvgm-card footer span { background: #f1f5f9; padding: 2px 8px; border-radius: 6px; }
+    .qvgm-card dl > div {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.25);
+    }
+    .qvgm-card dt { color: #64748b; font-size: 0.8rem; font-weight: 700; }
+    .qvgm-card dd { margin: 0; font-size: 0.92rem; color: #1e293b; line-height: 1.5; }
+    .qvgm-card footer {
+      margin-top: 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: #475569;
+    }
+    .qvgm-card footer span { background: rgba(148, 163, 184, 0.18); padding: 3px 9px; border-radius: 6px; }
 
-    .disclaimer { margin-top: 2rem; padding: 1rem 1.25rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.9rem; }
+    .disclaimer {
+      margin-top: 2rem;
+      padding: 1.1rem 1.25rem;
+      background: rgba(148, 163, 184, 0.10);
+      border: 1px solid rgba(148, 163, 184, 0.30);
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
     .disclaimer h3 { margin-top: 0; }
     .disclaimer ul { padding-left: 1.2rem; }
-    .disclaimer .warn { color: #b91c1c; font-weight: 600; margin-top: 0.5rem; }
+    .disclaimer .warn { color: #b91c1c; font-weight: 700; margin-top: 0.5rem; }
+
+    /* 모바일: 일부 컬럼 숨김 → 가독성 우선 */
+    @media (max-width: 768px) {
+      .qvgm-table { font-size: 0.82rem; }
+      .qvgm-table th, .qvgm-table td { padding: 8px 6px; }
+      .hide-md { display: none; }
+      .qvgm-card { padding: 0.95rem 0.85rem; }
+      .qvgm-card dl > div { grid-template-columns: 4.5rem 1fr; gap: 0.4rem; }
+      .qvgm-card dt { font-size: 0.75rem; }
+      .qvgm-card dd { font-size: 0.88rem; }
+    }
+    @media (max-width: 540px) {
+      .qvgm-table { font-size: 0.78rem; }
+      .qvgm-table th, .qvgm-table td { padding: 7px 5px; }
+      .hide-sm { display: none; }
+      .qvgm-card .one-liner { font-size: 0.92rem; }
+    }
 
     @media (prefers-color-scheme: dark) {
-      .qvgm-table tbody tr:nth-child(even) { background: #0f172a; }
-      .qvgm-table tbody tr:hover { background: #1e293b; }
-      .qvgm-card { background: #0f172a; border-color: #1f2a3a; color: #e2e8f0; }
+      .qvgm-table tbody tr:nth-child(even) { background: rgba(148, 163, 184, 0.08); }
+      .qvgm-table tbody tr:hover { background: rgba(59, 130, 246, 0.18); }
+      .qvgm-card { background: #0f172a; border-color: rgba(148, 163, 184, 0.18); color: #e2e8f0; }
       .qvgm-card .one-liner { color: #cbd5e1; }
       .qvgm-card dt { color: #94a3b8; }
       .qvgm-card dd { color: #e2e8f0; }
-      .qvgm-card footer span { background: #1e293b; color: #cbd5e1; }
-      .disclaimer { background: #0f172a; border-color: #1f2a3a; color: #cbd5e1; }
+      .qvgm-card footer span { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+      .disclaimer { background: rgba(148, 163, 184, 0.06); border-color: rgba(148, 163, 184, 0.20); color: #cbd5e1; }
+      .badge-strong { background: rgba(239, 68, 68, 0.20); color: #fca5a5; }
+      .badge-buy { background: rgba(34, 197, 94, 0.18); color: #86efac; }
+      .badge-hold { background: rgba(234, 179, 8, 0.18); color: #fde68a; }
+      .badge-avoid { background: rgba(99, 102, 241, 0.20); color: #a5b4fc; }
+      .badge-default { background: rgba(148, 163, 184, 0.18); color: #cbd5e1; }
     }
   </style>
 </BaseLayout>
