@@ -20,54 +20,156 @@ export type QvgmPortfolioCategory = {
   alternativesCount: number;
 };
 
-export const qvgmPortfolioGeneratedAt = "2026-04-27T23:40:08.093311";
+export const qvgmPortfolioGeneratedAt = "2026-04-28T00:05:03.300929";
 
-export const qvgmPortfolio_kr: QvgmPortfolioCategory | null = null;
+export const qvgmPortfolio_kr: QvgmPortfolioCategory = {
+  "label": "국장 ETF (KR-only)",
+  "best": {
+    "name": "균형형 포트폴리오",
+    "style": "시장 지수, 가치주, 성장 테마, 안전 자산을 고르게 배분하여 위험과 수익의 균형을 맞춥니다.",
+    "holdings": [
+      {
+        "ticker": "278540",
+        "weight_pct": 30.0,
+        "reason": "외국인 투자자들의 벤치마크인 MSCI Korea 지수를 추종하여 안정적인 코어 역할",
+        "name": "KODEX MSCI Korea TR"
+      },
+      {
+        "ticker": "496080",
+        "weight_pct": 20.0,
+        "reason": "코리아 밸류업 지수 편입으로 국내 증시 디스카운트 해소 수혜 기대",
+        "name": "TIGER 코리아밸류업"
+      },
+      {
+        "ticker": "395270",
+        "weight_pct": 15.0,
+        "reason": "국내 반도체 밸류체인 전반에 투자하여 성장성 보완",
+        "name": "HANARO Fn K-반도체"
+      },
+      {
+        "ticker": "475630",
+        "weight_pct": 15.0,
+        "reason": "CD 1년물 금리를 추종하여 안정적인 이자 수익 및 유동성 확보",
+        "name": "TIGER CD1년금리액티브(합성)"
+      },
+      {
+        "ticker": "487240",
+        "weight_pct": 10.0,
+        "reason": "AI 시대 핵심 인프라인 전력 설비 기업에 투자하여 테마 분산",
+        "name": "KODEX AI전력핵심설비"
+      },
+      {
+        "ticker": "315960",
+        "weight_pct": 10.0,
+        "reason": "대형 고배당주를 통한 인컴 수익으로 하방 경직성 제공",
+        "name": "RISE 대형고배당10TR"
+      }
+    ],
+    "metrics": {
+      "cagr": 256.77,
+      "sharpe": 2.22,
+      "max_dd": -51.89,
+      "composite": 1.5678
+    }
+  },
+  "alternativesCount": 4
+};
 
-export const qvgmPortfolio_krUs: QvgmPortfolioCategory | null = null;
+export const qvgmPortfolio_krUs: QvgmPortfolioCategory = {
+  "label": "국장 상장 미국추종 ETF",
+  "best": {
+    "name": "인컴 중심 포트폴리오",
+    "style": "배당주와 커버드콜, 채권 혼합을 통한 지속적인 현금흐름 극대화",
+    "holdings": [
+      {
+        "ticker": "0153X0",
+        "weight_pct": 35.0,
+        "reason": "미국 우량 고배당주에 투자하여 안정적인 기본 배당 수익 확보",
+        "name": "PLUS 미국고배당주액티브"
+      },
+      {
+        "ticker": "480040",
+        "weight_pct": 20.0,
+        "reason": "반도체 테마의 커버드콜 전략으로 높은 분배금 수취",
+        "name": "ACE 미국반도체데일리타겟커버드콜(합성)"
+      },
+      {
+        "ticker": "0057H0",
+        "weight_pct": 20.0,
+        "reason": "S&P500과 미국채 혼합으로 자산 변동성을 낮추고 이자 수익 추가",
+        "name": "PLUS 미국S&P500미국채혼합50액티브"
+      },
+      {
+        "ticker": "490590",
+        "weight_pct": 15.0,
+        "reason": "AI 밸류체인 커버드콜을 통해 성장 테마에서도 인컴 창출",
+        "name": "RISE 미국AI밸류체인데일리고정커버드콜"
+      },
+      {
+        "ticker": "0127M0",
+        "weight_pct": 10.0,
+        "reason": "대형 가치주 투자를 통해 안정적인 주가 방어와 배당 기대",
+        "name": "ACE 미국대형가치주액티브"
+      }
+    ],
+    "metrics": {
+      "cagr": 68.34,
+      "sharpe": 4.61,
+      "max_dd": -2.03,
+      "composite": 1.391
+    }
+  },
+  "alternativesCount": 4
+};
 
 export const qvgmPortfolio_us: QvgmPortfolioCategory = {
   "label": "미국 ETF (US-listed)",
   "best": {
-    "name": "성장 편향형 포트폴리오",
-    "style": "기술주 및 모멘텀 중심의 공격적 자본 차익 추구",
+    "name": "메가트렌드 테마형 포트폴리오",
+    "style": "반도체, 친환경 에너지, 배터리 등 미래 산업의 구조적 성장에 공격적으로 투자합니다.",
     "holdings": [
       {
-        "ticker": "QQQM",
-        "weight_pct": 30.0,
-        "reason": "나스닥 100 지수를 추종하며 미국 핵심 기술주 전반에 투자 (QQQ 대비 저렴한 보수)",
-        "name": "Nasdaq-100 (Mini)"
-      },
-      {
         "ticker": "SMH",
-        "weight_pct": 20.0,
-        "reason": "높은 수익률과 훌륭한 샤프 지수를 기록 중인 글로벌 반도체 산업에 집중 투자",
+        "weight_pct": 25.0,
+        "reason": "AI 혁신의 핵심 인프라인 글로벌 반도체 밸류체인 주도",
         "name": "Semiconductor (VanEck)"
       },
       {
-        "ticker": "VUG",
+        "ticker": "LIT",
         "weight_pct": 20.0,
-        "reason": "미국 대형 성장주 전반에 투자하여 기술주 외의 성장 동력 확보",
-        "name": "Vanguard Growth"
+        "reason": "전기차 및 에너지 저장 장치의 핵심인 리튬 및 배터리 생태계 투자",
+        "name": "Lithium & Battery Tech"
       },
       {
-        "ticker": "XLK",
+        "ticker": "ICLN",
         "weight_pct": 15.0,
-        "reason": "S&P 500 내 핵심 IT 섹터 비중을 확대하여 기술주 주도 장세 극대화",
-        "name": "Tech Select Sector"
+        "reason": "글로벌 친환경 에너지 전환 트렌드에 발맞춘 장기 투자",
+        "name": "Clean Energy"
       },
       {
-        "ticker": "MTUM",
+        "ticker": "URA",
         "weight_pct": 15.0,
-        "reason": "최근 주가 상승 추세가 강한 모멘텀 주식들을 편입하여 초과 수익 추구",
-        "name": "MSCI USA Momentum"
+        "reason": "원자력 에너지 수요 증가에 따른 우라늄 관련 기업 투자",
+        "name": "Uranium"
+      },
+      {
+        "ticker": "XME",
+        "weight_pct": 15.0,
+        "reason": "인프라 및 친환경 전환에 필수적인 금속 및 광산 기업 투자",
+        "name": "Metals & Mining"
+      },
+      {
+        "ticker": "FAN",
+        "weight_pct": 10.0,
+        "reason": "풍력 에너지 산업에 집중하여 신재생 에너지 테마 다각화",
+        "name": "Wind Energy"
       }
     ],
     "metrics": {
-      "cagr": 55.2,
-      "sharpe": 1.36,
-      "max_dd": -38.04,
-      "composite": 0.6158
+      "cagr": 47.76,
+      "sharpe": 1.24,
+      "max_dd": -35.95,
+      "composite": 0.5665
     }
   },
   "alternativesCount": 4
