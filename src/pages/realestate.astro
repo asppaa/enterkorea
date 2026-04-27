@@ -182,6 +182,14 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       width: 1180px;
     }
 
+    /* [hidden] 속성이 .re-skeleton·.re-host 의 display 규칙에 묻히지 않도록 명시. */
+    .re-skeleton[hidden],
+    .re-host[hidden],
+    .re-empty[hidden],
+    .re-error[hidden] {
+      display: none;
+    }
+
     /* 모바일 hero 압축 */
     @media (max-width: 768px) {
       .re-hero h1 { font-size: 1.35rem; }
