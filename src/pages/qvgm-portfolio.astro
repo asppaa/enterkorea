@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import { sitePages } from '../data/site';
+import { DEFAULT_SITE_URL } from '../lib/runtime';
+import {
+  qvgmPortfolio_kr,
+  qvgmPortfolio_krUs,
+  qvgmPortfolio_us,
+  qvgmPortfolioGeneratedAt,
+  type QvgmPortfolioCategory,
+} from '../data/qvgm-portfolio';
+
+const page = sitePages.find((item) => item.path === '/qvgm-portfolio') ?? {
+  title: 'QVGM 포트폴리오 | 김프보드',
+  description: 'LLM + 백테스트로 매월 갱신되는 ETF 포트폴리오',
+  path: '/qvgm-portfolio',
+  locale: 'ko' as const,
+};
+
+const sections: Array<{ slug: string; flag: string; cat: QvgmPortfolioCategory | null }> = [
+  { slug: 'kr', flag: '🇰🇷', cat: qvgmPortfolio_kr },
+  { slug: 'krUs', flag: '🇰🇷→🇺🇸', cat: qvgmPortfolio_krUs },
+  { slug: 'us', flag: '🇺🇸', cat: qvgmPortfolio_us },
+];
+
+const fmtPct = (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+const updatedLabel = qvgmPortfolioGeneratedAt
+  ? new Date(qvgmPortfolioGeneratedAt).toLocaleString('ko-KR', { dateStyle: 'medium', timeStyle: 'short' })
+  : '아직 갱신 전';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'QVGM 포트폴리오',
+  description: page.description,
+  inLanguage: 'ko',
+  url: `${DEFAULT_SITE_URL}${page.path}`,
+  dateModified: qvgmPortfolioGeneratedAt || new Date().toISOString(),
+};
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  locale="ko"
+  pathname={page.path}
+  structuredData={structuredData}
+>
+  <section class="hero">
+    <div class="hero-compact">
+      <div class="hero-topline">
+        <div>
+          <div class="eyebrow">QVGM 파생 · 월간 자동</div>
+          <h1>LLM + 백테스트로 매월 갱신되는 ETF 포트폴리오</h1>
+          <p>
+            국장 ETF · 국장 상장 미국추종 ETF · 미국 상장 ETF 세 카테고리에서
+            Gemini 가 후보 5개를 제안하고, 3년 일별 가격으로 월말 리밸런싱
+            백테스트(CAGR · Sharpe · MaxDD)를 돌려 가장 안정적인 1개를 채택합니다.
+            매수·매도 신호가 아니라 정성 보강용 참고 자료입니다.
+          </p>
+        </div>
+        <div class="hero-badges">
+          <div class="lang-badge">갱신 {updatedLabel}</div>
+          <div class="lang-badge">매월 1일 03:00 KST 자동</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {sections.map((sec) => (
+    <section class="qvgm-port-section">
+      <h2>{sec.flag} {sec.cat?.label || (sec.slug === 'kr' ? '국장 ETF' : sec.slug === 'krUs' ? '국장 상장 미국추종 ETF' : '미국 ETF')}</h2>
+      {sec.cat && sec.cat.best ? (
+        <article class="qvgm-port-card">
+          <header>
+            <strong>{sec.cat.best.name}</strong>
+            <span class="style-badge">{sec.cat.best.style}</span>
+          </header>
+          <div class="metric-row">
+            <div><dt>CAGR</dt><dd class={sec.cat.best.metrics.cagr >= 0 ? 'positive' : 'negative'}>{fmtPct(sec.cat.best.metrics.cagr)}</dd></div>
+            <div><dt>Sharpe</dt><dd>{sec.cat.best.metrics.sharpe.toFixed(2)}</dd></div>
+            <div><dt>MaxDD</dt><dd class="negative">{fmtPct(sec.cat.best.metrics.max_dd)}</dd></div>
+            <div><dt>합성점수</dt><dd>{sec.cat.best.metrics.composite.toFixed(3)}</dd></div>
+          </div>
+          <table class="port-table">
+            <thead>
+              <tr>
+                <th>티커</th>
+                <th>종목명</th>
+                <th>비중</th>
+                <th>선정 이유</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sec.cat.best.holdings.map((h) => (
+                <tr>
+                  <td class="mono">{h.ticker}</td>
+                  <td>{h.name}</td>
+                  <td><strong>{h.weight_pct.toFixed(1)}%</strong></td>
+                  <td class="reason">{h.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="alt-note">
+            동일 풀에서 생성된 대안 후보 {sec.cat.alternativesCount}개 중 백테스트 합성점수 1위를 채택했습니다.
+          </p>
+        </article>
+      ) : (
+        <p class="empty">아직 갱신된 포트폴리오가 없습니다. 매월 1일 03:00 KST 이후 표시됩니다.</p>
+      )}
+    </section>
+  ))}
+
+  <section class="disclaimer">
+    <h3>방법론</h3>
+    <ul>
+      <li>유니버스: 국장 ETF (pykrx, 거래대금 5억원/일 이상) · 미국 ETF (자체 화이트리스트 ~120개)</li>
+      <li>분류: 이름 매칭으로 KR-only / KR-listed-US 분리. 인버스·레버리지·선물·곱버스 제외</li>
+      <li>후보 생성: Gemini 3.1 Pro 가 카테고리당 5개 (5~7 ETF, 비중 5~35%, 합 100%)</li>
+      <li>백테스트: 최근 3년 일별, 월말 리밸런싱. CAGR · Sharpe(연환산) · MaxDD 산출</li>
+      <li>합성점수: CAGR 0.4 + Sharpe/2 0.4 + (1+MaxDD) 0.2 — 최고점 1개 채택</li>
+    </ul>
+    <p class="warn">
+      ※ 백테스트 결과는 과거 자료 기반이며 미래 성과를 보장하지 않습니다. 매수·매도 의사결정은 본인 판단으로 진행해 주세요.
+    </p>
+  </section>
+
+  <style>
+    .qvgm-port-section { margin: 2rem 0; }
+    .qvgm-port-section h2 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+
+    .qvgm-port-card {
+      background: rgba(10, 18, 33, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 14px;
+      padding: 1.2rem 1.3rem;
+    }
+
+    .qvgm-port-card header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+    .qvgm-port-card header strong { font-size: 1.1rem; }
+    .style-badge {
+      font-size: 0.78rem;
+      color: #f5deb3;
+      background: rgba(245, 222, 179, 0.1);
+      border: 1px solid rgba(245, 222, 179, 0.3);
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .metric-row > div {
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 10px;
+      padding: 0.6rem 0.7rem;
+    }
+    .metric-row dt { font-size: 0.75rem; color: var(--muted, #94a3b8); margin: 0; }
+    .metric-row dd {
+      margin: 0.2rem 0 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .port-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .port-table thead { background: rgba(31, 78, 120, 0.6); }
+    .port-table th, .port-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      text-align: left;
+      vertical-align: top;
+    }
+    .port-table .mono { font-family: ui-monospace, monospace; }
+    .port-table td.reason { color: var(--muted, #94a3b8); font-size: 0.85rem; }
+
+    .alt-note { margin: 0.75rem 0 0; font-size: 0.78rem; color: var(--muted, #94a3b8); }
+
+    .empty {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--muted, #94a3b8);
+      background: rgba(148, 163, 184, 0.05);
+      border-radius: 10px;
+    }
+
+    .disclaimer {
+      margin-top: 2rem;
+      padding: 1.1rem 1.25rem;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
+    .disclaimer h3 { margin-top: 0; }
+    .disclaimer ul { padding-left: 1.2rem; }
+    .disclaimer .warn { color: #fca5a5; font-weight: 700; margin-top: 0.5rem; }
+
+    @media (max-width: 640px) {
+      .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .port-table { font-size: 0.82rem; }
+      .port-table th, .port-table td { padding: 7px 6px; }
+    }
+  </style>
+</BaseLayout>

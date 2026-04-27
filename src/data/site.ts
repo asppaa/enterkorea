@@ -26,6 +26,7 @@ export const siteConfig = {
       { href: '/realestate', label: '부동산' },
       { href: '/portfolio', label: '포트폴리오' },
       { href: '/qvgm', label: 'QVGM 스크리너' },
+      { href: '/qvgm-portfolio', label: 'QVGM 포트폴리오' },
     ],
   },
 };
@@ -120,6 +121,13 @@ export const sitePages: SeoPage[] = [
     description:
       'KOSPI/KOSDAQ 시총 상위 265종과 미국 S&P 500/MidCap 400을 대상으로 가치·품질·성장·모멘텀·섹터·경제적 해자·공급 병목 7대 점수를 합산한 LLM 보강 스크리너 결과 TOP 10.',
     path: '/qvgm',
+    locale: 'ko',
+  },
+  {
+    title: 'QVGM 포트폴리오 | LLM 추천 ETF 비중 (국장·국장상장미국·미국)',
+    description:
+      '국장 ETF, 국장 상장 미국추종 ETF, 미국 상장 ETF 세 개 카테고리에 대해 Gemini 가 후보 5개를 제안하고 3년 백테스트(CAGR·Sharpe·MaxDD)로 최적 1개를 채택한 월간 자동 포트폴리오.',
+    path: '/qvgm-portfolio',
     locale: 'ko',
   },
   {
