@@ -33,7 +33,7 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       <div class="re-skeleton" id="re-skeleton">
         <div></div><div></div><div></div><div></div><div></div><div></div>
       </div>
-      <iframe id="re-iframe" title="대장 아파트 주간 스냅샷" loading="lazy" hidden></iframe>
+      <div class="re-host" id="re-host" hidden></div>
       <p class="re-empty" id="re-empty" hidden>
         아직 갱신된 스냅샷이 없습니다. 매주 금요일 오전에 갱신됩니다.
       </p>
@@ -47,21 +47,6 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
   </section>
 
   <script define:vars={{ apiBase }}>
-    const HEIGHT_INJECT = `
-<script>
-(function(){
-  function postHeight(){
-    var h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-    parent.postMessage({ type: 're-height', height: h }, '*');
-  }
-  window.addEventListener('load', function(){
-    postHeight();
-    setTimeout(postHeight, 200);
-  });
-  window.addEventListener('resize', postHeight);
-})();
-<\/script>`;
-
     function formatUpdated(iso) {
       if (!iso) return '';
       try {
@@ -77,9 +62,20 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       }
     }
 
+    function extractInner(fullHtml) {
+      // Source HTML is a self-contained doc with <style> and <body><div class="wrap">…</div></body>.
+      // Pull out the style block(s) and body content, then drop the body { … } / * { … } global rules
+      // so they don't leak into the page when re-injected.
+      const styleMatches = [...fullHtml.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)];
+      const styles = styleMatches.map((m) => m[1]).join('\n');
+      const bodyMatch = fullHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      const body = bodyMatch ? bodyMatch[1] : fullHtml;
+      return { styles, body };
+    }
+
     async function loadRealestate() {
       const skeleton = document.getElementById('re-skeleton');
-      const iframe = document.getElementById('re-iframe');
+      const host = document.getElementById('re-host');
       const empty = document.getElementById('re-empty');
       const error = document.getElementById('re-error');
       const updated = document.getElementById('re-updated');
@@ -99,11 +95,15 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
           if (hint) hint.style.display = 'none';
           return;
         }
-        const withHeight = html.includes('</body>')
-          ? html.replace('</body>', HEIGHT_INJECT + '</body>')
-          : html + HEIGHT_INJECT;
-        iframe.srcdoc = withHeight;
-        iframe.hidden = false;
+        const { styles, body } = extractInner(html);
+        // Shadow DOM 으로 사이트 본문 스타일과 완전 격리.
+        const shadow = host.shadowRoot || host.attachShadow({ mode: 'open' });
+        shadow.innerHTML =
+          '<style>:host{display:block;background:#eef3f8;padding:18px;font-family:Malgun,"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;}' +
+          styles +
+          '</style>' +
+          body;
+        host.hidden = false;
         skeleton.hidden = true;
         updated.textContent = formatUpdated(updatedAt);
       } catch (err) {
@@ -113,14 +113,6 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
         if (hint) hint.style.display = 'none';
       }
     }
-
-    window.addEventListener('message', (event) => {
-      const data = event.data;
-      if (!data || data.type !== 're-height' || typeof data.height !== 'number') return;
-      const iframe = document.getElementById('re-iframe');
-      if (!iframe) return;
-      iframe.style.height = Math.max(400, Math.ceil(data.height) + 8) + 'px';
-    });
 
     loadRealestate();
   </script>
@@ -166,18 +158,14 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       overflow-x: auto;
       overflow-y: hidden;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-      min-height: 400px;
       -webkit-overflow-scrolling: touch;
     }
 
-    .re-frame iframe {
-      /* 콘텐츠 자체가 1138px 너비라 iframe도 동일 폭 고정.
-         부모 .re-frame이 모바일에서 가로 스크롤을 담당. */
-      width: 1180px;
-      max-width: none;
-      border: 0;
+    .re-host {
+      /* Shadow DOM 호스트. 자연 높이로 늘어나며 빈 여백 없음. */
       display: block;
-      background: #eef3f8;
+      width: max-content;
+      min-width: 100%;
     }
 
     .re-skeleton {
