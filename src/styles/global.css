@@ -203,6 +203,11 @@ img {
   gap: 14px;
 }
 
+/* DashboardHero 메인 카드(6장)를 2행 3열로 — 카드 한 장당 폭이 더 넓어져 가독성 ↑ */
+.summary-grid-3col {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .summary-card {
   padding: 18px 20px;
   border-radius: 20px;
