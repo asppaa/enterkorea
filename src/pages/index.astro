@@ -307,63 +307,6 @@ const structuredData = [
   </section>
 
   <section class="section">
-    <article class="panel">
-      <div class="section-header">
-        <div>
-          <h2>지금의 위험 신호</h2>
-          <p>
-            코인 시장·환율·심리(F&amp;G)·BTC 수급까지 8개 지표 한눈에.
-            자세한 해설은 <a class="text-link" href="/risk">위험 신호</a> 페이지에.
-          </p>
-        </div>
-        <div class="lang-badge" id="home-risk-status">실시간 연결 대기 중</div>
-      </div>
-      <div class="summary-grid">
-        <article class="summary-card summary-card-primary">
-          <strong>KIMP Index</strong>
-          <span id="home-risk-kimp">+0.06%</span>
-          <p id="home-risk-kimp-label">정상</p>
-        </article>
-        <article class="summary-card summary-card-primary">
-          <strong>코인 F&G (Crypto)</strong>
-          <span id="home-risk-fg-coin">26</span>
-          <p id="home-risk-fg-coin-label">Fear</p>
-        </article>
-        <article class="summary-card summary-card-primary">
-          <strong>미국증시 F&G (CNN)</strong>
-          <span id="home-risk-fg-cnn">47</span>
-          <p id="home-risk-fg-cnn-label">Neutral</p>
-        </article>
-        <article class="summary-card">
-          <strong>USD/KRW</strong>
-          <span id="home-risk-usdkrw">1478.99</span>
-          <p>환율 스트레스</p>
-        </article>
-        <article class="summary-card">
-          <strong>BTC 한국/해외</strong>
-          <span id="home-risk-btc-global">+0.05%</span>
-          <p>대표 코인 프리미엄</p>
-        </article>
-        <article class="summary-card">
-          <strong>BTC 국내 거래소</strong>
-          <span id="home-risk-btc-domestic">+0.01%</span>
-          <p>한국 내부 수급</p>
-        </article>
-        <article class="summary-card">
-          <strong>BTC 펀딩비</strong>
-          <span id="home-risk-btc-funding">+0.0100%</span>
-          <p>선물 포지션 쏠림</p>
-        </article>
-        <article class="summary-card">
-          <strong>BTC OI 24h</strong>
-          <span id="home-risk-btc-oi">+1.20%</span>
-          <p>청산 대리지표</p>
-        </article>
-      </div>
-    </article>
-  </section>
-
-  <section class="section">
     <Calculator heading="실행 가격 기준 프리미엄 계산기" />
   </section>
 </BaseLayout>
@@ -458,40 +401,12 @@ const structuredData = [
     `).join('');
   };
 
-  const formatFunding = (value) =>
-    value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${(Number(value) * 100).toFixed(4)}%`;
-
-  const setText = (id, text) => {
-    const node = document.getElementById(id);
-    if (node) node.textContent = text;
-  };
-
-  const updateRiskCards = (risk) => {
-    if (!risk) return;
-    setText('home-risk-kimp', formatPercent(risk.kimpIndex?.value));
-    setText('home-risk-kimp-label', risk.kimpIndex?.label ?? '-');
-    setText('home-risk-fg-coin', String(risk.fearGreed?.value ?? '-'));
-    setText('home-risk-fg-coin-label', risk.fearGreed?.label ?? '-');
-    setText('home-risk-fg-cnn', risk.fearGreedCnn?.value != null ? String(risk.fearGreedCnn.value) : '-');
-    setText('home-risk-fg-cnn-label', risk.fearGreedCnn?.label ?? '-');
-    setText('home-risk-usdkrw', Number(risk.usdKrw ?? 0).toFixed(2));
-    setText('home-risk-btc-global', formatPercent(risk.btcGlobalPremium));
-    setText('home-risk-btc-domestic', formatPercent(risk.btcDomesticPremium));
-    setText('home-risk-btc-funding', formatFunding(risk.btcFunding?.rate));
-    setText('home-risk-btc-oi', formatPercent(risk.btcOpenInterest?.change24hPercent));
-    const status = document.getElementById('home-risk-status');
-    if (status) status.textContent = risk.fallback ? '폴백 표시' : '실시간 연결 정상';
-  };
-
   const load = async () => {
     if (!apiBase) return;
 
     try {
-      const [summaryRes, riskRes] = await Promise.all([
-        fetch(`${apiBase}/api/summary`),
-        fetch(`${apiBase}/api/risk`).catch(() => null),
-      ]);
-      const payload = await summaryRes.json();
+      const response = await fetch(`${apiBase}/api/summary`);
+      const payload = await response.json();
 
       updateSummary(payload);
       renderCoins(payload.rows);
@@ -505,16 +420,9 @@ const structuredData = [
         setStatus(heroStatus, 'live', '실시간 연결 정상');
         setStatus(updated, 'live', `실시간 · ${payload.updatedAt}`);
       }
-
-      if (riskRes && riskRes.ok) {
-        const risk = await riskRes.json();
-        updateRiskCards(risk);
-      }
     } catch {
       setStatus(heroStatus, 'offline', '연결 지연');
       setStatus(updated, 'offline', '실시간 연결 실패');
-      const status = document.getElementById('home-risk-status');
-      if (status) status.textContent = '연결 지연';
     }
   };
 
