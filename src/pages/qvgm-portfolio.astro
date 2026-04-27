@@ -5,6 +5,7 @@ import { DEFAULT_SITE_URL } from '../lib/runtime';
 import {
   qvgmPortfolio_kr,
   qvgmPortfolio_krUs,
+  qvgmPortfolio_krMixed,
   qvgmPortfolio_us,
   qvgmPortfolioGeneratedAt,
   type QvgmPortfolioCategory,
@@ -20,6 +21,7 @@ const page = sitePages.find((item) => item.path === '/qvgm-portfolio') ?? {
 const sections: Array<{ slug: string; flag: string; cat: QvgmPortfolioCategory | null }> = [
   { slug: 'kr', flag: '🇰🇷', cat: qvgmPortfolio_kr },
   { slug: 'krUs', flag: '🇰🇷→🇺🇸', cat: qvgmPortfolio_krUs },
+  { slug: 'krMixed', flag: '🇰🇷+🇺🇸', cat: qvgmPortfolio_krMixed },
   { slug: 'us', flag: '🇺🇸', cat: qvgmPortfolio_us },
 ];
 
@@ -69,7 +71,7 @@ const structuredData = {
 
   {sections.map((sec) => (
     <section class="qvgm-port-section">
-      <h2>{sec.flag} {sec.cat?.label || (sec.slug === 'kr' ? '국장 ETF' : sec.slug === 'krUs' ? '국장 상장 미국추종 ETF' : '미국 ETF')}</h2>
+      <h2>{sec.flag} {sec.cat?.label || (sec.slug === 'kr' ? '국장 ETF' : sec.slug === 'krUs' ? '국장 상장 미국추종 ETF' : sec.slug === 'krMixed' ? '국장 종합 ETF (KR + 미국추종 혼합)' : '미국 ETF')}</h2>
       {sec.cat && sec.cat.best ? (
         <article class="qvgm-port-card">
           <header>

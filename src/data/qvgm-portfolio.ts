@@ -174,3 +174,5 @@ export const qvgmPortfolio_us: QvgmPortfolioCategory = {
   },
   "alternativesCount": 4
 };
+
+export const qvgmPortfolio_krMixed: QvgmPortfolioCategory | null = null;
