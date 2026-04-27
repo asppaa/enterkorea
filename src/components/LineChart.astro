@@ -1,13 +1,26 @@
 ---
-const { title, value, caption, values } = Astro.props as {
+const {
+  title,
+  value,
+  caption,
+  values,
+  valuesSecondary,
+  primaryLabel,
+  secondaryLabel,
+} = Astro.props as {
   title: string;
   value: string;
   caption: string;
   values: number[];
+  valuesSecondary?: number[];
+  primaryLabel?: string;
+  secondaryLabel?: string;
 };
 
-const rawMin = Math.min(...values);
-const rawMax = Math.max(...values);
+const series: number[][] = [values, ...(valuesSecondary && valuesSecondary.length ? [valuesSecondary] : [])];
+const allPoints = series.flat().filter((v) => Number.isFinite(v));
+const rawMin = Math.min(...allPoints);
+const rawMax = Math.max(...allPoints);
 const pad = (rawMax - rawMin) * 0.12 || 2;
 const yMin = Math.max(0, rawMin - pad);
 const yMax = rawMax + pad;
@@ -32,13 +45,17 @@ const yTicks = [yMax, (yMax + yMin) / 2, yMin].map((tick) => ({
   y: PLOT_TOP + (1 - (tick - yMin) / yRange) * PLOT_H,
 }));
 
-const points = values
-  .map((point, index) => {
-    const x = PLOT_LEFT + (index / (values.length - 1 || 1)) * PLOT_W;
-    const y = PLOT_TOP + (1 - (point - yMin) / yRange) * PLOT_H;
-    return `${x.toFixed(2)},${y.toFixed(2)}`;
-  })
-  .join(' ');
+const buildPoints = (data: number[]) =>
+  data
+    .map((point, index) => {
+      const x = PLOT_LEFT + (index / (data.length - 1 || 1)) * PLOT_W;
+      const y = PLOT_TOP + (1 - (point - yMin) / yRange) * PLOT_H;
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    })
+    .join(' ');
+
+const points = buildPoints(values);
+const pointsSecondary = valuesSecondary && valuesSecondary.length ? buildPoints(valuesSecondary) : null;
 ---
 
 <article class="panel chart-card">
@@ -49,6 +66,18 @@ const points = values
     </div>
     <div class="lang-badge">{value}</div>
   </div>
+  {
+    pointsSecondary && (
+      <div class="chart-legend">
+        <span class="legend-item legend-primary">
+          <span class="legend-dot legend-dot-primary" /> {primaryLabel || '시리즈 1'}
+        </span>
+        <span class="legend-item legend-secondary">
+          <span class="legend-dot legend-dot-secondary" /> {secondaryLabel || '시리즈 2'}
+        </span>
+      </div>
+    )
+  }
   <svg class="sparkline" viewBox="0 0 320 104" aria-hidden="true" preserveAspectRatio="none">
     <defs>
       <linearGradient id="sparkGradient" x1="0%" x2="100%" y1="0%" y2="0%">
@@ -86,5 +115,37 @@ const points = values
       }
     </g>
     <polyline points={points}></polyline>
+    {pointsSecondary && <polyline class="series-secondary" points={pointsSecondary}></polyline>}
   </svg>
 </article>
+
+<style>
+  .chart-legend {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin: 0.25rem 0 0.6rem;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .legend-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .legend-dot-primary { background: #8fdcff; }
+  .legend-dot-secondary { background: #f2bf63; }
+  .sparkline polyline.series-secondary {
+    fill: none;
+    stroke: #f2bf63;
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+</style>

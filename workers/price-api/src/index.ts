@@ -458,6 +458,39 @@ async function getFearGreed() {
   });
 }
 
+async function getCnnFearGreed() {
+  return memoize('cnn-fear-greed', 5 * 60 * 1000, async () => {
+    const headers = {
+      'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
+      Accept: '*/*',
+      'Accept-Language': 'en-US,en;q=0.9',
+      Referer: 'https://edition.cnn.com/markets/fear-and-greed',
+      Origin: 'https://edition.cnn.com',
+    };
+    const r = await fetch('https://production.dataviz.cnn.io/index/fearandgreed/graphdata', { headers });
+    if (!r.ok) {
+      throw new Error(`CNN F&G HTTP ${r.status}`);
+    }
+    const j = (await r.json()) as {
+      fear_and_greed?: { score?: number; rating?: string; timestamp?: string };
+      fear_and_greed_historical?: { data?: Array<{ x?: number; y?: number; rating?: string }> };
+    };
+    const cur = j.fear_and_greed || {};
+    const hist = j.fear_and_greed_historical?.data || [];
+    const last7 = hist.slice(-7).map((d) => Math.round(Number(d.y ?? 0)));
+    const score = cur.score != null ? Math.round(Number(cur.score)) : null;
+    const ratingRaw = (cur.rating || '').toString();
+    const label = ratingRaw
+      ? ratingRaw
+          .split(/\s+/)
+          .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ''))
+          .join(' ')
+      : '-';
+    return { value: score, label, history: last7 };
+  });
+}
+
 async function getBtcFunding() {
   return memoize('btc-funding', 60 * 1000, async () => {
     const response = await fetchJson<{ lastFundingRate: string; markPrice: string }>(
@@ -689,9 +722,10 @@ async function buildSummary() {
 }
 
 async function buildRiskSummaryRaw() {
-  const [summary, fearGreed, funding, openInterest] = await Promise.all([
+  const [summary, fearGreed, fearGreedCnn, funding, openInterest] = await Promise.all([
     buildSummary(),
     getFearGreed(),
+    getCnnFearGreed().catch(() => null),
     getBtcFunding().catch(() => null),
     getBtcOpenInterest().catch(() => null),
   ]);
@@ -706,6 +740,8 @@ async function buildRiskSummaryRaw() {
     updatedAt: new Date().toISOString(),
     fearGreed: currentFearGreed,
     fearGreedHistory: fearGreed.slice().reverse().map((item) => item.value),
+    fearGreedCnn: fearGreedCnn ? { value: fearGreedCnn.value, label: fearGreedCnn.label } : null,
+    fearGreedCnnHistory: fearGreedCnn ? fearGreedCnn.history : [],
     usdKrw,
     kimpIndex,
     btcGlobalPremium: btc.leadPremium,
@@ -848,6 +884,8 @@ function getFallbackRisk() {
       timestamp: Math.floor(Date.now() / 1000),
     },
     fearGreedHistory: [16, 12, 21, 23, 23, 21, 26],
+    fearGreedCnn: { value: 47, label: 'Neutral' },
+    fearGreedCnnHistory: [55, 52, 49, 48, 47, 46, 47],
     usdKrw: 1478.99,
     kimpIndex: { value: 0.06, label: '정상', tone: 'normal', display: '+0.06% · 정상' },
     btcGlobalPremium: 0.05,
