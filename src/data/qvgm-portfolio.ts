@@ -20,7 +20,7 @@ export type QvgmPortfolioCategory = {
   alternativesCount: number;
 };
 
-export const qvgmPortfolioGeneratedAt = "2026-04-27T23:37:45.443164";
+export const qvgmPortfolioGeneratedAt = "2026-04-27T23:40:08.093311";
 
 export const qvgmPortfolio_kr: QvgmPortfolioCategory | null = null;
 
@@ -29,19 +29,19 @@ export const qvgmPortfolio_krUs: QvgmPortfolioCategory | null = null;
 export const qvgmPortfolio_us: QvgmPortfolioCategory = {
   "label": "미국 ETF (US-listed)",
   "best": {
-    "name": "성장 편향 포트폴리오",
-    "style": "기술주 및 나스닥 우량주를 중심으로 시장을 주도하는 메가 트렌드와 모멘텀에 집중하는 고수익 추구형",
+    "name": "성장 편향형 포트폴리오",
+    "style": "기술주 및 모멘텀 중심의 공격적 자본 차익 추구",
     "holdings": [
       {
         "ticker": "QQQM",
-        "weight_pct": 35.0,
-        "reason": "나스닥 100 지수를 추종하여 미국 핵심 기술 및 혁신 기업에 집중 투자",
+        "weight_pct": 30.0,
+        "reason": "나스닥 100 지수를 추종하며 미국 핵심 기술주 전반에 투자 (QQQ 대비 저렴한 보수)",
         "name": "Nasdaq-100 (Mini)"
       },
       {
         "ticker": "SMH",
         "weight_pct": 20.0,
-        "reason": "최고의 12개월 수익률과 샤프 지수를 기록 중인 반도체 섹터 집중 공략",
+        "reason": "높은 수익률과 훌륭한 샤프 지수를 기록 중인 글로벌 반도체 산업에 집중 투자",
         "name": "Semiconductor (VanEck)"
       },
       {
@@ -51,23 +51,23 @@ export const qvgmPortfolio_us: QvgmPortfolioCategory = {
         "name": "Vanguard Growth"
       },
       {
-        "ticker": "IWM",
+        "ticker": "XLK",
         "weight_pct": 15.0,
-        "reason": "러셀 2000 중소형주 편입으로 대형주 랠리 이후의 중소형주 갭메우기 기대",
-        "name": "Russell 2000"
+        "reason": "S&P 500 내 핵심 IT 섹터 비중을 확대하여 기술주 주도 장세 극대화",
+        "name": "Tech Select Sector"
       },
       {
         "ticker": "MTUM",
-        "weight_pct": 10.0,
-        "reason": "최근 상승 추세가 뚜렷한 주도주에 투자하여 추가적인 알파 수익 창출",
+        "weight_pct": 15.0,
+        "reason": "최근 주가 상승 추세가 강한 모멘텀 주식들을 편입하여 초과 수익 추구",
         "name": "MSCI USA Momentum"
       }
     ],
     "metrics": {
-      "cagr": 52.15,
+      "cagr": 55.2,
       "sharpe": 1.36,
-      "max_dd": -36.93,
-      "composite": 0.6077
+      "max_dd": -38.04,
+      "composite": 0.6158
     }
   },
   "alternativesCount": 4
