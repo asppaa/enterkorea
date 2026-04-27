@@ -90,9 +90,9 @@ const sections = [
           <p>KOSPI/KOSDAQ 265종 + S&amp;P 500/MidCap 400 903종</p>
         </article>
         <article class="summary-card summary-card-primary">
-          <strong>해자 평가</strong>
+          <strong>경제적 해자 평가</strong>
           <span>Gemini 3.1 Pro</span>
-          <p>BRAND·NETWORK·COST·IP·SWITCHING·REG 분류</p>
+          <p>브랜드 · 네트워크 · 원가 · 지식재산 · 전환비용 · 규제/면허 분류</p>
         </article>
         <article class="summary-card">
           <strong>가중치</strong>
@@ -197,7 +197,7 @@ const sections = [
       <li>유니버스: KOSPI/KOSDAQ 시총 상위 265종 (Naver Finance) · S&amp;P 500 + MidCap 400 (Wikipedia)</li>
       <li>데이터: yahooquery 일괄 + KR 상위 60종 DART 정밀화 (ROIC·매출·영업이익)</li>
       <li>점수: Value 16% · Quality 12% · Growth 15% · Momentum 18% · Sector 12% · Moat 17% · 병목 10%</li>
-      <li>Moat: Gemini 3.1 Pro로 0~100 점수 + BRAND/NETWORK/COST/IP/SWITCHING/REG 분류</li>
+      <li>경제적 해자: Gemini 3.1 Pro로 0~100 점수 + 브랜드/네트워크/원가/지식재산/전환비용/규제·면허 분류</li>
       <li>병목: 반도체 HBM·전력기기·방산·조선·원전·희토류·광케이블 등 공급제약 테마 매칭</li>
       <li>심층 카드: Gemini 3.1 Pro로 핵심사업·경쟁우위·촉매·리스크·밸류·추천강도 생성</li>
     </ul>
@@ -209,6 +209,14 @@ const sections = [
   <style>
     .qvgm-section { margin: 2rem 0; }
     .qvgm-section h2 { margin-bottom: 0.75rem; font-size: 1.3rem; }
+
+    /* hero summary-card 내부 긴 한글 라벨이 좁은 카드 폭을 넘지 않도록.
+       word-break: keep-all 로 단어 중간 분절 방지, '·' 주변 공백에서 자연스럽게 wrap. */
+    .hero .metrics-grid .summary-card p,
+    .hero .metrics-grid .summary-card span {
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
 
     .table-wrap {
       overflow-x: auto;
