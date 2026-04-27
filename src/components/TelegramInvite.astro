@@ -1,55 +1,150 @@
 ---
 const telegramUrl = import.meta.env.PUBLIC_TELEGRAM_CHANNEL_URL || 'https://t.me/macrobmacro';
 const telegramHandle = import.meta.env.PUBLIC_TELEGRAM_CHANNEL_HANDLE || '@macrobmacro';
-const xUrl = import.meta.env.PUBLIC_X_PROFILE_URL || 'https://x.com/lifelagos1';
-const xHandle = import.meta.env.PUBLIC_X_HANDLE || '@lifelagos1';
+const telegramRealestateUrl = import.meta.env.PUBLIC_TELEGRAM_REALESTATE_URL || 'https://t.me/mcpapt';
+const telegramRealestateHandle = import.meta.env.PUBLIC_TELEGRAM_REALESTATE_HANDLE || '@mcpapt';
+const xUrl = import.meta.env.PUBLIC_X_PROFILE_URL || 'https://x.com/SeoulIsGood';
+const xHandle = import.meta.env.PUBLIC_X_HANDLE || '@SeoulIsGood';
 
 const {
-  title = '텔레그램 채널',
-  note = '사이트에서 숫자를 보고, 텔레그램과 X에서는 더 빠른 요약과 링크 큐레이션을 받는 구조로 연결합니다.',
+  title = 'SNS 연결',
+  note = '사이트에서 숫자를 본 뒤, 텔레그램·X 채널로 더 빠른 요약과 알림을 이어 받으세요.',
   compact = false,
 } = Astro.props as {
   title?: string;
   note?: string;
   compact?: boolean;
 };
-
-const isReady = Boolean(telegramUrl);
-const hasX = Boolean(xUrl);
 ---
 
 <section class:list={['telegram-card', compact && 'telegram-card-compact']}>
   <div class="telegram-copy">
-    <div class="eyebrow">텔레그램 유입 동선</div>
+    <div class="eyebrow">SNS</div>
     <h2>{title}</h2>
     <p>{note}</p>
     <ul class="bullet-list">
       <li>사이트: 숫자와 비교를 빠르게 확인</li>
-      <li>텔레그램: 요약 해설, 위험 신호, 빠른 링크 전달</li>
-      <li>X: 짧은 코멘트와 업데이트 흐름 확인</li>
-      <li>둘 다 이미 연결돼 있어 바로 들어갈 수 있습니다</li>
+      <li>텔레그램: 매크로 요약 · 부동산 신고가 알림</li>
+      <li>X: 짧은 코멘트와 업데이트 흐름</li>
     </ul>
-  </div>
-  <div class="telegram-side">
+
     <div class="social-stack">
-      {
-        isReady ? (
-          <a class="telegram-link" href={telegramUrl} target="_blank" rel="noreferrer">
-            텔레그램 채널 열기 {telegramHandle}
-          </a>
-        ) : (
-          <div class="telegram-link telegram-link-muted">텔레그램 링크 자리 확보</div>
-        )
-      }
-      {
-        hasX ? (
-          <a class="telegram-link telegram-link-secondary" href={xUrl} target="_blank" rel="noreferrer">
-            X {xHandle}
-          </a>
-        ) : (
-          <div class="telegram-link telegram-link-muted">X 링크 자리 확보</div>
-        )
-      }
+      <a class="social-btn social-btn-telegram" href={telegramUrl} target="_blank" rel="noreferrer">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.24 3.64 11.95c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" fill="currentColor"/>
+        </svg>
+        <span class="social-text">
+          <span class="social-label">텔레그램 매크로 채널</span>
+          <span class="social-handle">{telegramHandle}</span>
+        </span>
+      </a>
+      <a class="social-btn social-btn-telegram" href={telegramRealestateUrl} target="_blank" rel="noreferrer">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.24 3.64 11.95c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" fill="currentColor"/>
+        </svg>
+        <span class="social-text">
+          <span class="social-label">텔레그램 부동산 신고가</span>
+          <span class="social-handle">{telegramRealestateHandle}</span>
+        </span>
+      </a>
+      <a class="social-btn social-btn-x" href={xUrl} target="_blank" rel="noreferrer">
+        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
+        </svg>
+        <span class="social-text">
+          <span class="social-label">X (구 트위터)</span>
+          <span class="social-handle">{xHandle}</span>
+        </span>
+      </a>
     </div>
   </div>
 </section>
+
+<style>
+  .telegram-card {
+    /* 단일 컬럼 — 텍스트 아래에 SNS 버튼 3개가 자연스럽게 이어짐 */
+    grid-template-columns: 1fr !important;
+  }
+
+  .telegram-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .telegram-copy h2,
+  .telegram-copy p,
+  .telegram-copy .bullet-list {
+    margin: 0;
+  }
+
+  .social-stack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 0.5rem;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 18, 33, 0.7);
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .social-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(10, 18, 33, 0.95);
+  }
+
+  .social-btn-telegram {
+    border-color: rgba(56, 156, 232, 0.45);
+    background: linear-gradient(135deg, rgba(56, 156, 232, 0.18), rgba(10, 18, 33, 0.7));
+  }
+  .social-btn-telegram:hover {
+    border-color: rgba(56, 156, 232, 0.75);
+  }
+  .social-btn-telegram .social-icon {
+    color: #58a6e6;
+  }
+
+  .social-btn-x {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(10, 18, 33, 0.7));
+  }
+  .social-btn-x:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  .social-btn-x .social-icon {
+    color: #f5f5f5;
+  }
+
+  .social-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .social-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .social-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .social-handle {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>
