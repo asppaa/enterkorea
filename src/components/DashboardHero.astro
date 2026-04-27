@@ -27,13 +27,23 @@ const { featuredCoin, apiBase = '' } = Astro.props as {
         <div class="lang-badge">{marketMeta.cacheWindowSeconds}초 캐시</div>
       </div>
     </div>
-    <div class="hero-cta-row">
-      <a class="hero-cta hero-cta-primary" href="#home-premium-board">한국 프리미엄 보기</a>
-      <a class="hero-cta" href="/risk">위험 신호 보기</a>
-      <a class="hero-cta" href="/etf">ETF 괴리율 보기</a>
-      <a class="hero-cta" href="/methodology">데이터 기준 보기</a>
+    <div class="hero-cta-row" role="tablist" aria-label="대시보드 탭">
+      <button type="button" class="hero-cta hero-cta-primary" data-tab="premium" role="tab" aria-selected="true">
+        한국 프리미엄 보기
+      </button>
+      <button type="button" class="hero-cta" data-tab="risk" role="tab" aria-selected="false">
+        위험 신호 보기
+      </button>
+      <button type="button" class="hero-cta" data-tab="etf" role="tab" aria-selected="false">
+        ETF 괴리율 보기
+      </button>
+      <button type="button" class="hero-cta" data-tab="data" role="tab" aria-selected="false">
+        데이터 기준 보기
+      </button>
     </div>
-    <div class="summary-grid summary-grid-3col">
+
+    {/* Tab 1: 한국 프리미엄 (default 6 cards, 2x3) */}
+    <div class="summary-grid summary-grid-3col tab-panel active" data-panel="premium" role="tabpanel">
       <article class="summary-card summary-card-primary">
         <strong>USDT 김프</strong>
         <span id="summary-usdt-premium" class="positive">{heroSummaryFallback.usdtLabel}</span>
@@ -76,5 +86,158 @@ const { featuredCoin, apiBase = '' } = Astro.props as {
         <p>금 · 은 · 구리 · 원유</p>
       </article>
     </div>
+
+    {/* Tab 2: 위험 신호 (8 cards in 2x4 layout via 4-col grid) */}
+    <div class="summary-grid summary-grid-4col tab-panel" data-panel="risk" role="tabpanel" hidden>
+      <article class="summary-card summary-card-primary">
+        <strong>KIMP Index</strong>
+        <span id="hero-risk-kimp">+0.06%</span>
+        <p id="hero-risk-kimp-label">정상</p>
+      </article>
+      <article class="summary-card summary-card-primary">
+        <strong>코인 F&G (Crypto)</strong>
+        <span id="hero-risk-fg-coin">26</span>
+        <p id="hero-risk-fg-coin-label">Fear</p>
+      </article>
+      <article class="summary-card summary-card-primary">
+        <strong>미국증시 F&G (CNN)</strong>
+        <span id="hero-risk-fg-cnn">47</span>
+        <p id="hero-risk-fg-cnn-label">Neutral</p>
+      </article>
+      <article class="summary-card">
+        <strong>USD/KRW</strong>
+        <span id="hero-risk-usdkrw">1478.99</span>
+        <p>환율 스트레스</p>
+      </article>
+      <article class="summary-card">
+        <strong>BTC 한국/해외</strong>
+        <span id="hero-risk-btc-global">+0.05%</span>
+        <p>대표 코인 프리미엄</p>
+      </article>
+      <article class="summary-card">
+        <strong>BTC 국내 거래소</strong>
+        <span id="hero-risk-btc-domestic">+0.01%</span>
+        <p>한국 내부 수급</p>
+      </article>
+      <article class="summary-card">
+        <strong>BTC 펀딩비</strong>
+        <span id="hero-risk-btc-funding">+0.0100%</span>
+        <p>선물 포지션 쏠림</p>
+      </article>
+      <article class="summary-card">
+        <strong>BTC OI 24h</strong>
+        <span id="hero-risk-btc-oi">+1.20%</span>
+        <p>청산 대리지표</p>
+      </article>
+    </div>
+
+    {/* Tab 3: ETF 괴리율 — top 6 by abs deviation (live wired in index.astro) */}
+    <div class="summary-grid summary-grid-3col tab-panel" data-panel="etf" role="tabpanel" hidden>
+      <article class="summary-card summary-card-primary" data-etf-slot="0">
+        <strong class="etf-name">데이터 로드 중…</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">국내 상장 해외 ETF</p>
+      </article>
+      <article class="summary-card summary-card-primary" data-etf-slot="1">
+        <strong class="etf-name">-</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">-</p>
+      </article>
+      <article class="summary-card summary-card-primary" data-etf-slot="2">
+        <strong class="etf-name">-</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">-</p>
+      </article>
+      <article class="summary-card" data-etf-slot="3">
+        <strong class="etf-name">-</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">-</p>
+      </article>
+      <article class="summary-card" data-etf-slot="4">
+        <strong class="etf-name">-</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">-</p>
+      </article>
+      <article class="summary-card" data-etf-slot="5">
+        <strong class="etf-name">-</strong>
+        <span class="etf-dev">-</span>
+        <p class="etf-bench">-</p>
+      </article>
+    </div>
+
+    {/* Tab 4: 데이터 기준 — static methodology */}
+    <div class="summary-grid summary-grid-3col tab-panel" data-panel="data" role="tabpanel" hidden>
+      <article class="summary-card summary-card-primary">
+        <strong>코인</strong>
+        <span class="data-source">Upbit · Bithumb · Binance</span>
+        <p>거래대금 가중. 환율 Frankfurter USD/KRW. 캐시 3초.</p>
+      </article>
+      <article class="summary-card summary-card-primary">
+        <strong>ETF / 원자재</strong>
+        <span class="data-source">K-ETF · Stooq</span>
+        <p>국내 상장 해외 ETF의 시장가 vs NAV 괴리. 벤치마크는 GLD/SLV/CPER 등.</p>
+      </article>
+      <article class="summary-card summary-card-primary">
+        <strong>심리 지표</strong>
+        <span class="data-source">alternative.me · CNN</span>
+        <p>코인은 alternative.me Fear&amp;Greed, 미국 주식은 CNN dataviz.</p>
+      </article>
+      <article class="summary-card">
+        <strong>BTC 선물</strong>
+        <span class="data-source">Binance Futures</span>
+        <p>펀딩비(8h) + 미결제약정 24h 변화.</p>
+      </article>
+      <article class="summary-card">
+        <strong>업데이트 주기</strong>
+        <span class="data-source">3초 / 1분 / 5분</span>
+        <p>코인 3초, F&amp;G·환율 1분, CNN 5분 캐시.</p>
+      </article>
+      <article class="summary-card">
+        <strong>방법론 전체</strong>
+        <span class="data-source"><a class="text-link" href="/methodology">/methodology</a></span>
+        <p>데이터 출처·계산식·면책 사항 한 페이지로 정리.</p>
+      </article>
+    </div>
   </div>
 </section>
+
+<style>
+  .hero-cta { cursor: pointer; }
+  .tab-panel[hidden] { display: none !important; }
+  .summary-grid-4col { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  /* 모바일에서는 4열도 2열로 자연 reflow (global.css 의 ≤960px 이미 처리됨) */
+  .data-source { font-size: 1.05rem !important; }
+</style>
+
+<script>
+  (function () {
+    const tabs = document.querySelectorAll('.hero-cta-row [data-tab]');
+    const panels = document.querySelectorAll('[data-panel]');
+    if (!tabs.length || !panels.length) return;
+
+    function activate(tabKey: string) {
+      tabs.forEach((btn) => {
+        const isActive = btn.getAttribute('data-tab') === tabKey;
+        btn.classList.toggle('hero-cta-primary', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        const match = panel.getAttribute('data-panel') === tabKey;
+        if (match) {
+          panel.removeAttribute('hidden');
+          panel.classList.add('active');
+        } else {
+          panel.setAttribute('hidden', '');
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-tab');
+        if (key) activate(key);
+      });
+    });
+  })();
+</script>

@@ -401,17 +401,71 @@ const structuredData = [
     `).join('');
   };
 
+  const formatFunding = (value) =>
+    value === null || value === undefined ? '-' : `${Number(value) > 0 ? '+' : ''}${(Number(value) * 100).toFixed(4)}%`;
+
+  const setText = (id, text) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = text;
+  };
+
+  const updateRiskTab = (risk) => {
+    if (!risk) return;
+    setText('hero-risk-kimp', formatPercent(risk.kimpIndex?.value));
+    setText('hero-risk-kimp-label', risk.kimpIndex?.label ?? '-');
+    setText('hero-risk-fg-coin', String(risk.fearGreed?.value ?? '-'));
+    setText('hero-risk-fg-coin-label', risk.fearGreed?.label ?? '-');
+    setText('hero-risk-fg-cnn', risk.fearGreedCnn?.value != null ? String(risk.fearGreedCnn.value) : '-');
+    setText('hero-risk-fg-cnn-label', risk.fearGreedCnn?.label ?? '-');
+    setText('hero-risk-usdkrw', Number(risk.usdKrw ?? 0).toFixed(2));
+    setText('hero-risk-btc-global', formatPercent(risk.btcGlobalPremium));
+    setText('hero-risk-btc-domestic', formatPercent(risk.btcDomesticPremium));
+    setText('hero-risk-btc-funding', formatFunding(risk.btcFunding?.rate));
+    setText('hero-risk-btc-oi', formatPercent(risk.btcOpenInterest?.change24hPercent));
+  };
+
+  const updateEtfTab = (etfs) => {
+    if (!Array.isArray(etfs)) return;
+    const sorted = etfs
+      .filter((row) => row && typeof row.deviationPercent === 'number')
+      .slice()
+      .sort((a, b) => Math.abs(b.deviationPercent) - Math.abs(a.deviationPercent))
+      .slice(0, 6);
+    document.querySelectorAll('[data-etf-slot]').forEach((slot, idx) => {
+      const row = sorted[idx];
+      const nameEl = slot.querySelector('.etf-name');
+      const devEl = slot.querySelector('.etf-dev');
+      const benchEl = slot.querySelector('.etf-bench');
+      if (!row) {
+        if (nameEl) nameEl.textContent = '-';
+        if (devEl) { devEl.textContent = '-'; devEl.className = 'etf-dev'; }
+        if (benchEl) benchEl.textContent = '-';
+        return;
+      }
+      if (nameEl) nameEl.textContent = row.name || row.code || '-';
+      if (devEl) {
+        devEl.textContent = formatPercent(row.deviationPercent);
+        devEl.className = 'etf-dev ' + tone(row.deviationPercent);
+      }
+      if (benchEl) benchEl.textContent = row.benchmarkLabel || '국내 상장 해외 ETF';
+    });
+  };
+
   const load = async () => {
     if (!apiBase) return;
 
     try {
-      const response = await fetch(`${apiBase}/api/summary`);
-      const payload = await response.json();
+      const [summaryRes, riskRes] = await Promise.all([
+        fetch(`${apiBase}/api/summary`),
+        fetch(`${apiBase}/api/risk`).catch(() => null),
+      ]);
+      const payload = await summaryRes.json();
 
       updateSummary(payload);
       renderCoins(payload.rows);
       renderAssets(etfBody, payload.etfs);
       renderAssets(commodityBody, payload.commodities);
+      updateEtfTab(payload.etfs);
 
       if (payload.fallback) {
         setStatus(heroStatus, 'delayed', '폴백 데이터');
@@ -419,6 +473,10 @@ const structuredData = [
       } else {
         setStatus(heroStatus, 'live', '실시간 연결 정상');
         setStatus(updated, 'live', `실시간 · ${payload.updatedAt}`);
+      }
+
+      if (riskRes && riskRes.ok) {
+        updateRiskTab(await riskRes.json());
       }
     } catch {
       setStatus(heroStatus, 'offline', '연결 지연');
