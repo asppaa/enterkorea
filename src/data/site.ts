@@ -23,6 +23,7 @@ export const siteConfig = {
       { href: '/etf', label: 'ETF 괴리율' },
       { href: '/commodities', label: '원자재' },
       { href: '/risk', label: '위험 신호' },
+      { href: '/realestate', label: '부동산' },
       { href: '/portfolio', label: '포트폴리오' },
       { href: '/qvgm', label: 'QVGM 스크리너' },
     ],
@@ -98,6 +99,13 @@ export const sitePages: SeoPage[] = [
     description:
       'Fear and Greed Index, USD/KRW, BTC 프리미엄, ETF·원자재 괴리율을 묶어 보는 위험 신호 페이지.',
     path: '/risk',
+    locale: 'ko',
+  },
+  {
+    title: '서울/추적지역 대장 아파트 주간 스냅샷 | 가격·거래량 대장',
+    description:
+      '서울 25개구 + 추적지역의 가격 대장 단지와 거래량 대장 단지를 매주 한 표로 정리. 국토부 실거래가 기반, 90일 평균과 전고점·전세가율 동봉.',
+    path: '/realestate',
     locale: 'ko',
   },
   {
