@@ -384,8 +384,31 @@ function toneByAbsolute(value: number, warning: number, danger: number) {
 }
 
 async function getFxRate() {
-  return memoize('fx-rate', 3_000, async () => {
-    const response = await fetchJson<{ rates: { KRW: number } }>('https://api.frankfurter.dev/v1/latest?from=USD&to=KRW');
+  // Frankfurter 는 ECB 일일 reference rate(전일 종가 기준) 만 제공해 한국 시장 시간 동안 값이 stuck 됨.
+  // Yahoo Finance KRW=X 를 1차 소스로 사용해 분 단위 실시간 환율을 반영. 장애 시 Frankfurter 로 폴백.
+  return memoize('fx-rate', 60_000, async () => {
+    try {
+      const response = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/KRW=X', {
+        headers: {
+          'user-agent': 'Mozilla/5.0 (compatible; kimpboard/1.0)',
+          accept: 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = (await response.json()) as {
+          chart?: { result?: Array<{ meta?: { regularMarketPrice?: number } }> };
+        };
+        const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+        if (typeof price === 'number' && price > 0) {
+          return price;
+        }
+      }
+    } catch (_) {
+      // fallthrough to backup
+    }
+    const response = await fetchJson<{ rates: { KRW: number } }>(
+      'https://api.frankfurter.dev/v1/latest?from=USD&to=KRW',
+    );
     return response.rates.KRW;
   });
 }
