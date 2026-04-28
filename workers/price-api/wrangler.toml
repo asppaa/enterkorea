@@ -10,9 +10,9 @@ custom_domain = true
 
 [vars]
 CACHE_TTL = "3"
-# 매크로 요약 POST 인증 토큰. 보안 강화 시 `wrangler secret put MACRO_API_TOKEN`
-# 으로 옮기고 이 줄을 제거. 현재 repo가 private이라 vars로 둠.
-MACRO_API_TOKEN = "DjMJYfoL1YdKzlXkId5Zpaw96_EE4RE4iruA4XvvtVHCRJ_3ZzyMhg"
+# MACRO_API_TOKEN 은 Cloudflare encrypted secret 으로만 관리 (`wrangler secret put MACRO_API_TOKEN`
+# 또는 CF 대시보드 → kimp-price-api → Settings → Variables and Secrets → Encrypted).
+# 이 토큰이 미설정이면 /api/macro-summary, /api/realestate-weekly 의 POST 가 차단됩니다.
 
 [[kv_namespaces]]
 binding = "MACRO_KV"
