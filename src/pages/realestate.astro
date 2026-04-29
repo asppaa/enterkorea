@@ -28,7 +28,7 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
   </section>
 
   <section class="container">
-    <div class="mobile-hint" id="re-mobile-hint">📱 표를 더블탭하면 자세히 볼 수 있습니다</div>
+    <div class="mobile-hint" id="re-mobile-hint">📱 표가 넓습니다 — 좌우로 스크롤해서 보세요</div>
     <div class="re-frame">
       <div class="re-skeleton" id="re-skeleton">
         <div></div><div></div><div></div><div></div><div></div><div></div>
@@ -62,20 +62,9 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       }
     }
 
-    function fitHostToContainer(host) {
-      // 콘텐츠 자연 폭 — Python 측 WRAP_WIDTH (1570) + body padding(36) ≈ 1606px.
-      // 컨테이너에 맞춰 zoom 적용. zoom 은 transform 과 달리 layout 흐름까지 같이 줄여서 부모 높이가 자동 보정됨.
-      const SOURCE_WIDTH = 1606;
-      const apply = () => {
-        const parentWidth = host.parentElement ? host.parentElement.clientWidth : 0;
-        if (!parentWidth) return;
-        const ratio = Math.min(1, parentWidth / SOURCE_WIDTH);
-        host.style.zoom = ratio < 1 ? ratio.toFixed(4) : '1';
-      };
-      apply();
-      // 폰트 로딩 후 폭 변동 대비 한번 더.
-      setTimeout(apply, 200);
-      window.addEventListener('resize', apply);
+    function fitHostToContainer(_host) {
+      // 의도적 no-op: 컨테이너 폭에 맞춰 zoom 으로 줄이면 본문 글자가 너무 작아져 가독성이 깨짐.
+      // 자연 폭(콘텐츠 그대로) 유지 + .re-frame 의 overflow-x:auto 로 가로 스크롤 허용.
     }
 
     function extractInner(fullHtml) {
@@ -171,13 +160,15 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
       width: 100%;
       background: #eef3f8;
       border-radius: 0.8rem;
-      overflow: hidden; /* zoom 적용 후 잔여 픽셀 컷 */
+      overflow-x: auto;       /* 콘텐츠가 컨테이너보다 넓으면 가로 스크롤 허용 (모바일도 자연 크기 유지) */
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
     }
 
     .re-host {
-      /* Shadow DOM 호스트. 콘텐츠 자연 폭(WRAP_WIDTH 1570 + body padding 36 ≈ 1606)으로 고정.
-         JS 가 컨테이너 폭에 맞춰 zoom 비율을 설정해서 한 화면에 맞춤. */
+      /* Shadow DOM 호스트. 자연 폭 (Python WRAP_WIDTH 1570 + body padding 36 ≈ 1606px) 유지.
+         사이트 컨테이너에 맞춰 줄이지 않음 — 모바일에서는 가로 스크롤로 확인. */
       display: block;
       width: 1606px;
     }
