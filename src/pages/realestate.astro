@@ -63,9 +63,9 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
     }
 
     function fitHostToContainer(host) {
-      // 콘텐츠 자연 폭(1138 wrap + 36px 패딩 ≈ 1174px). 컨테이너에 맞춰 zoom 적용.
-      // zoom 은 transform 과 달리 layout 흐름까지 같이 줄여서 부모 높이가 자동 보정됨.
-      const SOURCE_WIDTH = 1180;
+      // 콘텐츠 자연 폭 — Python 측 WRAP_WIDTH (1570) + body padding(36) ≈ 1606px.
+      // 컨테이너에 맞춰 zoom 적용. zoom 은 transform 과 달리 layout 흐름까지 같이 줄여서 부모 높이가 자동 보정됨.
+      const SOURCE_WIDTH = 1606;
       const apply = () => {
         const parentWidth = host.parentElement ? host.parentElement.clientWidth : 0;
         if (!parentWidth) return;
@@ -176,10 +176,10 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
     }
 
     .re-host {
-      /* Shadow DOM 호스트. 콘텐츠 자연 폭(1138 + 패딩 = ~1174)으로 고정.
+      /* Shadow DOM 호스트. 콘텐츠 자연 폭(WRAP_WIDTH 1570 + body padding 36 ≈ 1606)으로 고정.
          JS 가 컨테이너 폭에 맞춰 zoom 비율을 설정해서 한 화면에 맞춤. */
       display: block;
-      width: 1180px;
+      width: 1606px;
     }
 
     /* [hidden] 속성이 .re-skeleton·.re-host 의 display 규칙에 묻히지 않도록 명시. */
