@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { sitePages } from '../../data/site';
+
+const page = sitePages.find((item) => item.path === '/guide/송금-네트워크-선택')!;
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '거래소 간 USDT 송금에는 어떤 네트워크가 가장 좋나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '도착 거래소가 같은 네트워크의 입금을 지원해야 하며, 트론(TRC20)이 일반적으로 빠르고 저렴합니다. 다만 한국 거래소가 트래블룰 정책상 특정 네트워크의 입금을 제한하는 경우가 있어 양쪽 거래소의 입금 정책을 먼저 확인해야 합니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '잘못된 네트워크로 보내면 어떻게 되나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '도착 주소가 다른 체인이라면 거래는 성공해도 자산은 도착 거래소에서 인식되지 않으며, 회수가 어려운 경우가 많습니다. 최악의 경우 자산이 영구 유실됩니다.',
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path} structuredData={faq}>
+  <section class="hero">
+    <div class="eyebrow">실행 가이드</div>
+    <h1>코인 송금 네트워크 선택</h1>
+    <p>김프 차익거래에서 시간과 수수료, 안전성을 가르는 결정적 변수는 송금 네트워크입니다. 코인별로 어떤 네트워크가 자주 쓰이고, 어디서 실수가 나오는지를 정리합니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>네트워크는 곧 비용·속도·안전</h2>
+    <p>같은 코인이라도 여러 블록체인 네트워크에서 발행·유통될 수 있습니다. 예를 들어 USDT는 이더리움(ERC20), 트론(TRC20), 솔라나(SPL), BSC(BEP20) 등 여러 체인에서 발행됩니다. 보내는 거래소에서 어떤 네트워크를 선택하느냐에 따라 출금 수수료, 도착까지 걸리는 시간, 도착 거래소의 인식 여부가 달라집니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>주요 코인별 자주 쓰이는 네트워크</h2>
+    <ul class="bullet-list">
+      <li><strong>비트코인(BTC)</strong> — 비트코인 메인넷이 표준입니다. 라이트닝(LN)을 지원하는 거래소도 있지만 도착 거래소의 지원 여부를 반드시 확인합니다.</li>
+      <li><strong>이더리움(ETH)</strong> — 이더리움 메인넷(ERC20)이 기본. 일부 거래소는 Arbitrum, Optimism, Base 같은 L2 네트워크를 지원하지만 호환되지 않는 거래소가 많아 사용에 주의해야 합니다.</li>
+      <li><strong>USDT</strong> — TRC20(트론)이 빠르고 저렴해 가장 자주 쓰입니다. 다만 TRC20은 Tag/Memo 사용이 필요 없으며, 도착 거래소가 TRC20 입금을 지원해야 합니다. ERC20은 비싸지만 보편적이어서 회수·재전송이 비교적 쉽습니다.</li>
+      <li><strong>XRP</strong> — XRP 메인넷. <strong>Destination Tag</strong>(목적지 태그)를 정확히 입력해야 합니다.</li>
+      <li><strong>솔라나(SOL)</strong> — 솔라나 메인넷. 빠르고 저렴하지만 일시적 네트워크 정지 사례가 있어 거래소 출금이 중단되는 경우가 있습니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>네트워크 선택 시 체크리스트</h2>
+    <ul class="bullet-list">
+      <li>도착 거래소가 같은 네트워크의 입금을 지원하는지 두 번 확인합니다.</li>
+      <li>도착 주소가 해당 네트워크용으로 발급된 주소인지 확인합니다(체인이 다른데 같은 주소 형식이라 헷갈릴 수 있습니다).</li>
+      <li>Tag·Memo가 필요한 코인(XRP, XLM, EOS 등)은 빠짐없이 입력합니다.</li>
+      <li>출금 수수료를 원화 가치로 환산해 송금 수량 대비 비율을 따져봅니다.</li>
+      <li>네트워크 혼잡도를 확인합니다. 혼잡할수록 도착 시간이 길어지고, 그만큼 가격 변동 위험이 커집니다.</li>
+      <li>한국 거래소의 트래블룰 정책상 일부 네트워크는 입금이 일시 보류·차단될 수 있으니 사전에 거래소 공지를 확인합니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>실수가 나오는 전형적 패턴</h2>
+    <ul class="bullet-list">
+      <li>이더리움 주소가 BSC와 형식이 같다는 점을 이용해 BEP20으로 보냈는데 도착 거래소가 BEP20 입금을 지원하지 않는 경우.</li>
+      <li>XRP 송금에서 Destination Tag를 누락하거나 0으로 보냈을 때.</li>
+      <li>한국 거래소의 트래블룰 검증으로 입금이 보류된 사이 시장이 급등·급락한 경우.</li>
+      <li>도착 거래소의 신규 가입자 출금 한도가 송금량보다 낮아, 다시 빠져나오지 못하는 경우.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>김프 차익거래에서의 의미</h2>
+    <p>표시 김프 1.0%는 빠른 네트워크(TRC20·솔라나)에서 30분 내에 사이클을 마쳤을 때를 가정한 값에 가깝습니다. 메인넷 ERC20을 쓰며 트래블룰 검증이 길어지면 가격 변동 위험만 커지고 실수익이 줄어듭니다. 결국 김프 수치는 "어떤 네트워크로 사이클을 짤 수 있는가"라는 운영 환경에 따라 의미가 크게 달라집니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>관련 페이지</h2>
+    <ul class="bullet-list">
+      <li><a href="/guide/트래블룰">트래블룰</a></li>
+      <li><a href="/guide/김프-차익거래-비용">김프 차익거래의 실제 비용</a></li>
+      <li><a href="/guide/USDT-김프">USDT 김프</a></li>
+    </ul>
+  </section>
+</BaseLayout>

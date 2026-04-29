@@ -3,12 +3,97 @@ import BaseLayout from '../components/BaseLayout.astro';
 import { sitePages } from '../data/site';
 
 const page = sitePages.find((item) => item.path === '/privacy')!;
+const lastUpdated = '2026-04-30';
 ---
 
 <BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
-  <section class="copy-panel">
+  <section class="hero">
+    <div class="eyebrow">개인정보처리방침</div>
     <h1 class="page-title">개인정보처리방침</h1>
-    <p class="lede">광고 및 트래픽 분석을 위한 최소한의 정보만 다루며, 운영 정책은 추후 실제 광고 도입 시 세부 조정될 수 있습니다.</p>
-    <p>기본적으로 서버 로그, 웹 분석 도구, 광고 스크립트가 수집하는 범위 내에서만 데이터를 처리합니다.</p>
+    <p class="lede">
+      김프보드(kimpboard.com, 이하 "본 사이트")는 방문자의 개인정보를 가능한 최소한으로 수집·이용하며, 본 방침은 어떤 정보가 어떤 목적으로 처리되는지를 투명하게 설명하기 위해 작성되었습니다.
+    </p>
+    <small>최종 갱신일: {lastUpdated}</small>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>1. 수집하는 정보 항목</h2>
+    <p>본 사이트는 회원가입을 요구하지 않으며, 이름·전화번호 같은 직접 식별 정보를 직접 수집하지 않습니다. 다만 사이트 운영과 광고 게재를 위해 다음 정보가 자동으로 처리됩니다.</p>
+    <ul class="bullet-list">
+      <li>접속 로그(IP 주소, User-Agent, Referer, 접속 시각, 요청 경로) — Cloudflare Workers 표준 로그 범위</li>
+      <li>Google Analytics(G-FWPKKDCTST)가 수집하는 익명 사용 통계(페이지뷰, 세션 길이, 대략적 지역, 디바이스 유형)</li>
+      <li>Google AdSense·DoubleClick 쿠키가 광고 개인화·빈도 제어를 위해 사용하는 식별자</li>
+      <li>이메일로 직접 문의하신 경우 메일 본문에 포함된 정보</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>2. 개인정보의 처리 목적</h2>
+    <ul class="bullet-list">
+      <li>사이트 안정성·보안 모니터링(비정상 트래픽·악의적 봇 차단)</li>
+      <li>방문자가 어떤 페이지를 어떻게 사용하는지 익명 통계로 파악해 콘텐츠 품질을 개선</li>
+      <li>광고 수익을 통한 사이트 운영비 충당과 광고 게재 빈도·관련성 조정</li>
+      <li>이용자의 문의·신고에 대한 회신과 분쟁 처리</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>3. 쿠키와 유사 기술</h2>
+    <p>본 사이트는 다음과 같은 쿠키를 사용합니다.</p>
+    <ul class="bullet-list">
+      <li><strong>필수 쿠키</strong> — Cloudflare가 보안·DDoS 방어·캐싱을 위해 사용하는 쿠키. 비활성화하면 사이트가 정상적으로 동작하지 않을 수 있습니다.</li>
+      <li><strong>분석 쿠키</strong> — Google Analytics(_ga, _ga_*)가 익명화된 사용 패턴 측정을 위해 사용합니다.</li>
+      <li><strong>광고 쿠키</strong> — Google AdSense·DoubleClick(IDE, ANID, NID 등)이 광고 개인화·전환 측정·빈도 제어를 위해 사용합니다.</li>
+    </ul>
+    <p>제3자 광고 사업자는 이 사이트와 다른 사이트에 대한 이용자의 방문 정보를 바탕으로 관련 광고를 제공하기 위해 쿠키를 사용할 수 있습니다. 광고 개인화는 <a href="https://adssettings.google.com/" rel="noopener" target="_blank">Google 광고 설정</a> 또는 <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info</a>에서 비활성화할 수 있습니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>4. 제3자 처리 위탁</h2>
+    <p>본 사이트는 다음의 외부 서비스에 일부 데이터 처리가 발생할 수 있습니다.</p>
+    <ul class="bullet-list">
+      <li><strong>Cloudflare, Inc.</strong> — 호스팅(Cloudflare Pages·Workers), CDN, 보안</li>
+      <li><strong>Google LLC</strong> — Google Analytics, Google AdSense, Google Fonts</li>
+      <li><strong>외부 시세 API</strong> — Frankfurter(환율), 업비트, 빗썸, 바이낸스, alternative.me, Stooq, k-etf.com 등 공개 API. 이 호출은 서버 측에서 발생하며 방문자의 개인정보를 외부 API에 전달하지 않습니다.</li>
+    </ul>
+    <p>각 사업자는 자체 개인정보처리방침을 따르며, 본 사이트는 그 범위 내에서만 데이터를 위탁합니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>5. 보유 기간</h2>
+    <ul class="bullet-list">
+      <li>접속 로그: 운영 목적 달성 시까지(원칙적으로 30일 이내) 자동 폐기</li>
+      <li>Google Analytics 데이터: Google이 정한 기본 보존 정책(최대 14개월)을 따름</li>
+      <li>이메일 문의 기록: 답변 완료 후 3년 이내 폐기</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>6. 이용자의 권리</h2>
+    <p>이용자는 본인 정보의 열람·정정·삭제·처리정지를 요청할 수 있으며, 광고 개인화를 거부할 수 있습니다. 요청은 본 방침 하단의 연락처로 보내주시면 합리적 기간 내에 처리합니다. 만 14세 미만 아동의 정보는 수집·이용 대상이 아닙니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>7. 정보 보호를 위한 조치</h2>
+    <ul class="bullet-list">
+      <li>모든 통신은 HTTPS(TLS 1.2 이상)로 암호화됩니다.</li>
+      <li>Cloudflare의 표준 보안 기능(WAF, Bot Fight, Rate Limiting)을 적용합니다.</li>
+      <li>사이트 운영자만이 비공개 설정과 외부 API 키에 접근하며, 키는 코드 저장소가 아닌 Wrangler/GitHub Secrets에 보관합니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>8. 방침 변경</h2>
+    <p>법령·서비스 정책 변경에 따라 본 방침은 사전 공지 후 개정될 수 있으며, 변경 사항은 본 페이지 상단의 최종 갱신일에 반영됩니다. 중대한 변경은 사이트 메인 또는 푸터 영역에서 함께 안내합니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>9. 연락처</h2>
+    <p>개인정보 관련 문의·요청은 다음 이메일로 보내주시기 바랍니다.</p>
+    <ul class="bullet-list">
+      <li>이메일: <a href="mailto:mcjeff.park@gmail.com">mcjeff.park@gmail.com</a></li>
+      <li>운영자: 김프보드 운영팀</li>
+    </ul>
+    <p>한국 개인정보 분쟁 관련 도움이 필요하면 <a href="https://www.kopico.go.kr" rel="noopener" target="_blank">개인정보분쟁조정위원회(www.kopico.go.kr)</a> 또는 <a href="https://privacy.go.kr" rel="noopener" target="_blank">개인정보침해신고센터(privacy.go.kr)</a>를 이용할 수 있습니다.</p>
   </section>
 </BaseLayout>

@@ -207,4 +207,39 @@ export const sitePages: SeoPage[] = [
     path: '/disclaimer',
     locale: 'ko',
   },
+  {
+    title: '연락처 | 김프보드 운영팀에게 문의·제보·제휴 보내기',
+    description:
+      '데이터 오류 제보, 콘텐츠 보강 요청, 광고·제휴 문의, 개인정보 관련 요청을 받는 김프보드 공식 연락처 페이지.',
+    path: '/contact',
+    locale: 'ko',
+  },
+  {
+    title: 'USDT 김프 | 스테이블코인 김치프리미엄과 BTC 김프의 차이',
+    description:
+      'USDT 김프가 한국 시장의 달러 수급을 어떻게 보여주는지, BTC·ETH 김프와는 어떻게 다른지 차이와 해석법을 정리합니다.',
+    path: '/guide/USDT-김프',
+    locale: 'ko',
+  },
+  {
+    title: '김프 차익거래의 실제 비용 | 표면 김프와 실수익이 다른 이유',
+    description:
+      '한 사이클에 발생하는 매수·매도 수수료, 출금 수수료, 환전 스프레드, 송금 지연 비용까지 합산해 표면 김프와 실수익의 차이를 정리한 가이드.',
+    path: '/guide/김프-차익거래-비용',
+    locale: 'ko',
+  },
+  {
+    title: 'ETF 괴리율 읽기 | 시장가격·NAV 차이를 단순 규칙으로 보지 않기',
+    description:
+      '국내 상장 해외 ETF의 괴리율이 왜 벌어지는지, 환헤지·LP 헤지 비용·국내 수요·한도 등 구조적 요인과 함께 읽는 순서를 정리합니다.',
+    path: '/guide/ETF-괴리율-읽기',
+    locale: 'ko',
+  },
+  {
+    title: '코인 송금 네트워크 선택 | 김프 사이클을 가르는 결정적 변수',
+    description:
+      'TRC20·ERC20·Solana·XRP 메인넷 등 코인별 송금 네트워크 특성과 도착 거래소 호환·트래블룰 영향까지 김프 차익거래 관점에서 정리한 가이드.',
+    path: '/guide/송금-네트워크-선택',
+    locale: 'ko',
+  },
 ];

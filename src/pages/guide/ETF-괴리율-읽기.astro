@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { sitePages } from '../../data/site';
+
+const page = sitePages.find((item) => item.path === '/guide/ETF-괴리율-읽기')!;
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'ETF 괴리율은 정확히 무엇인가요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'ETF의 시장가격과 NAV(순자산가치)의 차이를 백분율로 나타낸 값입니다. 시장가격이 NAV보다 높으면 양(+) 괴리, 낮으면 음(−) 괴리입니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '괴리율이 양(+)이면 매도, 음(−)이면 매수가 정답인가요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '단순 규칙으로 보기 어렵습니다. 환헤지 정책, LP의 헤지 비용, 외환시장 상황, 국내 한도 같은 구조적 요인이 괴리를 만들 수 있어, 시간과 함께 자연 수렴되지 않을 수도 있습니다.',
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path} structuredData={faq}>
+  <section class="hero">
+    <div class="eyebrow">ETF 가이드</div>
+    <h1>ETF 괴리율 읽기</h1>
+    <p>국내 상장 해외 ETF의 시장가격과 NAV 차이를 어떻게 해석해야 하는지, 단순 규칙으로 빠지지 않게 정리한 가이드입니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>괴리율의 정의</h2>
+    <p>ETF의 시장가격은 거래소에서 매수·매도가 만나는 호가입니다. 반면 NAV(Net Asset Value)는 ETF가 보유한 기초 자산(주식·채권·환율 포함)의 가치를 합산한 이론값입니다. 두 값의 차이를 백분율로 나눈 것이 괴리율(deviation)입니다. 정상 시장에서는 LP(유동성 공급자)의 차익거래 활동으로 괴리가 작은 범위에 머물지만, 한국 시장에서는 다음과 같은 구조적 이유로 괴리가 비정상적으로 벌어지는 경우가 있습니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>국내 상장 해외 ETF에서 괴리가 커지는 이유</h2>
+    <ul class="bullet-list">
+      <li><strong>외환시장 시간 차이</strong> — 미국 시장은 한국 야간이지만 국내 ETF는 한국 거래시간에 거래되므로, 야간 미국 시장 변동을 즉시 NAV에 반영할 수 없습니다. 이 시차가 괴리율로 나타납니다.</li>
+      <li><strong>환헤지 정책</strong> — 환헤지(H) ETF와 환노출(UH) ETF는 같은 기초자산을 추종해도 환율 변동에 따라 NAV·시장가격이 다르게 반응합니다.</li>
+      <li><strong>LP 헤지 비용</strong> — LP는 ETF를 만들고 해체하는 차익거래를 위해 외화 매수와 환헤지를 동시에 해야 합니다. 환헤지 비용이 비싸지면 차익거래가 줄어 괴리가 더 오래 유지됩니다.</li>
+      <li><strong>국내 수요 쏠림</strong> — 미국 빅테크·반도체 ETF처럼 일시적 수요가 폭발하는 종목은 국내 매수세만으로 시장가격이 NAV를 크게 웃돌 수 있습니다.</li>
+      <li><strong>한도·규제</strong> — 일부 ETF는 신규 발행이 제한되거나 외화 매수 한도가 있어 LP가 차익을 충분히 풀어내지 못할 때가 있습니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>괴리율을 읽는 순서</h2>
+    <ul class="bullet-list">
+      <li>먼저 <strong>해외 벤치마크</strong>(S&P 500, Nasdaq 100 등)의 야간 변동을 확인합니다. 큰 변동이 있으면 한국 ETF 시초가의 괴리는 시차의 결과일 뿐입니다.</li>
+      <li>다음으로 <strong>환율</strong>을 확인합니다. 환헤지 여부에 따라 같은 자산이 양·음 괴리로 다르게 보일 수 있습니다.</li>
+      <li><strong>거래대금</strong>과 LP 호가폭을 봅니다. 거래대금이 작고 LP가 호가를 넓게 두고 있다면 괴리는 일시적 호가 왜곡일 가능성이 큽니다.</li>
+      <li>마지막으로 <strong>지속성</strong>을 봅니다. 며칠 이상 같은 방향의 괴리가 유지되면 구조적 요인일 가능성이 큽니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>괴리가 보일 때 흔한 오해</h2>
+    <ul class="bullet-list">
+      <li>"양(+) 괴리는 즉시 매도해도 된다" — 환헤지 정책에 따라 자연스러운 양(+) 괴리가 정착될 수 있습니다.</li>
+      <li>"음(−) 괴리는 무조건 매수다" — 발행 한도가 풀리면 시장가격이 NAV로 빠르게 떨어져 음 괴리가 사라질 수 있습니다.</li>
+      <li>"괴리율이 0.0%여야 정상이다" — LP의 호가 스프레드 자체가 0보다 크기 때문에 ±0.1% 안팎의 미세한 괴리는 정상 운영의 결과입니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>김프보드에서 괴리율을 보는 위치</h2>
+    <p>김프보드의 <a href="/etf">ETF 괴리율 페이지</a>는 국내 상장 해외 ETF의 시장가격·NAV·괴리율을 한 화면에 모아 보여줍니다. 동시에 <a href="/commodities">원자재 페이지</a>는 금·은·구리 ETF의 국내 괴리율과 해외 벤치마크를 함께 보여 한국 시장의 가격 왜곡을 자산군별로 비교할 수 있게 구성했습니다.</p>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>관련 페이지</h2>
+    <ul class="bullet-list">
+      <li><a href="/etf">ETF 괴리율 보드</a></li>
+      <li><a href="/commodities">원자재 프리미엄 보드</a></li>
+      <li><a href="/methodology">방법론과 데이터 출처</a></li>
+      <li><a href="/glossary">용어 설명</a></li>
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,12 +1,58 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 import CoinDetailSection from '../components/CoinDetailSection.astro';
+import Calculator from '../components/Calculator.astro';
 import { coinSnapshots } from '../data/market';
 import { sitePages } from '../data/site';
 
 const page = sitePages.find((item) => item.path === '/xrp')!;
 ---
 
-<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  locale="ko"
+  pathname={page.path}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: page.title,
+    inLanguage: 'ko',
+    description: page.description,
+  }}
+>
   <CoinDetailSection coin={coinSnapshots.XRP} pageLabel="XRP 상세 랜딩" />
+
+  <section class="section">
+    <Calculator heading="XRP 김프 계산기" />
+  </section>
+
+  <section class="section copy-panel">
+    <h2>XRP 김프가 다른 자산과 다른 이유</h2>
+    <p>XRP는 한국 거래소에서의 거래대금 비중이 비트코인·이더리움보다 큰 시기가 잦습니다. 한국 투자자에게 친숙한 자산인 만큼 한국 발 호재·악재에 가격이 더 빠르게 반응하고, 그 결과 김프 수치도 단기간에 크게 흔들립니다.</p>
+    <ul class="bullet-list">
+      <li><strong>한국 거래대금 쏠림</strong> — XRP는 글로벌 거래대금에서 한국이 차지하는 비중이 크기 때문에, 한국 발 매수세만으로도 김프가 단숨에 벌어질 수 있습니다.</li>
+      <li><strong>호재 반응 속도</strong> — XRP 관련 법적 이슈, 결제 파트너십 뉴스가 한국에서 더 빠르게 가격에 반영되는 경향이 있어, 김프가 크게 양(+)으로 벌어지기 쉽습니다.</li>
+      <li><strong>빗썸 비중</strong> — XRP는 종목 특성상 빗썸 거래대금 비중이 다른 코인보다 큰 편입니다. 업비트와 빗썸의 XRP 가격이 일시적으로 벌어지는 경우 국내 거래소 차이를 함께 보는 게 중요합니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>XRP 차익거래에서 체크할 것</h2>
+    <ul class="bullet-list">
+      <li><strong>Destination Tag</strong> — XRP 입금에는 데스티네이션 태그(목적지 태그)가 필요한 거래소가 많습니다. 태그 누락은 분실 위험으로 이어지므로, 태그·메모를 거래소 안내대로 정확히 입력해야 합니다.</li>
+      <li><strong>출금 한도</strong> — 일부 거래소는 신규 가입 직후 XRP 같은 빠른 코인의 출금 한도를 낮게 설정합니다. 김프 사이클을 계획할 때 한도가 충분한지 미리 확인합니다.</li>
+      <li><strong>변동성</strong> — XRP는 급등락 빈도가 높습니다. 표시 김프와 실제 매수·송금·매도 사이의 시간 차이만큼 가격 변동 위험을 지게 됩니다. 이 시간이 김프보다 큰 손익을 만드는 일이 많습니다.</li>
+    </ul>
+  </section>
+
+  <section class="section copy-panel">
+    <h2>관련 페이지</h2>
+    <ul class="bullet-list">
+      <li><a href="/btc">비트코인 김프 상세</a></li>
+      <li><a href="/eth">이더리움 김프 상세</a></li>
+      <li><a href="/coins">코인 김프 보드</a></li>
+      <li><a href="/guide/트래블룰">트래블룰</a></li>
+    </ul>
+  </section>
 </BaseLayout>
