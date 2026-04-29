@@ -125,6 +125,8 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
 
   <style>
     .container {
+      /* 표 자체는 .re-frame 의 viewport-relative 정렬로 별도 처리.
+         이 컨테이너는 hint/foot 같은 보조 텍스트만 1200px 안에 두기 위함. */
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem 3rem;
@@ -156,11 +158,15 @@ const apiBase = getApiBase(import.meta.env.PUBLIC_KIMP_API_BASE, import.meta.env
     }
 
     .re-frame {
+      /* 콘텐츠 자연 폭(1606)을 그대로 노출. .container 의 max-width 1200 을
+         viewport 기준으로 깨고 표 전체가 한 번에 보이게 함. */
       position: relative;
-      width: 100%;
+      width: min(1606px, calc(100vw - 24px));
+      left: 50%;
+      transform: translateX(-50%);
       background: #eef3f8;
       border-radius: 0.8rem;
-      overflow-x: auto;       /* 콘텐츠가 컨테이너보다 넓으면 가로 스크롤 허용 (모바일도 자연 크기 유지) */
+      overflow-x: auto;       /* 1606 보다 좁은 화면에서만 가로 스크롤 (mobile fallback) */
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
