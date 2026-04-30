@@ -176,23 +176,50 @@ img {
 }
 .nav-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
   min-width: 280px;
+  margin-top: 0;
   padding: 8px;
   background: var(--panel-strong, rgba(19, 33, 56, 0.96));
   border: 1px solid var(--line, rgba(148, 163, 184, 0.18));
   border-radius: 14px;
   box-shadow: var(--shadow, 0 24px 80px rgba(2, 8, 23, 0.45));
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 2px;
   z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  /* close: 짧은 지연을 두어 트리거↔드롭다운 사이를 빠르게 가로질러도 닫히지 않음 */
+  transition:
+    opacity 120ms ease,
+    transform 140ms ease,
+    visibility 0s linear 140ms;
+}
+/* invisible hover bridge — 트리거와 드롭다운 사이 cursor-gap 을 흡수 */
+.nav-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: transparent;
 }
 .nav-group:hover .nav-dropdown,
 .nav-group:focus-within .nav-dropdown,
 .nav-group[data-open='true'] .nav-dropdown {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition:
+    opacity 120ms ease,
+    transform 140ms ease,
+    visibility 0s linear 0s;
 }
 .nav-dropdown a {
   display: flex;
