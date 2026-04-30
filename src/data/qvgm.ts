@@ -1,5 +1,5 @@
 // 자동 생성 — QVGM+Moat 스크리너 결과 (수동 편집 비권장)
-export const qvgmAsOf = '2026-04-30 10:48';
+export const qvgmAsOf = '2026-04-30 12:49';
 
 export type QvgmMetrics = {
   per: number | null;
@@ -54,7 +54,7 @@ export const qvgmKrTop: QvgmRecord[] = [
     "name": "SK하이닉스",
     "sector": "Technology",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 79.96618351113239,
+    "totalScore": 84.96618351113239,
     "moatScore": 85.0,
     "moatType": "IP",
     "recommendation": "STRONG_BUY",
@@ -111,7 +111,7 @@ export const qvgmKrTop: QvgmRecord[] = [
     "name": "삼성전자",
     "sector": "Technology",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 75.5336015791033,
+    "totalScore": 80.5336015791033,
     "moatScore": 88.0,
     "moatType": "COST",
     "recommendation": "BUY",
@@ -164,68 +164,11 @@ export const qvgmKrTop: QvgmRecord[] = [
   },
   {
     "rank": 3,
-    "ticker": "267260",
-    "name": "HD현대일렉트릭",
-    "sector": "Industrials",
-    "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 70.1203039090459,
-    "moatScore": 75.0,
-    "moatType": "BRAND",
-    "recommendation": "BUY",
-    "conviction": 85.0,
-    "oneLiner": "AI 데이터센터가 쏘아올린 전력 슈퍼사이클의 최대 수혜주",
-    "coreBusiness": "전력기기, 배전기기 및 회전기기 등 종합 중전기기 제조",
-    "competitiveEdge": "북미 및 중동 시장에서 강력한 브랜드 인지도와 레퍼런스를 보유하고 있습니다. 고압 변압기 시장의 높은 진입장벽과 장기 공급 계약이 안정적인 해자를 형성합니다.",
-    "catalysts": [
-      "북미 전력망 노후화 교체 및 AI 데이터센터 전력 수요 급증",
-      "고수익성 수주 잔고의 매출 인식 본격화"
-    ],
-    "risks": [
-      "원자재(구리 등) 가격 급등에 따른 원가 부담",
-      "글로벌 전력망 투자 지연 가능성"
-    ],
-    "valuationNote": "PER 62배로 밸류에이션 부담이 존재하나, 41%의 높은 ROE와 폭발적인 전력 인프라 수요를 감안하면 성장 프리미엄이 타당합니다.",
-    "metrics": {
-      "per": 62.0,
-      "pbr": null,
-      "psr": 11.04618,
-      "roe": 0.4134,
-      "fcfYield": 0.01507804041652209,
-      "ret6m": 0.525609756097561,
-      "ret12m": null
-    },
-    "personas": {
-      "buffett": {
-        "score": 60.0,
-        "verdict": "HOLD",
-        "note": "ROE 훌륭하나 가격이 너무 비쌈"
-      },
-      "graham": {
-        "score": 20.0,
-        "verdict": "AVOID",
-        "note": "PER 62배는 안전마진 전혀 없음"
-      },
-      "munger": {
-        "score": 50.0,
-        "verdict": "HOLD",
-        "note": "전력망 사이클 수혜나 가격 거품 우려"
-      },
-      "klarman": {
-        "score": 30.0,
-        "verdict": "AVOID",
-        "note": "고평가로 인한 영구 손실 리스크 큼"
-      },
-      "consensus": 40.0,
-      "summary": "우수한 사업이나 극심한 고평가로 투자 주의"
-    }
-  },
-  {
-    "rank": 4,
     "ticker": "402340",
     "name": "SK스퀘어",
     "sector": "Technology",
     "bottleneck": "",
-    "totalScore": 70.08439693169476,
+    "totalScore": 77.98439693169476,
     "moatScore": 75.0,
     "moatType": "NETWORK",
     "recommendation": "BUY",
@@ -277,12 +220,12 @@ export const qvgmKrTop: QvgmRecord[] = [
     }
   },
   {
-    "rank": 5,
+    "rank": 4,
     "ticker": "010120",
     "name": "LS ELECTRIC",
     "sector": "Industrials",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 69.45446400740677,
+    "totalScore": 74.45446400740677,
     "moatScore": 75.0,
     "moatType": "BRAND",
     "recommendation": "HOLD",
@@ -334,126 +277,69 @@ export const qvgmKrTop: QvgmRecord[] = [
     }
   },
   {
-    "rank": 6,
-    "ticker": "103590",
-    "name": "일진전기",
+    "rank": 5,
+    "ticker": "267260",
+    "name": "HD현대일렉트릭",
     "sector": "Industrials",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 69.22193864289024,
-    "moatScore": 55.0,
-    "moatType": "NONE",
-    "recommendation": "HOLD",
-    "conviction": 65.0,
-    "oneLiner": "전력망 사이클의 수혜를 입고 있으나 밸류에이션 매력은 다소 감소",
-    "coreBusiness": "초고압 케이블 및 변압기 등 전력 송배전 기기 제조",
-    "competitiveEdge": "전선과 전력기기를 일괄 생산할 수 있는 국내 유일의 턴키(Turn-key) 역량을 갖추고 있습니다. 이를 통해 수주 경쟁력과 원가 효율성을 확보하고 있습니다.",
-    "catalysts": [
-      "미국 및 유럽의 노후 전력망 교체 수요 증가",
-      "초고압 케이블 및 변압기 생산 능력(CAPA) 증설 효과"
-    ],
-    "risks": [
-      "구리 등 주요 원자재 가격 변동성",
-      "글로벌 메이저 업체 대비 상대적으로 낮은 브랜드 인지도"
-    ],
-    "valuationNote": "PER 55배로 전력기기 섹터 내 동반 상승 효과를 누리고 있으나, 뚜렷한 경제적 해자가 부족해 프리미엄 유지에 주의가 필요합니다.",
-    "metrics": {
-      "per": 55.3,
-      "pbr": null,
-      "psr": 2.7563267,
-      "roe": 0.1908,
-      "fcfYield": 0.008561856537080414,
-      "ret6m": 1.388663967611336,
-      "ret12m": null
-    },
-    "personas": {
-      "buffett": {
-        "score": 30.0,
-        "verdict": "AVOID",
-        "note": "뚜렷한 해자 부족, 가격 비쌈"
-      },
-      "graham": {
-        "score": 20.0,
-        "verdict": "AVOID",
-        "note": "PER 55배로 안전마진 없음"
-      },
-      "munger": {
-        "score": 30.0,
-        "verdict": "AVOID",
-        "note": "차별화된 경쟁 우위 찾기 어려움"
-      },
-      "klarman": {
-        "score": 25.0,
-        "verdict": "AVOID",
-        "note": "원자재 리스크와 고평가 부담"
-      },
-      "consensus": 26.0,
-      "summary": "해자 부족 및 밸류에이션 부담으로 투자 부적합"
-    }
-  },
-  {
-    "rank": 7,
-    "ticker": "298040",
-    "name": "효성중공업",
-    "sector": "Industrials",
-    "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 68.5895122253683,
-    "moatScore": 70.0,
-    "moatType": "IP",
+    "totalScore": 74.1203039090459,
+    "moatScore": 75.0,
+    "moatType": "BRAND",
     "recommendation": "BUY",
-    "conviction": 75.0,
-    "oneLiner": "북미 전력망 호황의 수혜와 건설 부문 리스크가 공존하는 기업",
-    "coreBusiness": "초고압 변압기, 차단기 등 중전기기 제조 및 건설 사업 영위",
-    "competitiveEdge": "초고압 변압기 분야에서 글로벌 수준의 기술력(IP)과 레퍼런스를 보유하고 있습니다. 미국 멤피스 공장 등 현지 생산 거점을 통한 북미 시장 대응력이 우수합니다.",
+    "conviction": 85.0,
+    "oneLiner": "AI 데이터센터가 쏘아올린 전력 슈퍼사이클의 최대 수혜주",
+    "coreBusiness": "전력기기, 배전기기 및 회전기기 등 종합 중전기기 제조",
+    "competitiveEdge": "북미 및 중동 시장에서 강력한 브랜드 인지도와 레퍼런스를 보유하고 있습니다. 고압 변압기 시장의 높은 진입장벽과 장기 공급 계약이 안정적인 해자를 형성합니다.",
     "catalysts": [
-      "북미 전력망 투자 확대에 따른 고수익 변압기 수주 증가",
-      "수소 충전소 및 ESS 등 신사업 부문의 성장"
+      "북미 전력망 노후화 교체 및 AI 데이터센터 전력 수요 급증",
+      "고수익성 수주 잔고의 매출 인식 본격화"
     ],
     "risks": [
-      "건설 부문의 PF 리스크 및 수익성 악화",
-      "글로벌 공급망 차질에 따른 원가 상승"
+      "원자재(구리 등) 가격 급등에 따른 원가 부담",
+      "글로벌 전력망 투자 지연 가능성"
     ],
-    "valuationNote": "PER 70배 수준으로 전력기기 호황을 반영 중입니다. 건설 부문의 리스크가 해소될 경우 추가적인 밸류에이션 리레이팅이 가능합니다.",
+    "valuationNote": "PER 62배로 밸류에이션 부담이 존재하나, 41%의 높은 ROE와 폭발적인 전력 인프라 수요를 감안하면 성장 프리미엄이 타당합니다.",
     "metrics": {
-      "per": 70.99,
+      "per": 62.0,
       "pbr": null,
-      "psr": 6.15321,
-      "roe": 0.22125,
-      "fcfYield": 0.005277532417468713,
-      "ret6m": 1.054166666666667,
+      "psr": 11.04618,
+      "roe": 0.4134,
+      "fcfYield": 0.01507804041652209,
+      "ret6m": 0.525609756097561,
       "ret12m": null
     },
     "personas": {
       "buffett": {
-        "score": 40.0,
-        "verdict": "AVOID",
-        "note": "건설 리스크가 본업 가치 훼손"
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "ROE 훌륭하나 가격이 너무 비쌈"
       },
       "graham": {
         "score": 20.0,
         "verdict": "AVOID",
-        "note": "PER 70배 및 PF 리스크 부담"
+        "note": "PER 62배는 안전마진 전혀 없음"
       },
       "munger": {
-        "score": 30.0,
-        "verdict": "AVOID",
-        "note": "건설업 리스크가 치명적 단점"
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "전력망 사이클 수혜나 가격 거품 우려"
       },
       "klarman": {
-        "score": 20.0,
+        "score": 30.0,
         "verdict": "AVOID",
-        "note": "PF 리스크로 영구 손실 우려됨"
+        "note": "고평가로 인한 영구 손실 리스크 큼"
       },
-      "consensus": 28.0,
-      "summary": "본업 호조에도 건설 PF 리스크로 전원 회피"
+      "consensus": 40.0,
+      "summary": "우수한 사업이나 극심한 고평가로 투자 주의"
     }
   },
   {
-    "rank": 8,
+    "rank": 6,
     "ticker": "062040",
     "name": "산일전기",
     "sector": "Industrials",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 68.51829968082308,
+    "totalScore": 73.51829968082308,
     "moatScore": 55.0,
     "moatType": "NONE",
     "recommendation": "BUY",
@@ -505,12 +391,12 @@ export const qvgmKrTop: QvgmRecord[] = [
     }
   },
   {
-    "rank": 9,
+    "rank": 7,
     "ticker": "042700",
     "name": "한미반도체",
     "sector": "Technology",
     "bottleneck": "반도체장비/소부장",
-    "totalScore": 67.60966884588774,
+    "totalScore": 72.60966884588774,
     "moatScore": 85.0,
     "moatType": "IP",
     "recommendation": "HOLD",
@@ -562,12 +448,12 @@ export const qvgmKrTop: QvgmRecord[] = [
     }
   },
   {
-    "rank": 10,
+    "rank": 8,
     "ticker": "007660",
     "name": "이수페타시스",
     "sector": "Technology",
     "bottleneck": "반도체장비/소부장",
-    "totalScore": 67.05932598965573,
+    "totalScore": 72.05932598965573,
     "moatScore": 75.0,
     "moatType": "IP",
     "recommendation": "BUY",
@@ -617,6 +503,120 @@ export const qvgmKrTop: QvgmRecord[] = [
       "consensus": 25.0,
       "summary": "현금흐름 부진 및 사이클 고점 우려로 회피"
     }
+  },
+  {
+    "rank": 9,
+    "ticker": "103590",
+    "name": "일진전기",
+    "sector": "Industrials",
+    "bottleneck": "AI인프라/HBM/전력",
+    "totalScore": 71.82193864289023,
+    "moatScore": 55.0,
+    "moatType": "NONE",
+    "recommendation": "HOLD",
+    "conviction": 65.0,
+    "oneLiner": "전력망 사이클의 수혜를 입고 있으나 밸류에이션 매력은 다소 감소",
+    "coreBusiness": "초고압 케이블 및 변압기 등 전력 송배전 기기 제조",
+    "competitiveEdge": "전선과 전력기기를 일괄 생산할 수 있는 국내 유일의 턴키(Turn-key) 역량을 갖추고 있습니다. 이를 통해 수주 경쟁력과 원가 효율성을 확보하고 있습니다.",
+    "catalysts": [
+      "미국 및 유럽의 노후 전력망 교체 수요 증가",
+      "초고압 케이블 및 변압기 생산 능력(CAPA) 증설 효과"
+    ],
+    "risks": [
+      "구리 등 주요 원자재 가격 변동성",
+      "글로벌 메이저 업체 대비 상대적으로 낮은 브랜드 인지도"
+    ],
+    "valuationNote": "PER 55배로 전력기기 섹터 내 동반 상승 효과를 누리고 있으나, 뚜렷한 경제적 해자가 부족해 프리미엄 유지에 주의가 필요합니다.",
+    "metrics": {
+      "per": 55.3,
+      "pbr": null,
+      "psr": 2.7563267,
+      "roe": 0.1908,
+      "fcfYield": 0.008561856537080414,
+      "ret6m": 1.388663967611336,
+      "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "뚜렷한 해자 부족, 가격 비쌈"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 55배로 안전마진 없음"
+      },
+      "munger": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "차별화된 경쟁 우위 찾기 어려움"
+      },
+      "klarman": {
+        "score": 25.0,
+        "verdict": "AVOID",
+        "note": "원자재 리스크와 고평가 부담"
+      },
+      "consensus": 26.0,
+      "summary": "해자 부족 및 밸류에이션 부담으로 투자 부적합"
+    }
+  },
+  {
+    "rank": 10,
+    "ticker": "298040",
+    "name": "효성중공업",
+    "sector": "Industrials",
+    "bottleneck": "AI인프라/HBM/전력",
+    "totalScore": 71.38951222536829,
+    "moatScore": 70.0,
+    "moatType": "IP",
+    "recommendation": "BUY",
+    "conviction": 75.0,
+    "oneLiner": "북미 전력망 호황의 수혜와 건설 부문 리스크가 공존하는 기업",
+    "coreBusiness": "초고압 변압기, 차단기 등 중전기기 제조 및 건설 사업 영위",
+    "competitiveEdge": "초고압 변압기 분야에서 글로벌 수준의 기술력(IP)과 레퍼런스를 보유하고 있습니다. 미국 멤피스 공장 등 현지 생산 거점을 통한 북미 시장 대응력이 우수합니다.",
+    "catalysts": [
+      "북미 전력망 투자 확대에 따른 고수익 변압기 수주 증가",
+      "수소 충전소 및 ESS 등 신사업 부문의 성장"
+    ],
+    "risks": [
+      "건설 부문의 PF 리스크 및 수익성 악화",
+      "글로벌 공급망 차질에 따른 원가 상승"
+    ],
+    "valuationNote": "PER 70배 수준으로 전력기기 호황을 반영 중입니다. 건설 부문의 리스크가 해소될 경우 추가적인 밸류에이션 리레이팅이 가능합니다.",
+    "metrics": {
+      "per": 70.99,
+      "pbr": null,
+      "psr": 6.15321,
+      "roe": 0.22125,
+      "fcfYield": 0.005277532417468713,
+      "ret6m": 1.054166666666667,
+      "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "건설 리스크가 본업 가치 훼손"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 70배 및 PF 리스크 부담"
+      },
+      "munger": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "건설업 리스크가 치명적 단점"
+      },
+      "klarman": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PF 리스크로 영구 손실 우려됨"
+      },
+      "consensus": 28.0,
+      "summary": "본업 호조에도 건설 PF 리스크로 전원 회피"
+    }
   }
 ];
 
@@ -627,7 +627,7 @@ export const qvgmUsTop: QvgmRecord[] = [
     "name": "Edison International",
     "sector": "Utilities",
     "bottleneck": "",
-    "totalScore": 72.05584227847254,
+    "totalScore": 78.15584227847253,
     "moatScore": 80.0,
     "moatType": "REG",
     "recommendation": "BUY",
@@ -680,59 +680,59 @@ export const qvgmUsTop: QvgmRecord[] = [
   },
   {
     "rank": 2,
-    "ticker": "VRT",
-    "name": "Vertiv",
-    "sector": "Industrials",
-    "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 70.21709501228841,
-    "moatScore": 75.0,
-    "moatType": "SWITCHING",
-    "recommendation": "BUY",
-    "conviction": 80.0,
-    "oneLiner": "AI 데이터센터 전력 및 냉각 병목 현상의 최대 수혜주.",
-    "coreBusiness": "데이터센터 및 통신 네트워크용 전력, 냉각 등 핵심 디지털 인프라 솔루션 제공.",
-    "competitiveEdge": "AI 데이터센터 확장에 필수적인 열 관리 및 전력 인프라 분야에서 글로벌 선두권의 기술력을 갖추고 있습니다. 고객사들의 높은 전환 비용(SWITCHING)이 강력한 진입장벽으로 작용합니다.",
+    "ticker": "CF",
+    "name": "CF Industries",
+    "sector": "Basic Materials",
+    "bottleneck": "",
+    "totalScore": 75.02692669965532,
+    "moatScore": 70.0,
+    "moatType": "COST",
+    "recommendation": "HOLD",
+    "conviction": 60.0,
+    "oneLiner": "저렴한 천연가스 기반의 원가 경쟁력을 갖춘 비료 대장주.",
+    "coreBusiness": "북미를 중심으로 암모니아 및 질소 비료를 생산, 판매하는 농업 화학 기업.",
+    "competitiveEdge": "북미의 저렴한 천연가스를 원료로 사용하여 글로벌 경쟁사 대비 압도적인 원가 우위(COST)를 확보하고 있습니다. 대규모 생산 설비와 물류 네트워크가 진입장벽입니다.",
     "catalysts": [
-      "빅테크 기업들의 AI 데이터센터 CAPEX 가이던스 상향",
-      "액체 냉각(Liquid Cooling) 솔루션 채택률 급증"
+      "글로벌 곡물 가격 상승에 따른 비료 수요 증가",
+      "청정 암모니아(블루/그린) 프로젝트 상용화 가시화"
     ],
     "risks": [
-      "AI 인프라 투자 사이클 둔화 시 직격탄",
-      "공급망 차질에 따른 마진 압박 가능성"
+      "주요 원재료인 천연가스 가격의 급격한 변동",
+      "중국 및 러시아의 비료 수출 통제 해제 시 공급 과잉"
     ],
-    "valuationNote": "PER 77배, PBR 29배로 밸류에이션 부담이 높으나, 30% 이상의 매출 성장과 45%의 ROE가 프리미엄을 정당화하고 있습니다.",
+    "valuationNote": "PER 14배, FCF 수익률 6.7%로 밸류에이션이 편안하며, 안정적인 현금흐름 창출 능력을 보여줍니다.",
     "metrics": {
-      "per": 77.12342,
-      "pbr": 29.717556,
-      "psr": 10.8459,
-      "roe": 0.45097,
-      "fcfYield": 0.01670614358209321,
-      "ret6m": 0.5872472906354065,
+      "per": 14.133779,
+      "pbr": 4.0238676,
+      "psr": 2.7492223,
+      "roe": 0.23401,
+      "fcfYield": 0.06715491570181745,
+      "ret6m": 0.4675309604700393,
       "ret12m": null
     },
     "personas": {
       "buffett": {
-        "score": 50.0,
+        "score": 65.0,
         "verdict": "HOLD",
-        "note": "해자는 있으나 PER 77은 너무 비쌈"
+        "note": "원가 우위 좋으나 천연가스 변동성 부담"
       },
       "graham": {
-        "score": 20.0,
-        "verdict": "AVOID",
-        "note": "PBR 29 등 절대적 고평가 상태"
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "PER 14 수준으로 무난한 밸류에이션"
       },
       "munger": {
-        "score": 40.0,
-        "verdict": "AVOID",
-        "note": "AI 유행에 편승한 가격, 사이클 주의"
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "저비용 구조 훌륭하나 지정학적 변수 큼"
       },
       "klarman": {
-        "score": 30.0,
-        "verdict": "AVOID",
-        "note": "가격에 완벽함이 반영돼 하방 리스크 큼"
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "공급 과잉 리스크와 원자재 변동성 주의"
       },
-      "consensus": 35.0,
-      "summary": "훌륭한 기업이나 AI 테마로 인한 극심한 고평가."
+      "consensus": 64.0,
+      "summary": "압도적 원가 우위가 돋보이나 매크로 변수에 민감함."
     }
   },
   {
@@ -741,7 +741,7 @@ export const qvgmUsTop: QvgmRecord[] = [
     "name": "Micron Technology",
     "sector": "Technology",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 69.4229056029805,
+    "totalScore": 74.5229056029805,
     "moatScore": 80.0,
     "moatType": "IP",
     "recommendation": "STRONG_BUY",
@@ -794,68 +794,11 @@ export const qvgmUsTop: QvgmRecord[] = [
   },
   {
     "rank": 4,
-    "ticker": "CF",
-    "name": "CF Industries",
-    "sector": "Basic Materials",
-    "bottleneck": "",
-    "totalScore": 68.62692669965531,
-    "moatScore": 70.0,
-    "moatType": "COST",
-    "recommendation": "HOLD",
-    "conviction": 60.0,
-    "oneLiner": "저렴한 천연가스 기반의 원가 경쟁력을 갖춘 비료 대장주.",
-    "coreBusiness": "북미를 중심으로 암모니아 및 질소 비료를 생산, 판매하는 농업 화학 기업.",
-    "competitiveEdge": "북미의 저렴한 천연가스를 원료로 사용하여 글로벌 경쟁사 대비 압도적인 원가 우위(COST)를 확보하고 있습니다. 대규모 생산 설비와 물류 네트워크가 진입장벽입니다.",
-    "catalysts": [
-      "글로벌 곡물 가격 상승에 따른 비료 수요 증가",
-      "청정 암모니아(블루/그린) 프로젝트 상용화 가시화"
-    ],
-    "risks": [
-      "주요 원재료인 천연가스 가격의 급격한 변동",
-      "중국 및 러시아의 비료 수출 통제 해제 시 공급 과잉"
-    ],
-    "valuationNote": "PER 14배, FCF 수익률 6.7%로 밸류에이션이 편안하며, 안정적인 현금흐름 창출 능력을 보여줍니다.",
-    "metrics": {
-      "per": 14.133779,
-      "pbr": 4.0238676,
-      "psr": 2.7492223,
-      "roe": 0.23401,
-      "fcfYield": 0.06715491570181745,
-      "ret6m": 0.4675309604700393,
-      "ret12m": null
-    },
-    "personas": {
-      "buffett": {
-        "score": 65.0,
-        "verdict": "HOLD",
-        "note": "원가 우위 좋으나 천연가스 변동성 부담"
-      },
-      "graham": {
-        "score": 75.0,
-        "verdict": "BUY",
-        "note": "PER 14 수준으로 무난한 밸류에이션"
-      },
-      "munger": {
-        "score": 60.0,
-        "verdict": "HOLD",
-        "note": "저비용 구조 훌륭하나 지정학적 변수 큼"
-      },
-      "klarman": {
-        "score": 55.0,
-        "verdict": "HOLD",
-        "note": "공급 과잉 리스크와 원자재 변동성 주의"
-      },
-      "consensus": 64.0,
-      "summary": "압도적 원가 우위가 돋보이나 매크로 변수에 민감함."
-    }
-  },
-  {
-    "rank": 5,
     "ticker": "GEV",
     "name": "GE Vernova",
     "sector": "Industrials",
     "bottleneck": "AI인프라/HBM/전력",
-    "totalScore": 68.60265169237123,
+    "totalScore": 73.90265169237122,
     "moatScore": 75.0,
     "moatType": "IP",
     "recommendation": "BUY",
@@ -907,12 +850,69 @@ export const qvgmUsTop: QvgmRecord[] = [
     }
   },
   {
+    "rank": 5,
+    "ticker": "VRT",
+    "name": "Vertiv",
+    "sector": "Industrials",
+    "bottleneck": "AI인프라/HBM/전력",
+    "totalScore": 73.71709501228841,
+    "moatScore": 75.0,
+    "moatType": "SWITCHING",
+    "recommendation": "BUY",
+    "conviction": 80.0,
+    "oneLiner": "AI 데이터센터 전력 및 냉각 병목 현상의 최대 수혜주.",
+    "coreBusiness": "데이터센터 및 통신 네트워크용 전력, 냉각 등 핵심 디지털 인프라 솔루션 제공.",
+    "competitiveEdge": "AI 데이터센터 확장에 필수적인 열 관리 및 전력 인프라 분야에서 글로벌 선두권의 기술력을 갖추고 있습니다. 고객사들의 높은 전환 비용(SWITCHING)이 강력한 진입장벽으로 작용합니다.",
+    "catalysts": [
+      "빅테크 기업들의 AI 데이터센터 CAPEX 가이던스 상향",
+      "액체 냉각(Liquid Cooling) 솔루션 채택률 급증"
+    ],
+    "risks": [
+      "AI 인프라 투자 사이클 둔화 시 직격탄",
+      "공급망 차질에 따른 마진 압박 가능성"
+    ],
+    "valuationNote": "PER 77배, PBR 29배로 밸류에이션 부담이 높으나, 30% 이상의 매출 성장과 45%의 ROE가 프리미엄을 정당화하고 있습니다.",
+    "metrics": {
+      "per": 77.12342,
+      "pbr": 29.717556,
+      "psr": 10.8459,
+      "roe": 0.45097,
+      "fcfYield": 0.01670614358209321,
+      "ret6m": 0.5872472906354065,
+      "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "해자는 있으나 PER 77은 너무 비쌈"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PBR 29 등 절대적 고평가 상태"
+      },
+      "munger": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "AI 유행에 편승한 가격, 사이클 주의"
+      },
+      "klarman": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "가격에 완벽함이 반영돼 하방 리스크 큼"
+      },
+      "consensus": 35.0,
+      "summary": "훌륭한 기업이나 AI 테마로 인한 극심한 고평가."
+    }
+  },
+  {
     "rank": 6,
     "ticker": "TXT",
     "name": "Textron",
     "sector": "Industrials",
     "bottleneck": "방산",
-    "totalScore": 66.8476146455417,
+    "totalScore": 73.6476146455417,
     "moatScore": 75.0,
     "moatType": "BRAND",
     "recommendation": "HOLD",
@@ -965,125 +965,11 @@ export const qvgmUsTop: QvgmRecord[] = [
   },
   {
     "rank": 7,
-    "ticker": "NUE",
-    "name": "Nucor",
-    "sector": "Basic Materials",
-    "bottleneck": "",
-    "totalScore": 66.63282737676259,
-    "moatScore": 80.0,
-    "moatType": "COST",
-    "recommendation": "BUY",
-    "conviction": 70.0,
-    "oneLiner": "압도적 원가 경쟁력과 유연성을 갖춘 미국 철강 대장주.",
-    "coreBusiness": "전기로 방식을 활용하여 다양한 철강 제품을 생산하는 미국 최대의 철강 기업.",
-    "competitiveEdge": "고철을 재활용하는 전기로(EAF) 기술을 통해 전통적인 고로 대비 유연한 생산과 압도적인 원가 우위(COST)를 자랑합니다. 성과급 위주의 독특한 기업 문화가 높은 생산성으로 이어집니다.",
-    "catalysts": [
-      "미국 인프라 투자 법안(IIJA)에 따른 철강 수요 본격화",
-      "친환경 철강(Green Steel) 수요 증가에 따른 프리미엄 확보"
-    ],
-    "risks": [
-      "글로벌 경기 둔화에 따른 전방 산업(건설, 자동차) 수요 침체",
-      "저가 수입산 철강재 유입에 따른 판가 하락"
-    ],
-    "valuationNote": "PER 22배로 철강주 치고는 프리미엄을 받고 있으나, 꾸준한 이익 창출력과 주주환원 정책이 이를 뒷받침합니다.",
-    "metrics": {
-      "per": 22.0625,
-      "pbr": 2.425085,
-      "psr": 1.482615,
-      "roe": 0.12285,
-      "fcfYield": -0.007801681720448195,
-      "ret6m": 0.5426608888752464,
-      "ret12m": null
-    },
-    "personas": {
-      "buffett": {
-        "score": 60.0,
-        "verdict": "HOLD",
-        "note": "원가 우위 있으나 철강은 자본집약적임"
-      },
-      "graham": {
-        "score": 50.0,
-        "verdict": "HOLD",
-        "note": "철강주치고 밸류에이션 매력이 떨어짐"
-      },
-      "munger": {
-        "score": 75.0,
-        "verdict": "BUY",
-        "note": "전기로 기술과 훌륭한 기업 문화는 칭찬"
-      },
-      "klarman": {
-        "score": 55.0,
-        "verdict": "HOLD",
-        "note": "경기 둔화 시 전방 수요 침체 리스크"
-      },
-      "consensus": 60.0,
-      "summary": "우수한 기업 문화와 원가 경쟁력, 단 경기 민감도 큼."
-    }
-  },
-  {
-    "rank": 8,
-    "ticker": "NEM",
-    "name": "Newmont",
-    "sector": "Basic Materials",
-    "bottleneck": "",
-    "totalScore": 65.70479697695656,
-    "moatScore": 65.0,
-    "moatType": "COST",
-    "recommendation": "BUY",
-    "conviction": 75.0,
-    "oneLiner": "금 가격 상승의 레버리지를 온전히 누릴 수 있는 글로벌 1위 금광주.",
-    "coreBusiness": "전 세계 주요 광산에서 금을 비롯해 구리, 은 등을 채굴하는 글로벌 1위 금 생산 기업.",
-    "competitiveEdge": "다각화된 글로벌 광산 포트폴리오를 통해 지정학적 리스크를 분산하고, 규모의 경제를 통한 원가 통제력(COST)을 갖추고 있습니다. 뉴크레스트 인수로 구리 생산 능력도 크게 확충했습니다.",
-    "catalysts": [
-      "지정학적 긴장 및 금리 인하 기대감에 따른 금 가격 상승",
-      "뉴크레스트 합병 시너지 본격화로 인한 단위당 생산 단가 하락"
-    ],
-    "risks": [
-      "광산 노후화 및 채굴 난이도 증가에 따른 자본적 지출(CAPEX) 급증",
-      "주요 조업 국가의 환경 규제 및 자원 민족주의 심화"
-    ],
-    "valuationNote": "PER 13.9배, FCF 수익률 8.5%로 밸류에이션 매력이 높으며, 금 가격 강세 시 강력한 이익 레버리지가 기대됩니다.",
-    "metrics": {
-      "per": 13.957198,
-      "pbr": 3.305991,
-      "psr": 4.6014323,
-      "roe": 0.25832,
-      "fcfYield": 0.08534931787740727,
-      "ret6m": 0.3685616732699792,
-      "ret12m": null
-    },
-    "personas": {
-      "buffett": {
-        "score": 40.0,
-        "verdict": "AVOID",
-        "note": "원가 통제력 좋으나 금광업은 선호 안 함"
-      },
-      "graham": {
-        "score": 65.0,
-        "verdict": "HOLD",
-        "note": "PER 13.9로 가격은 나쁘지 않음"
-      },
-      "munger": {
-        "score": 40.0,
-        "verdict": "AVOID",
-        "note": "금광업 자체의 장기적 가치 창출에 회의적"
-      },
-      "klarman": {
-        "score": 50.0,
-        "verdict": "HOLD",
-        "note": "지정학적 리스크와 CAPEX 증가 부담"
-      },
-      "consensus": 49.0,
-      "summary": "금광업 특유의 리스크와 자본 집약적 구조가 단점."
-    }
-  },
-  {
-    "rank": 9,
     "ticker": "HII",
     "name": "Huntington Ingalls Industries",
     "sector": "Industrials",
     "bottleneck": "방산",
-    "totalScore": 65.61087873858682,
+    "totalScore": 73.11087873858682,
     "moatScore": 85.0,
     "moatType": "REG",
     "recommendation": "BUY",
@@ -1135,12 +1021,126 @@ export const qvgmUsTop: QvgmRecord[] = [
     }
   },
   {
+    "rank": 8,
+    "ticker": "NUE",
+    "name": "Nucor",
+    "sector": "Basic Materials",
+    "bottleneck": "",
+    "totalScore": 72.63282737676259,
+    "moatScore": 80.0,
+    "moatType": "COST",
+    "recommendation": "BUY",
+    "conviction": 70.0,
+    "oneLiner": "압도적 원가 경쟁력과 유연성을 갖춘 미국 철강 대장주.",
+    "coreBusiness": "전기로 방식을 활용하여 다양한 철강 제품을 생산하는 미국 최대의 철강 기업.",
+    "competitiveEdge": "고철을 재활용하는 전기로(EAF) 기술을 통해 전통적인 고로 대비 유연한 생산과 압도적인 원가 우위(COST)를 자랑합니다. 성과급 위주의 독특한 기업 문화가 높은 생산성으로 이어집니다.",
+    "catalysts": [
+      "미국 인프라 투자 법안(IIJA)에 따른 철강 수요 본격화",
+      "친환경 철강(Green Steel) 수요 증가에 따른 프리미엄 확보"
+    ],
+    "risks": [
+      "글로벌 경기 둔화에 따른 전방 산업(건설, 자동차) 수요 침체",
+      "저가 수입산 철강재 유입에 따른 판가 하락"
+    ],
+    "valuationNote": "PER 22배로 철강주 치고는 프리미엄을 받고 있으나, 꾸준한 이익 창출력과 주주환원 정책이 이를 뒷받침합니다.",
+    "metrics": {
+      "per": 22.0625,
+      "pbr": 2.425085,
+      "psr": 1.482615,
+      "roe": 0.12285,
+      "fcfYield": -0.007801681720448195,
+      "ret6m": 0.5426608888752464,
+      "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "원가 우위 있으나 철강은 자본집약적임"
+      },
+      "graham": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "철강주치고 밸류에이션 매력이 떨어짐"
+      },
+      "munger": {
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "전기로 기술과 훌륭한 기업 문화는 칭찬"
+      },
+      "klarman": {
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "경기 둔화 시 전방 수요 침체 리스크"
+      },
+      "consensus": 60.0,
+      "summary": "우수한 기업 문화와 원가 경쟁력, 단 경기 민감도 큼."
+    }
+  },
+  {
+    "rank": 9,
+    "ticker": "NEM",
+    "name": "Newmont",
+    "sector": "Basic Materials",
+    "bottleneck": "",
+    "totalScore": 70.60479697695656,
+    "moatScore": 65.0,
+    "moatType": "COST",
+    "recommendation": "BUY",
+    "conviction": 75.0,
+    "oneLiner": "금 가격 상승의 레버리지를 온전히 누릴 수 있는 글로벌 1위 금광주.",
+    "coreBusiness": "전 세계 주요 광산에서 금을 비롯해 구리, 은 등을 채굴하는 글로벌 1위 금 생산 기업.",
+    "competitiveEdge": "다각화된 글로벌 광산 포트폴리오를 통해 지정학적 리스크를 분산하고, 규모의 경제를 통한 원가 통제력(COST)을 갖추고 있습니다. 뉴크레스트 인수로 구리 생산 능력도 크게 확충했습니다.",
+    "catalysts": [
+      "지정학적 긴장 및 금리 인하 기대감에 따른 금 가격 상승",
+      "뉴크레스트 합병 시너지 본격화로 인한 단위당 생산 단가 하락"
+    ],
+    "risks": [
+      "광산 노후화 및 채굴 난이도 증가에 따른 자본적 지출(CAPEX) 급증",
+      "주요 조업 국가의 환경 규제 및 자원 민족주의 심화"
+    ],
+    "valuationNote": "PER 13.9배, FCF 수익률 8.5%로 밸류에이션 매력이 높으며, 금 가격 강세 시 강력한 이익 레버리지가 기대됩니다.",
+    "metrics": {
+      "per": 13.957198,
+      "pbr": 3.305991,
+      "psr": 4.6014323,
+      "roe": 0.25832,
+      "fcfYield": 0.08534931787740727,
+      "ret6m": 0.3685616732699792,
+      "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "원가 통제력 좋으나 금광업은 선호 안 함"
+      },
+      "graham": {
+        "score": 65.0,
+        "verdict": "HOLD",
+        "note": "PER 13.9로 가격은 나쁘지 않음"
+      },
+      "munger": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "금광업 자체의 장기적 가치 창출에 회의적"
+      },
+      "klarman": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "지정학적 리스크와 CAPEX 증가 부담"
+      },
+      "consensus": 49.0,
+      "summary": "금광업 특유의 리스크와 자본 집약적 구조가 단점."
+    }
+  },
+  {
     "rank": 10,
     "ticker": "ALB",
     "name": "Albemarle Corporation",
     "sector": "Basic Materials",
     "bottleneck": "희토류/배터리소재",
-    "totalScore": 64.84611787549451,
+    "totalScore": 68.24611787549452,
     "moatScore": 80.0,
     "moatType": "COST",
     "recommendation": "HOLD",
@@ -1197,8 +1197,9 @@ export const qvgmWeights = {
   value: 0.16,
   quality: 0.12,
   growth: 0.15,
-  momentum: 0.18,
+  momentum: 0.13,
   sector: 0.12,
   moat: 0.17,
-  bottleneck: 0.1,
+  bottleneck: 0.05,
+  persona: 0.1,
 } as const;
