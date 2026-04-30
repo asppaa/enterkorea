@@ -1048,8 +1048,10 @@ img {
     width: 100%;
     flex: none;
     justify-content: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    /* 5개 메뉴라 가로 스크롤 불필요 — wrap 으로 두 줄 허용해 드롭다운이 클리핑되지 않게 */
+    flex-wrap: wrap;
+    overflow-x: visible;
+    overflow-y: visible;
     padding-bottom: 4px;
   }
 
@@ -1061,6 +1063,53 @@ img {
     white-space: nowrap;
     padding: 9px 12px;
     font-size: 0.92rem;
+  }
+
+  /* 모바일: 드롭다운을 absolute → 인라인 플로우로 전환.
+     트리거 아래 같은 줄에 자연스럽게 펼쳐져 클리핑 문제 회피 + 터치 UX 개선. */
+  .nav-group {
+    flex-wrap: wrap;
+  }
+  .nav-group[data-open='true'] {
+    flex: 1 1 100%;
+  }
+  .nav-dropdown {
+    position: static;
+    display: none;
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    margin: 6px 0 6px;
+    padding: 6px;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+    box-shadow: none;
+    background: rgba(8, 18, 33, 0.92);
+    border-radius: 12px;
+  }
+  .nav-dropdown::before { display: none; }
+  /* 모바일은 터치 환경 — hover 가 sticky 하면 사용성 ↓. 오직 data-open(탭) 으로만 토글. */
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown {
+    display: none;
+  }
+  .nav-group[data-open='true'] .nav-dropdown {
+    display: flex;
+  }
+  .nav-dropdown a {
+    padding: 12px 14px;
+    border-radius: 8px;
+  }
+  /* 모바일에서 caret 탭 타겟 확대 (작은 화면에서 누르기 어려운 문제) */
+  .nav-trigger .nav-caret {
+    padding: 8px 14px 8px 4px;
+    font-size: 0.85rem;
+  }
+  .nav-trigger .nav-trigger-label {
+    padding: 9px 6px 9px 12px;
   }
 
   .summary-card {
