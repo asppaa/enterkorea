@@ -1,5 +1,5 @@
 // 자동 생성 — QVGM+Moat 스크리너 결과 (수동 편집 비권장)
-export const qvgmAsOf = '2026-04-30 10:36';
+export const qvgmAsOf = '2026-04-30 10:48';
 
 export type QvgmMetrics = {
   per: number | null;
@@ -9,6 +9,21 @@ export type QvgmMetrics = {
   fcfYield: number | null;
   ret6m: number | null;
   ret12m: number | null;
+};
+
+export type QvgmPersonaVerdict = {
+  score: number | null;
+  verdict: string;  // BUY | HOLD | AVOID
+  note: string;
+};
+
+export type QvgmPersonas = {
+  buffett: QvgmPersonaVerdict | null;
+  graham: QvgmPersonaVerdict | null;
+  munger: QvgmPersonaVerdict | null;
+  klarman: QvgmPersonaVerdict | null;
+  consensus: number | null;
+  summary: string;
 };
 
 export type QvgmRecord = {
@@ -29,6 +44,7 @@ export type QvgmRecord = {
   risks: string[];
   valuationNote: string;
   metrics: QvgmMetrics;
+  personas: QvgmPersonas | null;
 };
 
 export const qvgmKrTop: QvgmRecord[] = [
@@ -63,6 +79,30 @@ export const qvgmKrTop: QvgmRecord[] = [
       "fcfYield": null,
       "ret6m": 1.439252336448598,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 80.0,
+        "verdict": "BUY",
+        "note": "압도적 기술 해자와 높은 ROE 매력"
+      },
+      "graham": {
+        "score": 40.0,
+        "verdict": "HOLD",
+        "note": "PER 22배로 안전마진 부족"
+      },
+      "munger": {
+        "score": 85.0,
+        "verdict": "BUY",
+        "note": "AI 사이클의 확실한 승자"
+      },
+      "klarman": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "사이클 고점 리스크 경계 필요"
+      },
+      "consensus": 64.0,
+      "summary": "강력한 해자 인정되나 사이클 고점 우려 상존"
     }
   },
   {
@@ -94,8 +134,32 @@ export const qvgmKrTop: QvgmRecord[] = [
       "psr": 4.43865,
       "roe": 0.10783,
       "fcfYield": 0.01617032663746331,
-      "ret6m": 1.2107843137254903,
+      "ret6m": 1.21078431372549,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 75.0,
+        "verdict": "HOLD",
+        "note": "규모의 경제 해자, 수익성 개선 필요"
+      },
+      "graham": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "PER 34배로 가치투자 매력 낮음"
+      },
+      "munger": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "파운드리 경쟁력 저하 우려됨"
+      },
+      "klarman": {
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "하방 경직성 있으나 밸류에이션 부담"
+      },
+      "consensus": 55.0,
+      "summary": "안정적이나 밸류에이션과 경쟁력 우려로 관망"
     }
   },
   {
@@ -126,9 +190,33 @@ export const qvgmKrTop: QvgmRecord[] = [
       "pbr": null,
       "psr": 11.04618,
       "roe": 0.4134,
-      "fcfYield": 0.015078040416522087,
+      "fcfYield": 0.01507804041652209,
       "ret6m": 0.525609756097561,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "ROE 훌륭하나 가격이 너무 비쌈"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 62배는 안전마진 전혀 없음"
+      },
+      "munger": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "전력망 사이클 수혜나 가격 거품 우려"
+      },
+      "klarman": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "고평가로 인한 영구 손실 리스크 큼"
+      },
+      "consensus": 40.0,
+      "summary": "우수한 사업이나 극심한 고평가로 투자 주의"
     }
   },
   {
@@ -160,8 +248,32 @@ export const qvgmKrTop: QvgmRecord[] = [
       "psr": 10.702937,
       "roe": 0.37138999,
       "fcfYield": 0.05157153172420359,
-      "ret6m": 1.9125214408233275,
+      "ret6m": 1.912521440823328,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 80.0,
+        "verdict": "BUY",
+        "note": "우수한 자본 배분과 현금흐름 창출"
+      },
+      "graham": {
+        "score": 85.0,
+        "verdict": "BUY",
+        "note": "낮은 PER과 지주사 할인 매력적"
+      },
+      "munger": {
+        "score": 70.0,
+        "verdict": "HOLD",
+        "note": "복잡한 구조나 밸류에이션은 합리적"
+      },
+      "klarman": {
+        "score": 80.0,
+        "verdict": "BUY",
+        "note": "NAV 대비 큰 할인율로 안전마진 확보"
+      },
+      "consensus": 79.0,
+      "summary": "저평가된 가치와 우량 자회사 보유로 매력적"
     }
   },
   {
@@ -193,8 +305,32 @@ export const qvgmKrTop: QvgmRecord[] = [
       "psr": 8.249382,
       "roe": 0.14061,
       "fcfYield": 0.0002189816292316865,
-      "ret6m": 2.6666666666666665,
+      "ret6m": 2.666666666666667,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "브랜드 해자 있으나 가격 터무니없음"
+      },
+      "graham": {
+        "score": 10.0,
+        "verdict": "AVOID",
+        "note": "PER 145배는 절대 매수 불가"
+      },
+      "munger": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "유행에 편승한 극단적 고평가"
+      },
+      "klarman": {
+        "score": 15.0,
+        "verdict": "AVOID",
+        "note": "하방 리스크가 너무 커서 회피"
+      },
+      "consensus": 21.0,
+      "summary": "비이성적 고평가 상태로 전원 매수 회피"
     }
   },
   {
@@ -226,8 +362,32 @@ export const qvgmKrTop: QvgmRecord[] = [
       "psr": 2.7563267,
       "roe": 0.1908,
       "fcfYield": 0.008561856537080414,
-      "ret6m": 1.3886639676113361,
+      "ret6m": 1.388663967611336,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "뚜렷한 해자 부족, 가격 비쌈"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 55배로 안전마진 없음"
+      },
+      "munger": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "차별화된 경쟁 우위 찾기 어려움"
+      },
+      "klarman": {
+        "score": 25.0,
+        "verdict": "AVOID",
+        "note": "원자재 리스크와 고평가 부담"
+      },
+      "consensus": 26.0,
+      "summary": "해자 부족 및 밸류에이션 부담으로 투자 부적합"
     }
   },
   {
@@ -259,8 +419,32 @@ export const qvgmKrTop: QvgmRecord[] = [
       "psr": 6.15321,
       "roe": 0.22125,
       "fcfYield": 0.005277532417468713,
-      "ret6m": 1.0541666666666667,
+      "ret6m": 1.054166666666667,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "건설 리스크가 본업 가치 훼손"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 70배 및 PF 리스크 부담"
+      },
+      "munger": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "건설업 리스크가 치명적 단점"
+      },
+      "klarman": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PF 리스크로 영구 손실 우려됨"
+      },
+      "consensus": 28.0,
+      "summary": "본업 호조에도 건설 PF 리스크로 전원 회피"
     }
   },
   {
@@ -294,6 +478,30 @@ export const qvgmKrTop: QvgmRecord[] = [
       "fcfYield": 0.05603604934038713,
       "ret6m": 0.507177033492823,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "ROE 경이로우나 장기 해자 불확실"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 46배로 가치투자 기준 미달"
+      },
+      "munger": {
+        "score": 40.0,
+        "verdict": "HOLD",
+        "note": "틈새시장이나 진입장벽 낮음"
+      },
+      "klarman": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "수요 변동성 리스크 대비 고평가"
+      },
+      "consensus": 35.0,
+      "summary": "높은 수익성이나 해자 부족과 고평가로 관망"
     }
   },
   {
@@ -324,9 +532,33 @@ export const qvgmKrTop: QvgmRecord[] = [
       "pbr": null,
       "psr": 63.81818,
       "roe": 0.34764,
-      "fcfYield": 0.0033893448003079374,
+      "fcfYield": 0.003389344800307937,
       "ret6m": 1.606951871657754,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "훌륭한 기업이나 가격이 비이성적"
+      },
+      "graham": {
+        "score": 10.0,
+        "verdict": "AVOID",
+        "note": "PER 172배는 투기적 수준"
+      },
+      "munger": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "AI 거품의 전형적인 고평가 사례"
+      },
+      "klarman": {
+        "score": 10.0,
+        "verdict": "AVOID",
+        "note": "완벽한 가격 책정으로 하방 리스크 극대"
+      },
+      "consensus": 20.0,
+      "summary": "압도적 기술력에도 극단적 고평가로 전원 회피"
     }
   },
   {
@@ -360,6 +592,30 @@ export const qvgmKrTop: QvgmRecord[] = [
       "fcfYield": -0.004794223742013965,
       "ret6m": 0.568893528183716,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "음수 현금흐름과 고평가 부담"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PER 67배로 안전마진 전무"
+      },
+      "munger": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "AI 인프라 사이클 고점 우려"
+      },
+      "klarman": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "현금흐름 악화 및 고평가 리스크"
+      },
+      "consensus": 25.0,
+      "summary": "현금흐름 부진 및 사이클 고점 우려로 회피"
     }
   }
 ];
@@ -393,9 +649,33 @@ export const qvgmUsTop: QvgmRecord[] = [
       "pbr": 1.5304215,
       "psr": 1.3537563,
       "roe": 0.24103001,
-      "fcfYield": -0.024836992368275055,
+      "fcfYield": -0.02483699236827505,
       "ret6m": 0.1938148413911076,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 65.0,
+        "verdict": "HOLD",
+        "note": "산불 리스크로 현금흐름 예측 어려움"
+      },
+      "graham": {
+        "score": 80.0,
+        "verdict": "BUY",
+        "note": "PER 7.3으로 가격 매력 높음"
+      },
+      "munger": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "규제 독점은 좋으나 꼬리 위험 큼"
+      },
+      "klarman": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "산불 배상 책임은 영구 손실 리스크"
+      },
+      "consensus": 61.0,
+      "summary": "저평가 매력은 있으나 산불 리스크가 발목을 잡음."
     }
   },
   {
@@ -429,6 +709,30 @@ export const qvgmUsTop: QvgmRecord[] = [
       "fcfYield": 0.01670614358209321,
       "ret6m": 0.5872472906354065,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "해자는 있으나 PER 77은 너무 비쌈"
+      },
+      "graham": {
+        "score": 20.0,
+        "verdict": "AVOID",
+        "note": "PBR 29 등 절대적 고평가 상태"
+      },
+      "munger": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "AI 유행에 편승한 가격, 사이클 주의"
+      },
+      "klarman": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "가격에 완벽함이 반영돼 하방 리스크 큼"
+      },
+      "consensus": 35.0,
+      "summary": "훌륭한 기업이나 AI 테마로 인한 극심한 고평가."
     }
   },
   {
@@ -460,8 +764,32 @@ export const qvgmUsTop: QvgmRecord[] = [
       "psr": 10.060135,
       "roe": 0.39823002,
       "fcfYield": 0.004948818476481477,
-      "ret6m": 1.3555656864853445,
+      "ret6m": 1.355565686485344,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "IP 해자 훌륭하나 사이클 변동성 큼"
+      },
+      "graham": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "자산가치 대비 비싸고 실적 변동성 큼"
+      },
+      "munger": {
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "과점 시장은 좋으나 극심한 사이클 산업"
+      },
+      "klarman": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "사이클 고점 우려 및 하방 리스크 존재"
+      },
+      "consensus": 51.0,
+      "summary": "과점 시장의 강자이나 메모리 사이클 변동성이 부담."
     }
   },
   {
@@ -495,6 +823,30 @@ export const qvgmUsTop: QvgmRecord[] = [
       "fcfYield": 0.06715491570181745,
       "ret6m": 0.4675309604700393,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 65.0,
+        "verdict": "HOLD",
+        "note": "원가 우위 좋으나 천연가스 변동성 부담"
+      },
+      "graham": {
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "PER 14 수준으로 무난한 밸류에이션"
+      },
+      "munger": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "저비용 구조 훌륭하나 지정학적 변수 큼"
+      },
+      "klarman": {
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "공급 과잉 리스크와 원자재 변동성 주의"
+      },
+      "consensus": 64.0,
+      "summary": "압도적 원가 우위가 돋보이나 매크로 변수에 민감함."
     }
   },
   {
@@ -528,6 +880,30 @@ export const qvgmUsTop: QvgmRecord[] = [
       "fcfYield": 0.03260872276926885,
       "ret6m": 0.8191789022800424,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 70.0,
+        "verdict": "BUY",
+        "note": "막강한 시장 지배력, 밸류에이션은 부담"
+      },
+      "graham": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "PER 31, PBR 20으로 너무 비쌈"
+      },
+      "munger": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "인프라 필수재이나 해상풍력 적자 거슬림"
+      },
+      "klarman": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "고정 가격 계약의 마진 훼손 리스크 존재"
+      },
+      "consensus": 53.0,
+      "summary": "전력 인프라 지배력은 좋으나 밸류에이션이 부담됨."
     }
   },
   {
@@ -559,8 +935,32 @@ export const qvgmUsTop: QvgmRecord[] = [
       "psr": 1.056193,
       "roe": 0.12242,
       "fcfYield": 0.05458044076432937,
-      "ret6m": 0.11569525807585679,
+      "ret6m": 0.1156952580758568,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 65.0,
+        "verdict": "HOLD",
+        "note": "브랜드 파워와 양호한 현금흐름 긍정적"
+      },
+      "graham": {
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "PER 17, PBR 1.9로 적절한 가격"
+      },
+      "munger": {
+        "score": 70.0,
+        "verdict": "BUY",
+        "note": "다각화된 포트폴리오가 실적 방어에 유리"
+      },
+      "klarman": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "경기 침체 시 제트기 수요 급감 리스크"
+      },
+      "consensus": 68.0,
+      "summary": "무난한 밸류에이션과 다각화된 사업 구조가 긍정적."
     }
   },
   {
@@ -591,9 +991,33 @@ export const qvgmUsTop: QvgmRecord[] = [
       "pbr": 2.425085,
       "psr": 1.482615,
       "roe": 0.12285,
-      "fcfYield": -0.0078016817204481954,
+      "fcfYield": -0.007801681720448195,
       "ret6m": 0.5426608888752464,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "원가 우위 있으나 철강은 자본집약적임"
+      },
+      "graham": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "철강주치고 밸류에이션 매력이 떨어짐"
+      },
+      "munger": {
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "전기로 기술과 훌륭한 기업 문화는 칭찬"
+      },
+      "klarman": {
+        "score": 55.0,
+        "verdict": "HOLD",
+        "note": "경기 둔화 시 전방 수요 침체 리스크"
+      },
+      "consensus": 60.0,
+      "summary": "우수한 기업 문화와 원가 경쟁력, 단 경기 민감도 큼."
     }
   },
   {
@@ -625,8 +1049,32 @@ export const qvgmUsTop: QvgmRecord[] = [
       "psr": 4.6014323,
       "roe": 0.25832,
       "fcfYield": 0.08534931787740727,
-      "ret6m": 0.36856167326997924,
+      "ret6m": 0.3685616732699792,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "원가 통제력 좋으나 금광업은 선호 안 함"
+      },
+      "graham": {
+        "score": 65.0,
+        "verdict": "HOLD",
+        "note": "PER 13.9로 가격은 나쁘지 않음"
+      },
+      "munger": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "금광업 자체의 장기적 가치 창출에 회의적"
+      },
+      "klarman": {
+        "score": 50.0,
+        "verdict": "HOLD",
+        "note": "지정학적 리스크와 CAPEX 증가 부담"
+      },
+      "consensus": 49.0,
+      "summary": "금광업 특유의 리스크와 자본 집약적 구조가 단점."
     }
   },
   {
@@ -657,9 +1105,33 @@ export const qvgmUsTop: QvgmRecord[] = [
       "pbr": 2.8015256,
       "psr": 1.1423607,
       "roe": 0.124239996,
-      "fcfYield": 0.048102440779887505,
-      "ret6m": 0.20047071661936977,
+      "fcfYield": 0.04810244077988751,
+      "ret6m": 0.2004707166193698,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 85.0,
+        "verdict": "BUY",
+        "note": "대체 불가한 독점력과 장기 계약 훌륭함"
+      },
+      "graham": {
+        "score": 60.0,
+        "verdict": "HOLD",
+        "note": "다소 비싸나 독점력 감안 시 보유 만함"
+      },
+      "munger": {
+        "score": 80.0,
+        "verdict": "BUY",
+        "note": "국가 안보와 직결된 완벽한 규제적 독점"
+      },
+      "klarman": {
+        "score": 75.0,
+        "verdict": "BUY",
+        "note": "인건비 리스크 있으나 현금흐름 안정적"
+      },
+      "consensus": 75.0,
+      "summary": "대체 불가능한 국가 안보 자산으로 강력한 해자 보유."
     }
   },
   {
@@ -690,9 +1162,33 @@ export const qvgmUsTop: QvgmRecord[] = [
       "pbr": 3.0787594,
       "psr": 4.3755436,
       "roe": -0.04656,
-      "fcfYield": 0.020144045951340565,
+      "fcfYield": 0.02014404595134056,
       "ret6m": 0.983580985389825,
       "ret12m": null
+    },
+    "personas": {
+      "buffett": {
+        "score": 40.0,
+        "verdict": "AVOID",
+        "note": "수익성 악화 및 수요 둔화로 예측 불가"
+      },
+      "graham": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "수익성 악화로 가치투자 매력 없음"
+      },
+      "munger": {
+        "score": 35.0,
+        "verdict": "AVOID",
+        "note": "리튬 사이클 변동성과 국유화 리스크 큼"
+      },
+      "klarman": {
+        "score": 30.0,
+        "verdict": "AVOID",
+        "note": "공급 과잉 및 규제 리스크로 영구 손실"
+      },
+      "consensus": 34.0,
+      "summary": "리튬 공급 과잉과 수요 둔화로 불확실성이 매우 큼."
     }
   }
 ];
