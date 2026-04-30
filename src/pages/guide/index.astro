@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { sitePages } from '../../data/site';
+
+const page = {
+  title: '가이드 | 한국 프리미엄·김프·ETF·차익거래 기본 글 모음',
+  description:
+    '김치프리미엄·역프·USDT 김프·ETF 괴리율·트래블룰·송금 네트워크 등 한국 프리미엄 시장을 읽는 데 필요한 핵심 가이드를 한곳에 모은 페이지.',
+  path: '/guide',
+  locale: 'ko' as const,
+};
+
+type GuideEntry = {
+  href: string;
+  title: string;
+  summary: string;
+  group: string;
+};
+
+const guides: GuideEntry[] = [
+  {
+    href: '/guide/김치프리미엄-뜻',
+    title: '김치프리미엄 뜻',
+    summary: '코인 김프부터 ETF 괴리율·원자재 프리미엄까지 한국 프리미엄을 어떻게 이해해야 하는지 출발점을 정리.',
+    group: '기본 개념',
+  },
+  {
+    href: '/guide/역프-뜻',
+    title: '역프 뜻',
+    summary: '한국 시장이 글로벌 기준보다 싸지는 역프가 자산별로 어떻게 보이고 무엇을 함께 봐야 하는지.',
+    group: '기본 개념',
+  },
+  {
+    href: '/guide/김프-보는법',
+    title: '김프 보는 법',
+    summary: '김프 수치만 보지 않고 거래대금·국내 거래소 차이·ETF 괴리율을 함께 읽는 기본 루틴.',
+    group: '기본 개념',
+  },
+  {
+    href: '/glossary',
+    title: '용어 설명',
+    summary: '김프·역프·NAV·괴리율·BTC 김프·USDT 김프 등 사이트에서 쓰는 핵심 용어 정리.',
+    group: '기본 개념',
+  },
+  {
+    href: '/guide/USDT-김프',
+    title: 'USDT 김프',
+    summary: '스테이블코인 USDT의 한국 가격 차이가 뜻하는 것, BTC 김프와 다르게 움직이는 이유와 해석법.',
+    group: '코인',
+  },
+  {
+    href: '/guide/김프-차익거래-비용',
+    title: '김프 차익거래의 실제 비용',
+    summary: '한 사이클의 매수·매도·송금·환전·세금까지 합쳤을 때 표면 김프가 얼마나 줄어드는지 단계별 분해.',
+    group: '코인',
+  },
+  {
+    href: '/guide/송금-네트워크-선택',
+    title: '코인 송금 네트워크 선택',
+    summary: 'TRC20·ERC20·솔라나·XRP 메인넷 등 송금 네트워크 차이, 거래소 호환과 트래블룰 영향까지.',
+    group: '코인',
+  },
+  {
+    href: '/guide/트래블룰',
+    title: '트래블룰',
+    summary: '거래소 간 송금에 적용되는 본인확인·KYC 규칙과 김프 차익거래의 실효성에 미치는 영향.',
+    group: '코인',
+  },
+  {
+    href: '/guide/ETF-괴리율-읽기',
+    title: 'ETF 괴리율 읽기',
+    summary: '국내 상장 해외 ETF의 시장가격·NAV 차이가 왜 벌어지는지, 환헤지·LP·외환 시각으로 해석하는 순서.',
+    group: 'ETF·원자재',
+  },
+  {
+    href: '/methodology',
+    title: '방법론·데이터 출처',
+    summary: '김프보드가 코인·ETF·원자재 프리미엄을 계산하는 공식, 데이터 출처, 한계, 갱신 주기.',
+    group: '방법론',
+  },
+  {
+    href: '/how-to-read',
+    title: '숫자 읽는 법 (체크포인트 7단계)',
+    summary: 'USD/KRW부터 Fear & Greed까지 한국 프리미엄을 7단계로 읽는 순서와 구간 해석.',
+    group: '방법론',
+  },
+];
+
+const groups = Array.from(new Set(guides.map((g) => g.group)));
+---
+
+<BaseLayout title={page.title} description={page.description} locale="ko" pathname={page.path}>
+  <section class="hero">
+    <div class="eyebrow">가이드</div>
+    <h1 class="page-title">한국 프리미엄을 읽는 데 필요한 글 모음</h1>
+    <p class="lede">
+      김프보드의 데이터를 더 정확히 해석하기 위해 미리 알아두면 좋은 개념·실행·방법론 가이드를 한 페이지에 모았습니다.
+      처음 방문하신 분이라면 "기본 개념" 섹션부터 차례대로 읽기를 권합니다.
+    </p>
+  </section>
+
+  {groups.map((g) => (
+    <section class="section copy-panel">
+      <h2>{g}</h2>
+      <ul class="bullet-list guide-list">
+        {guides.filter((x) => x.group === g).map((x) => (
+          <li>
+            <a href={x.href}>
+              <strong>{x.title}</strong>
+              <span>{x.summary}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <style>
+    .guide-list { padding-left: 0; list-style: none; }
+    .guide-list li { margin: 0; padding: 0; }
+    .guide-list li + li { margin-top: 6px; }
+    .guide-list a {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line, rgba(148, 163, 184, 0.18));
+      background: rgba(15, 25, 43, 0.55);
+      transition: border-color 140ms ease, background 140ms ease;
+    }
+    .guide-list a:hover {
+      border-color: var(--accent, #8fdcff);
+      background: rgba(143, 220, 255, 0.06);
+    }
+    .guide-list a strong { color: var(--text); font-size: 1rem; }
+    .guide-list a span { color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
+  </style>
+</BaseLayout>

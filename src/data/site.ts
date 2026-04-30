@@ -9,6 +9,18 @@ export type SeoPage = {
   locale: Locale;
 };
 
+export type TopNavChild = {
+  href: string;
+  label: string;
+  description?: string;
+};
+
+export type TopNavItem = {
+  href: string;
+  label: string;
+  children?: TopNavChild[];
+};
+
 export const siteConfig = {
   brand: {
     ko: '김프보드',
@@ -18,16 +30,29 @@ export const siteConfig = {
   defaultLocale: 'ko' as Locale,
   topNav: {
     ko: [
-      { href: '/', label: '한국 프리미엄' },
-      { href: '/coins', label: '코인 김프' },
-      { href: '/etf', label: 'ETF 괴리율' },
-      { href: '/commodities', label: '원자재' },
-      { href: '/risk', label: '위험 신호' },
+      {
+        href: '/',
+        label: '한국 프리미엄',
+        children: [
+          { href: '/coins', label: '코인 김프', description: '업비트·빗썸·바이낸스 가격차' },
+          { href: '/etf', label: 'ETF 괴리율', description: '국내 상장 해외 ETF NAV 차이' },
+          { href: '/commodities', label: '원자재', description: '금·은·구리 국내 괴리율' },
+          { href: '/risk', label: '위험 신호', description: 'F&G·환율·김프 종합' },
+        ],
+      },
       { href: '/realestate', label: '부동산' },
-      { href: '/portfolio', label: '포트폴리오' },
-      { href: '/qvgm', label: 'QVGM 스크리너' },
-      { href: '/qvgm-portfolio', label: 'QVGM 포트폴리오' },
-    ],
+      {
+        href: '/qvgm',
+        label: 'QVGM',
+        children: [
+          { href: '/qvgm', label: 'QVGM 스크리너', description: 'TOP 10 종목 발굴 + 페르소나 합의' },
+          { href: '/qvgm-portfolio', label: 'QVGM 포트폴리오', description: '월간 자동 ETF 백테스트' },
+          { href: '/portfolio', label: '정적배분 포트폴리오', description: 'ISA·올웨더 비중' },
+        ],
+      },
+      { href: '/journal', label: '일지' },
+      { href: '/guide', label: '가이드' },
+    ] satisfies TopNavItem[],
   },
 };
 
@@ -240,6 +265,20 @@ export const sitePages: SeoPage[] = [
     description:
       'TRC20·ERC20·Solana·XRP 메인넷 등 코인별 송금 네트워크 특성과 도착 거래소 호환·트래블룰 영향까지 김프 차익거래 관점에서 정리한 가이드.',
     path: '/guide/송금-네트워크-선택',
+    locale: 'ko',
+  },
+  {
+    title: '가이드 | 한국 프리미엄·김프·ETF·차익거래 기본 글 모음',
+    description:
+      '김치프리미엄·역프·USDT 김프·ETF 괴리율·트래블룰·송금 네트워크 등 한국 프리미엄 시장을 읽는 데 필요한 핵심 가이드를 한곳에 모은 페이지.',
+    path: '/guide',
+    locale: 'ko',
+  },
+  {
+    title: '일지 | 김프보드 운영자의 주간 매매·시장 일지',
+    description:
+      '김프보드 데이터와 함께 운영자의 주간 매매·시장 해석·교훈을 정리하는 일지. 1인칭, 비중 단위, 실패까지 함께 공개.',
+    path: '/journal',
     locale: 'ko',
   },
 ];

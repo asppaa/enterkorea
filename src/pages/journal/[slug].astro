@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../components/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('journal', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+};
+
+const { post } = Astro.props as { post: any };
+const { Content } = await render(post);
+
+const formatDate = (iso: string) => {
+  const dt = new Date(iso);
+  return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+};
+
+const path = `/journal/${post.id}`;
+const title = `${post.data.title} | 김프보드 일지`;
+---
+
+<BaseLayout
+  title={title}
+  description={post.data.summary}
+  locale="ko"
+  pathname={path}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    datePublished: post.data.date,
+    description: post.data.summary,
+    inLanguage: 'ko',
+  }}
+>
+  <article class="journal-article">
+    <header>
+      <p class="eyebrow"><a href="/journal">일지</a></p>
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        <time datetime={post.data.date}>{formatDate(post.data.date)}</time>
+        {post.data.tags.length > 0 && (
+          <span class="tags">{post.data.tags.map((t: string) => `#${t}`).join(' ')}</span>
+        )}
+      </div>
+      <p class="summary">{post.data.summary}</p>
+    </header>
+
+    <div class="body copy-panel">
+      <Content />
+    </div>
+
+    <footer class="article-foot">
+      <p>
+        <small>
+          본 일지는 운영자의 1인칭 기록이며 투자 권유가 아닙니다. 매매 결정은 본인의 추가 검토와 책임에 따라 주세요.
+          더 자세한 내용은 <a href="/disclaimer">면책조항</a> · <a href="/terms">이용약관</a> 참고.
+        </small>
+      </p>
+      <p>
+        <a href="/journal">← 일지 목록으로</a>
+      </p>
+    </footer>
+  </article>
+
+  <style>
+    .journal-article { max-width: 720px; margin: 0 auto; }
+    .journal-article .eyebrow a { color: var(--accent, #8fdcff); }
+    .journal-article h1 {
+      font-size: 1.8rem;
+      margin: 8px 0 14px;
+      line-height: 1.35;
+    }
+    .journal-article .meta {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    .journal-article .meta .tags { color: var(--accent, #8fdcff); }
+    .journal-article .summary {
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.65;
+      margin: 0 0 28px;
+      font-style: italic;
+    }
+    .journal-article .body {
+      padding: 28px 32px;
+      border-radius: 18px;
+    }
+    .journal-article .body :global(h2) {
+      margin-top: 28px;
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+    }
+    .journal-article .body :global(h3) {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.08rem;
+    }
+    .journal-article .body :global(p) {
+      line-height: 1.75;
+      margin: 0 0 12px;
+    }
+    .journal-article .body :global(ul),
+    .journal-article .body :global(ol) {
+      padding-left: 1.4em;
+      line-height: 1.75;
+    }
+    .journal-article .body :global(hr) {
+      border: 0;
+      height: 1px;
+      background: var(--line, rgba(148, 163, 184, 0.25));
+      margin: 24px 0;
+    }
+    .article-foot {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--line, rgba(148, 163, 184, 0.25));
+      color: var(--muted);
+      font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  </style>
+</BaseLayout>

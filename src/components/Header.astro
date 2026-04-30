@@ -1,12 +1,18 @@
 ---
-import { siteConfig, type Locale } from '../data/site';
+import { siteConfig, type Locale, type TopNavItem } from '../data/site';
 
 const { locale = 'ko', pathname = '/' } = Astro.props as {
   locale?: Locale;
   pathname?: string;
 };
 
-const nav = siteConfig.topNav[locale];
+const nav: TopNavItem[] = siteConfig.topNav[locale];
+
+const isActive = (item: TopNavItem) => {
+  if (item.href === pathname) return true;
+  if (item.children?.some((c) => c.href === pathname)) return true;
+  return false;
+};
 ---
 
 <header class="site-header">
@@ -19,13 +25,75 @@ const nav = siteConfig.topNav[locale];
       </span>
     </a>
     <nav class="top-nav" aria-label="주요 메뉴">
-      {
-        nav.map((item) => (
-          <a href={item.href} aria-current={pathname === item.href ? 'page' : undefined}>
-            {item.label}
-          </a>
-        ))
-      }
+      {nav.map((item) => {
+        const active = isActive(item);
+        if (!item.children?.length) {
+          return (
+            <a href={item.href} aria-current={active ? 'page' : undefined}>
+              {item.label}
+            </a>
+          );
+        }
+        return (
+          <div class="nav-group" data-active={active ? 'true' : undefined}>
+            <button
+              type="button"
+              class="nav-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-current={active ? 'page' : undefined}
+            >
+              <a href={item.href} class="nav-trigger-label">{item.label}</a>
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="nav-dropdown" role="menu">
+              {item.children.map((child) => (
+                <a
+                  href={child.href}
+                  role="menuitem"
+                  aria-current={pathname === child.href ? 'page' : undefined}
+                >
+                  <strong>{child.label}</strong>
+                  {child.description && <span>{child.description}</span>}
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </nav>
   </div>
+  <script is:inline>
+    (function () {
+      const groups = document.querySelectorAll('.nav-group');
+      groups.forEach((g) => {
+        const trigger = g.querySelector('.nav-trigger');
+        const labelLink = g.querySelector('.nav-trigger-label');
+        if (!trigger) return;
+        // Hover/focus 자연스럽게: CSS 가 처리. 클릭(트리거 영역)으로도 토글되게.
+        trigger.addEventListener('click', (event) => {
+          // 자식 a 링크 클릭은 통과
+          if (event.target && event.target.closest('a')) return;
+          const open = g.getAttribute('data-open') === 'true';
+          // 다른 그룹 닫기
+          groups.forEach((other) => other.removeAttribute('data-open'));
+          if (!open) g.setAttribute('data-open', 'true');
+          trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+        });
+      });
+      // 외부 클릭 닫기
+      document.addEventListener('click', (event) => {
+        const inside = event.target && event.target.closest('.nav-group');
+        if (!inside) {
+          groups.forEach((g) => g.removeAttribute('data-open'));
+        }
+      });
+      // ESC 닫기
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          groups.forEach((g) => g.removeAttribute('data-open'));
+        }
+      });
+    })();
+  </script>
 </header>
