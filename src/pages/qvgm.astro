@@ -44,6 +44,21 @@ const recBadge = (rec: string) => {
   return { emoji: '•', label: rec || '-', cls: 'badge-default' };
 };
 
+const personaVerdictBadge = (verdict: string) => {
+  const v = (verdict || '').toUpperCase();
+  if (v === 'BUY') return { emoji: '✅', cls: 'badge-buy' };
+  if (v === 'HOLD') return { emoji: '🟨', cls: 'badge-hold' };
+  if (v === 'AVOID') return { emoji: '⛔', cls: 'badge-avoid' };
+  return { emoji: '·', cls: 'badge-default' };
+};
+
+const PERSONAS: { key: 'buffett' | 'graham' | 'munger' | 'klarman'; label: string; tagline: string }[] = [
+  { key: 'buffett', label: '워런 버핏', tagline: '강한 해자·예측 가능한 현금흐름' },
+  { key: 'graham', label: '벤저민 그레이엄', tagline: '안전마진·자산가치 대비 저가' },
+  { key: 'munger', label: '찰리 멍거', tagline: '사이클·경쟁 동학·역설적 사고' },
+  { key: 'klarman', label: '세스 클라먼', tagline: '손실 회피·비대칭 보상' },
+];
+
 const fmt = {
   num1: (v: number | null | undefined) => (v == null ? '-' : v.toFixed(1)),
   pct: (v: number | null | undefined) => (v == null ? '-' : `${(v * 100).toFixed(1)}%`),
@@ -101,6 +116,14 @@ const sections = [
             Q {Math.round(qvgmWeights.quality * 100)}% · G {Math.round(qvgmWeights.growth * 100)}% ·
             M {Math.round(qvgmWeights.momentum * 100)}% · S {Math.round(qvgmWeights.sector * 100)}% ·
             병목 {Math.round(qvgmWeights.bottleneck * 100)}%
+          </p>
+        </article>
+        <article class="summary-card summary-card-primary">
+          <strong>🎩 4명 페르소나 합의 (신규)</strong>
+          <span>버핏 · 그레이엄 · 멍거 · 클라먼</span>
+          <p>
+            전설적 투자자 4명이 종목별로 각자 철학에 따라 점수·찬반을 부여하고 합의 점수를 산출합니다.
+            네 명의 시점이 같은 종목을 두고 토론·교차검증한 결과로 보시면 됩니다.
           </p>
         </article>
         <article class="summary-card">
@@ -184,6 +207,40 @@ const sections = [
                 {r.metrics.ret12m != null && <span>12m {fmt.signed(r.metrics.ret12m)}</span>}
                 {r.moatScore != null && <span>경제적 해자 {r.moatScore.toFixed(0)} ({moatTypeLabel(r.moatType)})</span>}
               </footer>
+
+              {r.personas && (
+                <div class="persona-block">
+                  <div class="persona-header">
+                    <span class="persona-title">🎩 4명 페르소나 토론 결과</span>
+                    {r.personas.consensus != null && (
+                      <span class="persona-consensus">합의 {Math.round(r.personas.consensus)}</span>
+                    )}
+                  </div>
+                  {r.personas.summary && (
+                    <p class="persona-summary">버핏·그레이엄·멍거·클라먼이 함께 검토한 결과: {r.personas.summary}</p>
+                  )}
+                  <ul class="persona-list">
+                    {PERSONAS.map(({ key, label, tagline }) => {
+                      const p = r.personas?.[key];
+                      const b = personaVerdictBadge(p?.verdict || '');
+                      return (
+                        <li class="persona-row">
+                          <div class="persona-name">
+                            <strong>{label}</strong>
+                            <span class="persona-tagline">{tagline}</span>
+                          </div>
+                          <div class="persona-verdict">
+                            <span class={`badge persona-badge ${b.cls}`}>
+                              {b.emoji} {p?.score != null ? Math.round(p.score) : '-'}
+                            </span>
+                            {p?.note && <span class="persona-note">{p.note}</span>}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </article>
           );
         })}
@@ -200,6 +257,11 @@ const sections = [
       <li>경제적 해자: Gemini 3.1 Pro로 0~100 점수 + 브랜드/네트워크/원가/지식재산/전환비용/규제·면허 분류</li>
       <li>병목: 반도체 HBM·전력기기·방산·조선·원전·희토류·광케이블 등 공급제약 테마 매칭</li>
       <li>심층 카드: Gemini 3.1 Pro로 핵심사업·경쟁우위·촉매·리스크·밸류·추천강도 생성</li>
+      <li>
+        🎩 페르소나 합의: 워런 버핏 · 벤저민 그레이엄 · 찰리 멍거 · 세스 클라먼 4명이 자신의 투자 철학에 따라
+        같은 종목을 0~100점·BUY/HOLD/AVOID로 평가하고, 평균을 합의 점수로 산출합니다. 단일 모델의 평면적 의견이 아니라
+        서로 다른 시점이 토론·교차검증한 결과로 활용해 주세요.
+      </li>
     </ul>
     <p class="warn">
       ※ 본 페이지는 1차 발굴 + 정성 보강 자동화 결과입니다. 실제 매수·매도 의사결정은 본인의 추가 검토에 따라 주세요.
@@ -288,6 +350,72 @@ const sections = [
       color: #475569;
     }
     .qvgm-card footer span { background: rgba(148, 163, 184, 0.18); padding: 3px 9px; border-radius: 6px; }
+
+    .persona-block {
+      margin-top: 0.9rem;
+      padding: 0.8rem 0.9rem;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 10px;
+    }
+    .persona-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+    .persona-title { font-size: 0.85rem; font-weight: 700; color: #4338ca; }
+    .persona-consensus {
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #4338ca;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .persona-summary {
+      margin: 0 0 0.5rem;
+      font-size: 0.85rem;
+      color: #1e293b;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .persona-list { list-style: none; margin: 0; padding: 0; }
+    .persona-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      padding: 0.45rem 0;
+      border-top: 1px dashed rgba(99, 102, 241, 0.18);
+      align-items: start;
+    }
+    .persona-row:first-child { border-top: none; }
+    .persona-name { display: flex; flex-direction: column; gap: 0.1rem; }
+    .persona-name strong { font-size: 0.88rem; color: #1e1b4b; }
+    .persona-tagline { font-size: 0.72rem; color: #64748b; }
+    .persona-verdict { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; max-width: 60%; text-align: right; }
+    .persona-badge { font-size: 0.78rem; padding: 2px 9px; }
+    .persona-note {
+      font-size: 0.78rem;
+      color: #334155;
+      line-height: 1.45;
+      max-width: 100%;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .persona-block {
+        background: rgba(99, 102, 241, 0.10);
+        border-color: rgba(99, 102, 241, 0.35);
+      }
+      .persona-title { color: #c7d2fe; }
+      .persona-summary { color: #cbd5e1; }
+      .persona-name strong { color: #e0e7ff; }
+      .persona-tagline { color: #94a3b8; }
+      .persona-note { color: #cbd5e1; }
+    }
 
     .disclaimer {
       margin-top: 2rem;
